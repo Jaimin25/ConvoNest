@@ -9,6 +9,7 @@ export default function useSupabase() {
   );
   const [session, setSession] = useState<Session | null>(null);
 
+  
   useEffect(() => {
     const supabase = createBrowserClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
