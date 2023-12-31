@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages Messages[]
+  chats    Chat[]
+
+  friends1 Friends[] @relation("User1")
+  friends2 Friends[] @relation("User2")
+
+  sentRequests     FriendRequests[] @relation("SentFriendRequest")
+  receivedRequests FriendRequests[] @relation("ReceivedFriendRequest")
+}
+
+model Chat {
+  id        String   @id @default(uuid())
+  isGroup   Boolean  @default(false)
+  name      String?
+  adminId   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users    User[]
+  messages Messages[]
+}
+
+model Messages {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  chat   Chat   @relation(fields: [chatId], references: [id])
+  chatId String
+}
+
+model FriendRequests {
+  id        String   @id @default(cuid())
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sender   User   @relation("SentFriendRequest", fields: [senderId], references: [id])
+  senderId String
+
+  receiver   User   @relation("ReceivedFriendRequest", fields: [receiverId], references: [id])
+  receiverId String
+}
+
+model Friends {
+  id String @id @default(cuid())
+
+  user1   User   @relation("User1", fields: [user1Id], references: [id])
+  user1Id String
+
+  user2   User   @relation("User2", fields: [user2Id], references: [id])
+  user2Id String
+
+  @@unique([user1Id, user2Id])
+  @@index([user1Id, user2Id])
+}
