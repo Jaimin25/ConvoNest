@@ -1,9 +1,9 @@
 import { db } from "@/lib/db";
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "../lib/supabase";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     const supabase = await createSupabaseServerClient();
     const {
         data: { session },

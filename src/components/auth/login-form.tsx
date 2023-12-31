@@ -1,10 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
+import Link from "next/link";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Label } from "../ui/label";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -15,13 +19,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "../ui/label";
-import Link from "next/link";
 import { encryptValue } from "@/lib/cryptoJS";
-import axios from "axios";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import useSupabase from "@/hooks/useSupabase";
 
 const loginFormSchema = z.object({
     email: z.string().email(),
@@ -30,7 +28,7 @@ const loginFormSchema = z.object({
 
 export default function LoginForm() {
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | undefined>();
 
     const router = useRouter();
 
@@ -43,7 +41,7 @@ export default function LoginForm() {
     });
 
     function onSubmit(values: z.infer<typeof loginFormSchema>) {
-        setError(null);
+        setError("");
         setLoading(true);
         async function signin() {
             values.password = encryptValue(values.password);
@@ -54,8 +52,10 @@ export default function LoginForm() {
             } else if (res.data.statusCode === 200) {
                 router.push("/");
             }
+
             setLoading(false);
         }
+
         signin();
     }
 

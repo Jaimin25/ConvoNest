@@ -4,7 +4,7 @@ import { decryptValue } from "@/lib/cryptoJS";
 import { createSupabaseServerClient } from "../../lib/supabase";
 
 export async function POST(req: NextRequest) {
-    const { username, email, password } = await req.json();
+    const { email, password } = await req.json();
     const originalPassword = decryptValue(password);
     const supabase = await createSupabaseServerClient();
 

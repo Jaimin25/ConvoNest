@@ -4,9 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
-import CryptoJS from "crypto-js";
-
+import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import { Label } from "../ui/label";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -17,12 +19,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "../ui/label";
-import Link from "next/link";
-import axios from "axios";
 import { encryptValue } from "@/lib/cryptoJS";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
 
 const signupFormSchema = z.object({
     username: z.string().min(3).max(8),
@@ -32,7 +29,7 @@ const signupFormSchema = z.object({
 
 export default function SignUpForm() {
     const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | undefined>("");
 
     const router = useRouter();
 
@@ -46,7 +43,7 @@ export default function SignUpForm() {
     });
 
     function onSubmit(values: z.infer<typeof signupFormSchema>) {
-        setError(null);
+        setError("");
         setLoading(true);
         async function signup() {
             values.password = encryptValue(values.password);
@@ -57,10 +54,13 @@ export default function SignUpForm() {
             } else if (res.data.statusCode === 200) {
                 router.push("/");
             }
+
             setLoading(false);
         }
+
         signup();
     }
+
     return (
         <div className="w-full flex items-center justify-center">
             <Form {...signUpForm}>

@@ -1,26 +1,11 @@
 "use client";
 
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Skeleton } from "../ui/skeleton";
 import ProfileListItem from "./profiles-list-item";
 import { useProfiles } from "../providers/profiles-provider";
 
 export default function ProfileList() {
-    // const [loading, setLoading] = useState<boolean>(true);
-    // const [users, setUsers] = useState<any[]>([]);
-
-    // useEffect(() => {
-    //     setLoading(true);
-    //     const fetchUsers = async () => {
-    //         const res = await axios.get("/api/user/fetch-all");
-    //         console.log(res.data.users);
-    //         setUsers(res.data.users);
-    //         setLoading(false);
-    //     };
-    //     fetchUsers();
-    // }, []);
-
     const { loading, users } = useProfiles();
 
     return (

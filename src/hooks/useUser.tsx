@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import useSupabase from "./useSupabase";
 import axios from "axios";
 
 interface User {
