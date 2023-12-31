@@ -85,6 +85,6 @@ export const config = {
     '/users',
     '/notifications',
     '/contacts',
-    '/chats'
+    'chats'
   ]
 };
