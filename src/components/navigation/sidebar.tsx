@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Bell, Contact, MessageSquareText, Users } from "lucide-react";
+import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Bell, Contact, MessageSquareText, Users } from 'lucide-react';
 
-import useUser from "@/hooks/useUser";
-import { generateAvatar } from "@/lib/generate-avatar";
-import { cn } from "@/lib/utils";
+import useUser from '@/hooks/useUser';
+import { generateAvatar } from '@/lib/generate-avatar';
+import { cn } from '@/lib/utils';
 
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Skeleton } from "../ui/skeleton";
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Skeleton } from '../ui/skeleton';
 
 export default function NavigationSidebar() {
   const { user } = useUser();
@@ -18,47 +18,45 @@ export default function NavigationSidebar() {
   const location = usePathname();
 
   return (
-    <div className="dark:bg-black/50 h-full w-14 flex flex-col items-center py-4">
-      <div className="flex flex-col flex-1 gap-y-2 *:self-center *:cursor-pointer">
+    <div className="flex h-full w-14 flex-col items-center py-4 dark:bg-black/50">
+      <div className="flex flex-1 flex-col gap-y-2 *:cursor-pointer *:self-center">
         <Link href="/users">
-          <div className="hover:bg-white/15  rounded-md p-2 transition ">
+          <div className="rounded-md  p-2 transition hover:bg-white/15 ">
             <Users
               className={cn(
-                "w-6 h-6",
-                location === "/users" ? " stroke-teal-500" : "fill-none",
+                'h-6 w-6',
+                location === '/users' ? ' stroke-teal-500' : 'fill-none'
               )}
             />
           </div>
         </Link>
         <Link href="/chats">
-          <div className="hover:bg-white/15  rounded-md p-2 transition ">
+          <div className="rounded-md  p-2 transition hover:bg-white/15 ">
             <MessageSquareText
               className={cn(
-                "w-6 h-6",
-                location === "/chats" ? " stroke-sky-500" : "fill-none",
+                'h-6 w-6',
+                location === '/chats' ? ' stroke-sky-500' : 'fill-none'
               )}
             />
           </div>
         </Link>
 
         <Link href="/notifications">
-          <div className="hover:bg-white/15  rounded-md p-2 transition">
+          <div className="rounded-md  p-2 transition hover:bg-white/15">
             <Bell
               className={cn(
-                "w-6 h-6",
-                location === "/notifications"
-                  ? " stroke-rose-500"
-                  : "fill-none",
+                'h-6 w-6',
+                location === '/notifications' ? ' stroke-rose-500' : 'fill-none'
               )}
             />
           </div>
         </Link>
         <Link href="/contacts">
-          <div className="hover:bg-white/15  rounded-md p-2 transition">
+          <div className="rounded-md  p-2 transition hover:bg-white/15">
             <Contact
               className={cn(
-                "w-6 h-6",
-                location === "/contacts" ? " stroke-amber-500" : "fill-none",
+                'h-6 w-6',
+                location === '/contacts' ? ' stroke-amber-500' : 'fill-none'
               )}
             />
           </div>
@@ -75,7 +73,7 @@ export default function NavigationSidebar() {
           <PopoverContent>Logout</PopoverContent>
         </Popover>
       ) : (
-        <Skeleton className="w-8 h-8 rounded-md" />
+        <Skeleton className="h-8 w-8 rounded-md" />
       )}
     </div>
   );

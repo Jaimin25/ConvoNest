@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { createBrowserClient } from "@supabase/ssr";
-import { type Session, SupabaseClient } from "@supabase/supabase-js";
+import { createBrowserClient } from '@supabase/ssr';
+import { type Session, SupabaseClient } from '@supabase/supabase-js';
 
 export default function useSupabase() {
   const [supabase, setSupabase] = useState<SupabaseClient>(
-    null! as SupabaseClient,
+    null! as SupabaseClient
   );
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
     const supabase = createBrowserClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     );
     async function getSession() {
       const { data } = await supabase.auth.getSession();

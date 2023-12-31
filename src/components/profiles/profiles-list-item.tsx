@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
-import { generateAvatar } from "@/lib/generate-avatar";
+import { generateAvatar } from '@/lib/generate-avatar';
 
 export default function ProfileListItem({
   name,
-  createdAt,
+  createdAt
 }: {
   id: string;
   name: string;
@@ -14,15 +14,15 @@ export default function ProfileListItem({
   const timestamp = createdAt;
   const dateObject = new Date(timestamp);
 
-  const formattedDate = dateObject.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const formattedDate = dateObject.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   });
 
   return (
-    <div className="flex items-center gap-x-4 hover:cursor-pointer hover:bg-white/10 rounded p-3 transition">
-      <div className="h-full flex items-center justify-center">
+    <div className="flex items-center gap-x-4 rounded p-3 transition hover:cursor-pointer hover:bg-white/10">
+      <div className="flex h-full items-center justify-center">
         <div
           dangerouslySetInnerHTML={{ __html: avatar }}
           className="h-11 w-11"

@@ -1,21 +1,21 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
-import { db } from "@/lib/db";
+import { db } from '@/lib/db';
 
-import { createSupabaseServerClient } from "../lib/supabase";
+import { createSupabaseServerClient } from '../lib/supabase';
 
 export async function GET() {
   const supabase = await createSupabaseServerClient();
   const {
-    data: { session },
+    data: { session }
   } = await supabase.auth.getSession();
 
   if (!session) {
     return NextResponse.json({
       status: 401,
       body: {
-        message: "Unauthorized",
-      },
+        message: 'Unauthorized'
+      }
     });
   }
 
@@ -23,12 +23,12 @@ export async function GET() {
 
   const user = await db.user.findUnique({
     where: {
-      id: userId,
-    },
+      id: userId
+    }
   });
 
   return NextResponse.json({
     statusCode: 200,
-    user,
+    user
   });
 }

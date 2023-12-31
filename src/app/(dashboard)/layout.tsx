@@ -1,20 +1,20 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 
-import Dashboard from "@/components/dashboard/dashboard";
-import { ProfilesProvider } from "@/components/providers/profiles-provider";
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import Dashboard from '@/components/dashboard/dashboard';
+import { ProfilesProvider } from '@/components/providers/profiles-provider';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 
-import "../globals.css";
+import '../globals.css';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "ConvoNest",
-  description: "Place to have some fun conversations",
+  title: 'ConvoNest',
+  description: 'Place to have some fun conversations'
 };
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {

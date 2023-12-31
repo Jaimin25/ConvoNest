@@ -1,8 +1,8 @@
-import NavigationSidebar from "../navigation/sidebar";
+import NavigationSidebar from '../navigation/sidebar';
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-full w-full flex">
+    <div className="flex h-full w-full">
       <NavigationSidebar />
       {children}
     </div>

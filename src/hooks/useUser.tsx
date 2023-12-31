@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 interface User {
   id: string;
@@ -13,7 +13,7 @@ export default function useUser() {
 
   useEffect(() => {
     const fetchUserDetails = async () => {
-      const res = await axios.get("/api/user");
+      const res = await axios.get('/api/user');
       setUser(res.data.user);
     };
     fetchUserDetails();

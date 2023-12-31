@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 
-import { useProfiles } from "../providers/profiles-provider";
-import { Skeleton } from "../ui/skeleton";
+import { useProfiles } from '../providers/profiles-provider';
+import { Skeleton } from '../ui/skeleton';
 
-import ProfileListItem from "./profiles-list-item";
+import ProfileListItem from './profiles-list-item';
 
 export default function ProfileList() {
   const { loading, users } = useProfiles();
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
+    <div className="flex h-full flex-col overflow-hidden">
       {loading ? (
-        <div className="space-y-4 flex flex-col overflow-y-auto h-full">
+        <div className="flex h-full flex-col space-y-4 overflow-y-auto">
           <div className="flex items-center space-x-4">
             <Skeleton className="h-12 w-12 rounded-md" />
             <div className="space-y-2">
@@ -51,7 +51,7 @@ export default function ProfileList() {
           </div>
         </div>
       ) : (
-        <div className="space-y-1 flex flex-col overflow-y-auto h-full">
+        <div className="flex h-full flex-col space-y-1 overflow-y-auto">
           {users.map((user) => (
             <ProfileListItem
               key={user.id}

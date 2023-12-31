@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-import { decryptValue } from "@/lib/cryptoJS";
+import { decryptValue } from '@/lib/cryptoJS';
 
-import { createSupabaseServerClient } from "../../lib/supabase";
+import { createSupabaseServerClient } from '../../lib/supabase';
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
-    password: originalPassword,
+    password: originalPassword
   });
 
   if (data && !error) {

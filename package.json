@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "npx eslint .",
+    "format": "npx prettier . --write"
   },
   "dependencies": {
     "@dicebear/collection": "^5.3.5",
@@ -48,6 +49,8 @@
     "eslint-config-next": "14.0.4",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "postcss": "^8",
+    "prettier": "^3.1.1",
+    "prettier-plugin-tailwindcss": "^0.5.10",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }

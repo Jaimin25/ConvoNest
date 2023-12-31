@@ -1,12 +1,12 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from 'next/server';
 
-import { type CookieOptions, createServerClient } from "@supabase/ssr";
+import { type CookieOptions, createServerClient } from '@supabase/ssr';
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
-      headers: request.headers,
-    },
+      headers: request.headers
+    }
   });
 
   const supabase = createServerClient(
@@ -21,62 +21,62 @@ export async function middleware(request: NextRequest) {
           request.cookies.set({
             name,
             value,
-            ...options,
+            ...options
           });
           response = NextResponse.next({
             request: {
-              headers: request.headers,
-            },
+              headers: request.headers
+            }
           });
           response.cookies.set({
             name,
             value,
-            ...options,
+            ...options
           });
         },
         remove(name: string, options: CookieOptions) {
           request.cookies.set({
             name,
-            value: "",
-            ...options,
+            value: '',
+            ...options
           });
           response = NextResponse.next({
             request: {
-              headers: request.headers,
-            },
+              headers: request.headers
+            }
           });
           response.cookies.set({
             name,
-            value: "",
-            ...options,
+            value: '',
+            ...options
           });
-        },
-      },
-    },
+        }
+      }
+    }
   );
 
   const { data, error } = await supabase.auth.getSession();
 
   if (!data.session) {
-    if (request.nextUrl.pathname === "/signup") {
-      return NextResponse.rewrite(new URL("/signup", request.url));
+    if (request.nextUrl.pathname === '/signup') {
+      return NextResponse.rewrite(new URL('/signup', request.url));
     }
-    return NextResponse.rewrite(new URL("/login", request.nextUrl.origin));
+    return NextResponse.rewrite(new URL('/login', request.nextUrl.origin));
   }
 
   if (
-    (request.nextUrl.pathname === "/login" ||
-      request.nextUrl.pathname === "/signup" ||
-      request.nextUrl.pathname === "/") &&
+    (request.nextUrl.pathname === '/login' ||
+      request.nextUrl.pathname === '/signup' ||
+      request.nextUrl.pathname === '/') &&
     data.session &&
     !error
   ) {
-    return NextResponse.redirect(new URL("/users", request.url));
+    return NextResponse.redirect(new URL('/users', request.url));
   }
 
   return response;
 }
 
 export const config = {
-  matcher: ["/", "/login", "/signup", "/users", "/notifications"],
+  matcher: ['/', '/login', '/signup', '/users', '/notifications']
 };

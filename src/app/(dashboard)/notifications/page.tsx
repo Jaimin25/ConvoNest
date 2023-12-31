@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import Notifications from "@/components/notifications/notifications";
+import Notifications from '@/components/notifications/notifications';
 
 export default function NotificationsPage() {
   return <Notifications />;

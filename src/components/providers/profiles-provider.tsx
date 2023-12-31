@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { createContext, useContext, useEffect, useState } from 'react';
+import axios from 'axios';
 
 interface UsersProps {
   id: string;
@@ -17,7 +17,7 @@ interface ProfilesContextProps {
 
 const ProfilesContext = createContext<ProfilesContextProps>({
   users: [],
-  loading: false,
+  loading: false
 });
 
 export const useProfiles = () => {
@@ -31,7 +31,7 @@ export function ProfilesProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setLoading(true);
     const fetchUsers = async () => {
-      const res = await axios.get("/api/user/fetch-all");
+      const res = await axios.get('/api/user/fetch-all');
       console.log(res.data.users);
       setUsers(res.data.users);
       setLoading(false);
