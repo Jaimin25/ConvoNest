@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "npx eslint .",
     "format": "npx prettier . --write",
-    "postinstall": "prisma generate",
-    "prepare": "husky install"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@dicebear/collection": "^5.3.5",
