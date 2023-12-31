@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { generateAvatar } from '@/lib/generate-avatar';
+import { generateAvatar } from '@/lib/generateAvatar';
 import { joinTimeFormat } from '@/lib/joinTimeFormat';
 
 export default function ProfileListItem({

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Bell, Contact, MessageSquareText, Users } from 'lucide-react';
 
 import useUser from '@/hooks/useUser';
-import { generateAvatar } from '@/lib/generate-avatar';
+import { generateAvatar } from '@/lib/generateAvatar';
 import { cn } from '@/lib/utils';
 
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
