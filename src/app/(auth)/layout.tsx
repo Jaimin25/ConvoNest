@@ -1,11 +1,12 @@
 import React from "react";
 import type { Metadata } from "next";
-import "../globals.css";
-
 import { Inter } from "next/font/google";
-import { MessageCircleMore } from "lucide-react";
 import { Merienda } from "next/font/google";
+import { MessageCircleMore } from "lucide-react";
+
 import { ThemeProvider } from "@/components/providers/theme-provider";
+
+import "../globals.css";
 
 const merienda = Merienda({
   subsets: ["latin"],

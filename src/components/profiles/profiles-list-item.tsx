@@ -1,5 +1,6 @@
-import { generateAvatar } from "@/lib/generate-avatar";
 import React from "react";
+
+import { generateAvatar } from "@/lib/generate-avatar";
 
 export default function ProfileListItem({
   name,

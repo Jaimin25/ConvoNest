@@ -1,14 +1,13 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import Link from "next/link";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
-import { Label } from "../ui/label";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,6 +19,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { encryptValue } from "@/lib/cryptoJS";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Label } from "../ui/label";
 
 const signupFormSchema = z.object({
   username: z.string().min(3).max(8),

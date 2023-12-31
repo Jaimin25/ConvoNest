@@ -1,14 +1,16 @@
 "use client";
 
+import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Bell, Contact, MessageSquareText, Users } from "lucide-react";
+
 import useUser from "@/hooks/useUser";
 import { generateAvatar } from "@/lib/generate-avatar";
-import { Bell, Contact, MessageSquareText, Users } from "lucide-react";
-import React from "react";
-import { Skeleton } from "../ui/skeleton";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Skeleton } from "../ui/skeleton";
 
 export default function NavigationSidebar() {
   const { user } = useUser();

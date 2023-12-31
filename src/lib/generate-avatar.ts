@@ -1,5 +1,5 @@
-import { createAvatar } from "@dicebear/core";
 import { adventurerNeutral } from "@dicebear/collection";
+import { createAvatar } from "@dicebear/core";
 
 export function generateAvatar(value: string) {
   const avatar = createAvatar(adventurerNeutral, {

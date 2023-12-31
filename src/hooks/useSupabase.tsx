@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react";
+
 import { createBrowserClient } from "@supabase/ssr";
 import { type Session, SupabaseClient } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
 
 export default function useSupabase() {
   const [supabase, setSupabase] = useState<SupabaseClient>(

@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
-import { Skeleton } from "../ui/skeleton";
-import ProfileListItem from "./profiles-list-item";
+
 import { useProfiles } from "../providers/profiles-provider";
+import { Skeleton } from "../ui/skeleton";
+
+import ProfileListItem from "./profiles-list-item";
 
 export default function ProfileList() {
   const { loading, users } = useProfiles();

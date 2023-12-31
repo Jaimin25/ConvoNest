@@ -1,6 +1,7 @@
+import { NextResponse } from "next/server";
+
 import { db } from "@/lib/db";
 
-import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "../lib/supabase";
 
 export async function GET() {
