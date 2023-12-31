@@ -13,7 +13,6 @@ import {
   DialogTitle
 } from '@/components/ui/dialog';
 import { DialogTrigger } from '@radix-ui/react-dialog';
-import { Label } from '@radix-ui/react-label';
 
 import { useRequests } from '../providers/requests-provider';
 import { useUser } from '../providers/user-provider';
@@ -31,8 +30,7 @@ interface AddFriendModalProps {
 export default function AddFriendModal({
   children,
   id,
-  name,
-  avatar
+  name
 }: AddFriendModalProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
