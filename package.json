@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "npx eslint .",
-    "format": "npx prettier . --write"
+    "format": "npx prettier . --write",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@dicebear/collection": "^5.3.5",
@@ -51,6 +52,7 @@
     "postcss": "^8",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.10",
+    "prisma": "^5.7.1",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
