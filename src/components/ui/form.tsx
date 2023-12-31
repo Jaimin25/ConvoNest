@@ -23,7 +23,7 @@ type FormFieldContextValue<
 };
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
+  {} as FormFieldContextValue,
 );
 
 const FormField = <
@@ -67,7 +67,7 @@ type FormItemContextValue = {
 };
 
 const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
+  {} as FormItemContextValue,
 );
 
 const FormItem = React.forwardRef<
@@ -78,11 +78,7 @@ const FormItem = React.forwardRef<
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div
-        ref={ref}
-        className={cn("space-y-2", className)}
-        {...props}
-      />
+      <div ref={ref} className={cn("space-y-2", className)} {...props} />
     </FormItemContext.Provider>
   );
 });
@@ -162,9 +158,10 @@ const FormMessage = React.forwardRef<
       id={formMessageId}
       className={cn(
         "text-sm font-medium text-red-500 dark:text-red-900",
-        className
+        className,
       )}
-      {...props}>
+      {...props}
+    >
       {body}
     </p>
   );
