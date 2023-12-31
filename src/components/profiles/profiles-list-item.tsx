@@ -3,7 +3,11 @@ import React from 'react';
 import { generateAvatar } from '@/lib/generateAvatar';
 import { joinTimeFormat } from '@/lib/joinTimeFormat';
 
+import AddFriendModal from '../modals/add-friend-modal';
+import UserAvatar from '../user-avatar';
+
 export default function ProfileListItem({
+  id,
   name,
   createdAt
 }: {
@@ -16,17 +20,16 @@ export default function ProfileListItem({
   const joinedAtTime = joinTimeFormat(createdAt);
 
   return (
-    <div className="m-2 flex items-center gap-x-4 rounded p-3 transition hover:cursor-pointer hover:bg-white/10">
-      <div className="flex h-full items-center justify-center">
-        <div
-          dangerouslySetInnerHTML={{ __html: avatar }}
-          className="h-11 w-11"
-        />
+    <AddFriendModal id={id} name={name} avatar={avatar}>
+      <div className="m-1 flex gap-x-4 rounded p-2 transition hover:cursor-pointer hover:bg-white/10">
+        <div className="flex h-full items-center justify-center">
+          <UserAvatar className="m-2 h-11 w-11 rounded-md" username={name} />
+        </div>
+        <div className="flex w-full flex-col items-start">
+          <p className="text-lg">{name}</p>
+          <p className="text-xs text-stone-400">Joined {joinedAtTime}</p>
+        </div>
       </div>
-      <div className="flex flex-col justify-center">
-        <p className="text-lg">{name}</p>
-        <p className="text-xs text-stone-400">Joined {joinedAtTime}</p>
-      </div>
-    </div>
+    </AddFriendModal>
   );
 }

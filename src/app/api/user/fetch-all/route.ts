@@ -19,7 +19,13 @@ export async function GET() {
     });
   }
 
-  const users = await db.user.findMany({});
+  const users = await db.user.findMany({
+    where: {
+      NOT: {
+        id: session.user.id
+      }
+    }
+  });
 
   return NextResponse.json({
     statusCode: 200,

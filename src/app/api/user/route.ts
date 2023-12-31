@@ -27,8 +27,17 @@ export async function GET() {
     }
   });
 
-  return NextResponse.json({
-    statusCode: 200,
-    user
-  });
+  if (user) {
+    return NextResponse.json({
+      statusCode: 200,
+      user
+    });
+  } else {
+    return NextResponse.json({
+      statusCode: 404,
+      body: {
+        message: 'User not found'
+      }
+    });
+  }
 }

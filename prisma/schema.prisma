@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "cockroachdb"
+  url       = env("DATABASE_URL")
 }
 
 model User {
@@ -36,7 +36,7 @@ model Chat {
 }
 
 model Messages {
-  id      Int    @id @default(autoincrement())
+  id      Int    @id @default(sequence())
   content String
 
   createdAt DateTime @default(now())
