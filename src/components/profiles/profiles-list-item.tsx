@@ -6,7 +6,7 @@ import { joinTimeFormat } from '@/lib/joinTimeFormat';
 import AddFriendModal from '../modals/add-friend-modal';
 import UserAvatar from '../user-avatar';
 
-export default function ProfileListItem({
+export default function ProfilesListItem({
   id,
   name,
   createdAt
@@ -27,7 +27,7 @@ export default function ProfileListItem({
         </div>
         <div className="flex w-full flex-col items-start">
           <p className="text-lg">{name}</p>
-          <p className="text-xs text-stone-400">Joined {joinedAtTime}</p>
+          <p className="text-xs text-stone-400">Joined {joinedAtTime} ago</p>
         </div>
       </div>
     </AddFriendModal>

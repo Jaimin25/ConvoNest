@@ -1,13 +1,14 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
+import axios from 'axios';
 
 import { type FriendRequests } from '@prisma/client';
 
 import { useProfiles } from './profiles-provider';
 import { useUser } from './user-provider';
 
-export type ModifiedFriendRequests = {
+export type FriendRequestsProps = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -18,8 +19,8 @@ export type ModifiedFriendRequests = {
 
 interface RequestsContextProps {
   loading?: boolean;
-  requests: ModifiedFriendRequests[];
-  setUpdatedRequests: (data: ModifiedFriendRequests) => void;
+  requests: FriendRequestsProps[];
+  setUpdatedRequests: (data: FriendRequestsProps) => void;
   deleteRequest: (id: string) => void;
 }
 
@@ -35,19 +36,19 @@ export const useRequests = () => {
 
 export function RequestsProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState<boolean>(true);
-  const [requests, setRequests] = useState<ModifiedFriendRequests[]>([]);
+  const [requests, setRequests] = useState<FriendRequestsProps[]>([]);
 
   const { user } = useUser();
-
   const { users } = useProfiles();
 
   useEffect(() => {
     setLoading(true);
     const fetchRequests = async () => {
-      const res = await fetch('/api/user/request');
-      const requests = await res.json();
+      const res = await axios.get('/api/user/request');
+      const requests = res.data.requests;
+
       if (users.length > 0) {
-        const updatedList: ModifiedFriendRequests[] = requests.allRequests.map(
+        const updatedList: FriendRequestsProps[] = requests.map(
           (request: FriendRequests) => {
             const matchingUser = users.find(
               (user) =>
@@ -66,7 +67,7 @@ export function RequestsProvider({ children }: { children: React.ReactNode }) {
     fetchRequests();
   }, [user, users]);
 
-  const setUpdatedRequests = (data: ModifiedFriendRequests) => {
+  const setUpdatedRequests = (data: FriendRequestsProps) => {
     setRequests([...requests, data]);
   };
 

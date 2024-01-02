@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dialog';
 import { DialogTrigger } from '@radix-ui/react-dialog';
 
+import { useContacts } from '../providers/contacts-provider';
 import { useRequests } from '../providers/requests-provider';
 import { useUser } from '../providers/user-provider';
 import { Button } from '../ui/button';
@@ -36,6 +37,8 @@ export default function AddFriendModal({
 
   const { user } = useUser();
 
+  const { contacts } = useContacts();
+
   const { requests, setUpdatedRequests } = useRequests();
 
   const handleRequest = () => {
@@ -48,7 +51,7 @@ export default function AddFriendModal({
       if (res.data.statusCode === 200) {
         const sentRequest = res.data.body.data;
         sentRequest.username = name;
-        setUpdatedRequests(res.data.body.data);
+        setUpdatedRequests(sentRequest);
         setIsOpen(false);
         setLoading(false);
       } else {
@@ -89,6 +92,17 @@ export default function AddFriendModal({
                 disabled={true}
               >
                 Friend Request Sent
+              </Button>
+            ) : contacts.some(
+                (cnt) => cnt.user1Id === id || cnt.user2Id === id
+              ) ? (
+              <Button
+                className="space-x-2 bg-green-600"
+                variant={'ghost'}
+                onClick={handleRequest}
+                disabled={true}
+              >
+                Already Friends
               </Button>
             ) : (
               <Button

@@ -63,6 +63,8 @@ model FriendRequests {
 
 model Friends {
   id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   user1   User   @relation("User1", fields: [user1Id], references: [id])
   user1Id String

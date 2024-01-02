@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Check, X } from 'lucide-react';
 
+import { useContacts } from '@/components/providers/contacts-provider';
 import {
-  ModifiedFriendRequests,
+  FriendRequestsProps,
   useRequests
 } from '@/components/providers/requests-provider';
 import UserAvatar from '@/components/user-avatar';
@@ -14,11 +15,13 @@ export default function RequestsList({
   requestsList,
   type
 }: {
-  requestsList: ModifiedFriendRequests;
+  requestsList: FriendRequestsProps;
   type: string;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
   const { deleteRequest } = useRequests();
+
+  const { setUpdatedContacts } = useContacts();
 
   const handleCancelRequest = (reqId: string) => {
     setLoading(true);
@@ -46,6 +49,10 @@ export default function RequestsList({
         receiverId: requestsList.receiverId
       });
       if (res.data.statusCode === 200) {
+        console.log(res.data.body.data);
+        const contact = res.data.body.data;
+        contact.username = requestsList.username;
+        setUpdatedContacts(contact);
         deleteRequest(reqId);
       } else {
         setLoading(false);

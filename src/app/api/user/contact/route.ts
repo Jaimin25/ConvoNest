@@ -21,16 +21,16 @@ export async function GET() {
 
   const userId = session.user.id;
 
-  const userContacts = await db.friends.findMany({
+  const contacts = await db.friends.findMany({
     where: {
       user1Id: userId
     }
   });
 
-  if (userContacts) {
+  if (contacts) {
     return NextResponse.json({
       statusCode: 200,
-      userContacts
+      contacts
     });
   } else {
     return NextResponse.json({
@@ -101,7 +101,8 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({
             statusCode: 200,
             body: {
-              message: 'Friend request accepted'
+              message: 'Friend request accepted',
+              data: friendOne
             }
           });
         } else {

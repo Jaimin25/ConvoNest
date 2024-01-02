@@ -101,7 +101,7 @@ export async function GET() {
   if (allRequests) {
     return NextResponse.json({
       statusCode: 200,
-      allRequests
+      requests: allRequests
     });
   } else {
     return NextResponse.json({

@@ -11,7 +11,7 @@ interface UsersProps {
 }
 
 interface ProfilesContextProps {
-  users: { id: string; name: string; createdAt: Date; updatedAt: Date }[];
+  users: UsersProps[];
   loading: boolean;
 }
 

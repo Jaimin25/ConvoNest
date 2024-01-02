@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
+  Bell,
   Contact,
   Loader2,
   LogOut,
   MessageSquareText,
-  UserPlus,
   Users
 } from 'lucide-react';
 
@@ -75,7 +75,7 @@ export default function NavigationSidebar() {
               location === '/requests' ? 'bg-white/5' : 'bg-none'
             )}
           >
-            <UserPlus className="h-7 w-7" />
+            <Bell className="h-7 w-7" />
             Requests
           </div>
         </Link>

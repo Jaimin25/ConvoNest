@@ -5,7 +5,7 @@ import React from 'react';
 import { useProfiles } from '../providers/profiles-provider';
 import SkeletonProfile from '../skeletons/profile-skeleton';
 
-import ProfileListItem from './profiles-list-item';
+import ProfilesListItem from './profiles-list-item';
 
 export default function ProfileList() {
   const { loading, users } = useProfiles();
@@ -17,7 +17,7 @@ export default function ProfileList() {
       ) : (
         <div className="flex h-full flex-col overflow-y-auto">
           {users.map((user) => (
-            <ProfileListItem
+            <ProfilesListItem
               key={user.id}
               id={user.id}
               name={user.name}
