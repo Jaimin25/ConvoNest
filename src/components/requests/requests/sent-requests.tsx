@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Braces } from 'lucide-react';
 
 import {
-  ModifiedFriendRequests,
+  FriendRequestsProps,
   useRequests
 } from '@/components/providers/requests-provider';
 import { useUser } from '@/components/providers/user-provider';
@@ -16,9 +16,7 @@ export default function SentRequests() {
   const { loading, requests } = useRequests();
   const { user } = useUser();
 
-  const [sentRequests, setSentRequests] = useState<ModifiedFriendRequests[]>(
-    []
-  );
+  const [sentRequests, setSentRequests] = useState<FriendRequestsProps[]>([]);
 
   useEffect(() => {
     const sentRequests = requests.filter(
