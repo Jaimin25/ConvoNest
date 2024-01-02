@@ -12,7 +12,7 @@ export async function GET() {
 
   if (!session) {
     return NextResponse.json({
-      status: 401,
+      statusCode: 401,
       body: {
         message: 'Unauthorized'
       }
@@ -27,8 +27,17 @@ export async function GET() {
     }
   });
 
-  return NextResponse.json({
-    statusCode: 200,
-    users
-  });
+  if (users) {
+    return NextResponse.json({
+      statusCode: 200,
+      users
+    });
+  } else {
+    return NextResponse.json({
+      statusCode: 404,
+      body: {
+        message: 'No users found'
+      }
+    });
+  }
 }

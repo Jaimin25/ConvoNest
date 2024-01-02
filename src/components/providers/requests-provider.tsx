@@ -7,40 +7,47 @@ import { type FriendRequests } from '@prisma/client';
 import { useProfiles } from './profiles-provider';
 import { useUser } from './user-provider';
 
-export type UpdatedFriendRequests = {
+export type ModifiedFriendRequests = {
   id: string;
-  status: string;
   createdAt: Date;
   updatedAt: Date;
   senderId: string;
   receiverId: string;
-  receiverName: string;
-  senderName: string;
+  username: string;
 };
 
 interface RequestsContextProps {
-  requests: UpdatedFriendRequests[];
+  loading?: boolean;
+  requests: ModifiedFriendRequests[];
+  setUpdatedRequests: (data: ModifiedFriendRequests) => void;
+  deleteRequest: (id: string) => void;
 }
 
-const RequestsContext = createContext<RequestsContextProps>({ requests: [] });
+const RequestsContext = createContext<RequestsContextProps>({
+  requests: [],
+  setUpdatedRequests: () => {},
+  deleteRequest: () => {}
+});
 
 export const useRequests = () => {
   return useContext(RequestsContext);
 };
 
 export function RequestsProvider({ children }: { children: React.ReactNode }) {
-  const [requests, setRequests] = useState<UpdatedFriendRequests[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [requests, setRequests] = useState<ModifiedFriendRequests[]>([]);
 
   const { user } = useUser();
 
   const { users } = useProfiles();
 
   useEffect(() => {
+    setLoading(true);
     const fetchRequests = async () => {
       const res = await fetch('/api/user/request');
       const requests = await res.json();
       if (users.length > 0) {
-        const updatedList: UpdatedFriendRequests[] = requests.allRequests.map(
+        const updatedList: ModifiedFriendRequests[] = requests.allRequests.map(
           (request: FriendRequests) => {
             const matchingUser = users.find(
               (user) =>
@@ -48,20 +55,32 @@ export function RequestsProvider({ children }: { children: React.ReactNode }) {
             );
             return {
               ...request,
-              receiverName: matchingUser ? matchingUser.name : null,
-              senderName: matchingUser ? matchingUser.name : null
+              username: matchingUser ? matchingUser.name : null
             };
           }
         );
         setRequests(updatedList);
+        setLoading(false);
       }
     };
-
     fetchRequests();
   }, [user, users]);
 
+  const setUpdatedRequests = (data: ModifiedFriendRequests) => {
+    setRequests([...requests, data]);
+  };
+
+  const deleteRequest = (id: string) => {
+    const index = requests.findIndex((request) => request.id === id);
+    console.log(requests);
+    requests.splice(index, 1);
+    setRequests([...requests]);
+  };
+
   return (
-    <RequestsContext.Provider value={{ requests }}>
+    <RequestsContext.Provider
+      value={{ loading, requests, setUpdatedRequests, deleteRequest }}
+    >
       {children}
     </RequestsContext.Provider>
   );

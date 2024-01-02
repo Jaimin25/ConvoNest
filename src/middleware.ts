@@ -83,7 +83,7 @@ export const config = {
     '/login',
     '/signup',
     '/users',
-    '/notifications',
+    '/requests',
     '/contacts',
     '/chats'
   ]

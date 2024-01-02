@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
   if (!session) {
     return NextResponse.json({
-      status: 401,
+      statusCode: 401,
       body: {
         message: 'Unauthorized'
       }
@@ -38,7 +38,6 @@ export async function POST(req: NextRequest) {
   if (!sentReq) {
     const res = await db.friendRequests.create({
       data: {
-        status: 'pending',
         senderId,
         receiverId
       }
@@ -48,7 +47,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         statusCode: 200,
         body: {
-          message: 'Friend request sent'
+          message: 'Friend request sent',
+          data: res
         }
       });
     } else {
@@ -77,7 +77,7 @@ export async function GET() {
 
   if (!session) {
     return NextResponse.json({
-      status: 401,
+      statusCode: 401,
       body: {
         message: 'Unauthorized'
       }
@@ -107,7 +107,63 @@ export async function GET() {
     return NextResponse.json({
       statusCode: 404,
       body: {
-        message: 'Friend request not found'
+        message: 'No friend requests found'
+      }
+    });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const { sentRequstId } = await req.json();
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return NextResponse.json({
+      statusCode: 401,
+      body: {
+        message: 'Unauthorized'
+      }
+    });
+  }
+
+  const sentReq = await db.friendRequests.findUnique({
+    where: {
+      id: sentRequstId
+    }
+  });
+
+  if (sentReq) {
+    const cancelReq = await db.friendRequests.delete({
+      where: {
+        id: sentRequstId
+      }
+    });
+
+    if (cancelReq) {
+      return NextResponse.json({
+        statusCode: 200,
+        body: {
+          message: 'Friend request cancelled',
+          data: cancelReq
+        }
+      });
+    } else {
+      return NextResponse.json({
+        statusCode: 500,
+        body: {
+          message: 'Something went wrong'
+        }
+      });
+    }
+  } else {
+    return NextResponse.json({
+      statusCode: 400,
+      body: {
+        message: 'No friend request found'
       }
     });
   }

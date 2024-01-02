@@ -16,7 +16,6 @@ import { DialogTrigger } from '@radix-ui/react-dialog';
 
 import { useRequests } from '../providers/requests-provider';
 import { useUser } from '../providers/user-provider';
-import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import UserAvatar from '../user-avatar';
 
@@ -37,7 +36,7 @@ export default function AddFriendModal({
 
   const { user } = useUser();
 
-  const { requests } = useRequests();
+  const { requests, setUpdatedRequests } = useRequests();
 
   const handleRequest = () => {
     setLoading(true);
@@ -46,10 +45,14 @@ export default function AddFriendModal({
         senderId: user.id,
         receiverId: id
       });
-      setLoading(false);
-      console.log(res.data);
       if (res.data.statusCode === 200) {
+        const sentRequest = res.data.body.data;
+        sentRequest.username = name;
+        setUpdatedRequests(res.data.body.data);
         setIsOpen(false);
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
     };
     sendRequest();
@@ -63,24 +66,12 @@ export default function AddFriendModal({
     <div className="w-full">
       <Dialog open={isOpen} onOpenChange={handleChange}>
         <DialogTrigger className="w-full">{children}</DialogTrigger>
-        <DialogContent>
+        <DialogContent className="border-none">
           <DialogHeader>
             <DialogTitle>
               <div className="flex items-center gap-x-3">
                 <UserAvatar username={name} className="h-11 w-11 rounded-md" />
                 {name}
-                {requests.some(
-                  (rq) =>
-                    (rq.receiverId === id && rq.status === 'pending') ||
-                    (rq.senderId === id && rq.status === 'pending')
-                ) && (
-                  <Badge
-                    className="bg-orange-500 font-medium"
-                    variant={'outline'}
-                  >
-                    Pending
-                  </Badge>
-                )}
               </div>
             </DialogTitle>
             <DialogDescription className="py-4 text-lg">
@@ -88,11 +79,18 @@ export default function AddFriendModal({
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            {!requests.some(
-              (rq) =>
-                (rq.receiverId === id && rq.status === 'pending') ||
-                (rq.senderId === id && rq.status === 'pending')
-            ) && (
+            {requests.some(
+              (rq) => rq.receiverId === id || rq.senderId === id
+            ) ? (
+              <Button
+                className="space-x-2 bg-green-600"
+                variant={'ghost'}
+                onClick={handleRequest}
+                disabled={true}
+              >
+                Friend Request Sent
+              </Button>
+            ) : (
               <Button
                 className="space-x-2 bg-green-600"
                 variant={'ghost'}

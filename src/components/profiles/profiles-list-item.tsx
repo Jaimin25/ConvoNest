@@ -21,7 +21,7 @@ export default function ProfileListItem({
 
   return (
     <AddFriendModal id={id} name={name} avatar={avatar}>
-      <div className="m-1 flex gap-x-4 rounded p-2 transition hover:cursor-pointer hover:bg-white/10">
+      <div className="m-1 flex gap-x-4 rounded p-1 px-2 transition hover:cursor-pointer hover:bg-white/15">
         <div className="flex h-full items-center justify-center">
           <UserAvatar className="m-2 h-11 w-11 rounded-md" username={name} />
         </div>

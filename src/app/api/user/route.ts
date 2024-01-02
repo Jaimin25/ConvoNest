@@ -12,7 +12,7 @@ export async function GET() {
 
   if (!session) {
     return NextResponse.json({
-      status: 401,
+      statusCode: 401,
       body: {
         message: 'Unauthorized'
       }

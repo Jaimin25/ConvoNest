@@ -51,7 +51,6 @@ model Messages {
 
 model FriendRequests {
   id        String   @id @default(cuid())
-  status    String   @default("pending")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

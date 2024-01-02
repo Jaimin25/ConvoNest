@@ -32,7 +32,6 @@ export function ProfilesProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     const fetchUsers = async () => {
       const res = await axios.get('/api/user/fetch-all');
-      console.log(res.data.users);
       setUsers(res.data.users);
       setLoading(false);
     };

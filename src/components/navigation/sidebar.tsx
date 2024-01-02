@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  Bell,
   Contact,
   Loader2,
   LogOut,
   MessageSquareText,
+  UserPlus,
   Users
 } from 'lucide-react';
 
@@ -43,74 +43,88 @@ export default function NavigationSidebar() {
   };
 
   return (
-    <div className="flex h-full w-14 flex-col items-center py-4 dark:bg-black/50">
-      <div className="flex flex-1 flex-col gap-y-2 *:cursor-pointer *:self-center">
+    <div className="flex h-full w-1/5 flex-col items-center justify-center py-4 dark:bg-black/50">
+      <div className="flex w-full flex-1 flex-col gap-y-2 px-2 *:w-full *:cursor-pointer *:self-center">
         <Link href="/users">
-          <div className="rounded-md  p-2 transition hover:bg-white/15 ">
-            <Users
-              className={cn(
-                'h-6 w-6',
-                location === '/users' ? ' stroke-teal-500' : 'fill-none'
-              )}
-            />
+          <div
+            className={cn(
+              'flex w-full items-center gap-x-2 rounded-md p-2 transition hover:bg-white/15',
+              location === '/users' ? 'bg-white/5' : 'bg-none'
+            )}
+          >
+            <Users className="h-7 w-7" />
+            Users
           </div>
         </Link>
         <Link href="/chats">
-          <div className="rounded-md  p-2 transition hover:bg-white/15 ">
-            <MessageSquareText
-              className={cn(
-                'h-6 w-6',
-                location === '/chats' ? ' stroke-sky-500' : 'fill-none'
-              )}
-            />
+          <div
+            className={cn(
+              'flex w-full items-center gap-x-2 rounded-md p-2 transition hover:bg-white/15',
+              location === '/chats' ? 'bg-white/5' : 'bg-none'
+            )}
+          >
+            <MessageSquareText className="h-7 w-7" />
+            Chats
           </div>
         </Link>
 
-        <Link href="/notifications">
-          <div className="rounded-md  p-2 transition hover:bg-white/15">
-            <Bell
-              className={cn(
-                'h-6 w-6',
-                location === '/notifications' ? ' stroke-rose-500' : 'fill-none'
-              )}
-            />
+        <Link href="/requests">
+          <div
+            className={cn(
+              'flex w-full items-center gap-x-2 rounded-md p-2 transition hover:bg-white/15',
+              location === '/requests' ? 'bg-white/5' : 'bg-none'
+            )}
+          >
+            <UserPlus className="h-7 w-7" />
+            Requests
           </div>
         </Link>
         <Link href="/contacts">
-          <div className="rounded-md  p-2 transition hover:bg-white/15">
-            <Contact
-              className={cn(
-                'h-6 w-6',
-                location === '/contacts' ? ' stroke-amber-500' : 'fill-none'
-              )}
-            />
+          <div
+            className={cn(
+              'flex w-full items-center gap-x-2 rounded-md p-2 transition hover:bg-white/15',
+              location === '/contacts' ? 'bg-white/5' : 'bg-none'
+            )}
+          >
+            <Contact className="h-7 w-7" />
+            Contacts
           </div>
         </Link>
       </div>
       {username ? (
-        <Popover>
-          <PopoverTrigger>
-            <UserAvatar className="h-10 w-10 rounded-md" username={username} />
-          </PopoverTrigger>
-          <PopoverContent
-            className="flex items-center gap-x-2  hover:cursor-pointer"
-            onClick={handleLogout}
-          >
-            {loading ? (
-              <>
-                <p>Logging out...</p>
-                <Loader2 className="h-4 w-4 animate-spin" />
-              </>
-            ) : (
-              <>
-                <span className="text-red-500">Logout</span>
-                <LogOut className="h-5 w-5 text-red-500" />
-              </>
-            )}
-          </PopoverContent>
-        </Popover>
+        <div className="flex w-full flex-col px-4">
+          <Popover>
+            <PopoverTrigger className="flex w-full items-center gap-x-2 rounded-md p-2 transition hover:bg-white/15">
+              <UserAvatar
+                className="h-10 w-10 rounded-md"
+                username={username}
+              />
+              <p className="text-lg font-semibold">{username}</p>
+            </PopoverTrigger>
+            <PopoverContent
+              className="flex items-center gap-x-2  hover:cursor-pointer"
+              onClick={handleLogout}
+            >
+              {loading ? (
+                <>
+                  <p>Logging out...</p>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                </>
+              ) : (
+                <>
+                  <span className="text-red-500">Logout</span>
+                  <LogOut className="h-5 w-5 text-red-500" />
+                </>
+              )}
+            </PopoverContent>
+          </Popover>
+        </div>
       ) : (
-        <Skeleton className="h-8 w-8 rounded-md" />
+        <div className="flex w-full flex-col px-4">
+          <div className="flex w-full items-center gap-x-2 rounded-md p-2">
+            <Skeleton className="h-10 w-full rounded-md" />
+          </div>
+        </div>
       )}
     </div>
   );
