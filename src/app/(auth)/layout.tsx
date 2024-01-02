@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import { Merienda } from 'next/font/google';
 import { MessageCircleMore } from 'lucide-react';
 
@@ -12,8 +11,6 @@ const merienda = Merienda({
   subsets: ['latin'],
   variable: '--font-merienda'
 });
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'ConvoNest',
@@ -27,7 +24,7 @@ export default function AuthLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -35,7 +32,9 @@ export default function AuthLayout({
         >
           <div className="flex h-full w-full flex-col items-center justify-center gap-y-6">
             <div className="flex items-center justify-center gap-x-2">
-              <p className={`${merienda.variable} font-merienda text-4xl`}>
+              <p
+                className={`${merienda.variable} ${merienda.className} font-merienda text-4xl`}
+              >
                 ConvoNest
               </p>
               <MessageCircleMore className="h-8 w-8 text-sky-500" />
