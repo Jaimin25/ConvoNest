@@ -91,7 +91,7 @@ export default function AddFriendModal({
                 onClick={handleRequest}
                 disabled={true}
               >
-                Friend Request Sent
+                Pending Friend Request
               </Button>
             ) : contacts.some(
                 (cnt) => cnt.user1Id === id || cnt.user2Id === id
