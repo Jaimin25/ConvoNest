@@ -26,13 +26,17 @@ export default function RequestsList({
   const handleCancelRequest = (reqId: string) => {
     setLoading(true);
     const cancelRequest = async () => {
-      const res = await axios.delete('/api/user/request', {
-        data: { sentRequstId: reqId }
-      });
-      if (res.data.statusCode === 200 || res.data.statusCode === 404) {
-        deleteRequest(res.data.body.data.id);
-        setLoading(false);
-      }
+      await axios
+        .delete('/api/user/request', {
+          data: { sentRequstId: reqId }
+        })
+        .then((res) => {
+          if (res.data.statusCode === 200 || res.data.statusCode === 404) {
+            deleteRequest(reqId);
+          } else {
+            setLoading(false);
+          }
+        });
       setLoading(false);
     };
     cancelRequest();

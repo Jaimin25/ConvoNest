@@ -11,7 +11,7 @@ export default function Profiles() {
         <CardHeader>
           <CardTitle>Profiles</CardTitle>
         </CardHeader>
-        <CardContent className="h-5/6 sm:h-5/6">
+        <CardContent className="h-5/6 px-2 sm:h-5/6">
           <ProfileList />
         </CardContent>
       </Card>

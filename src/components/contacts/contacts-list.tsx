@@ -8,7 +8,7 @@ import SkeletonProfile from '../skeletons/profile-skeleton';
 
 import ContactsListItem from './contacts-list-item';
 
-export default function ProfileList() {
+export default function ContactsList() {
   const { loading, contacts } = useContacts();
 
   return (

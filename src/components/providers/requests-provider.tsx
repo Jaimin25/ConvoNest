@@ -75,7 +75,7 @@ export function RequestsProvider({ children }: { children: React.ReactNode }) {
     const index = requests.findIndex((request) => request.id === id);
     console.log(requests);
     requests.splice(index, 1);
-    setRequests(requests);
+    setRequests([...requests]);
   };
 
   return (

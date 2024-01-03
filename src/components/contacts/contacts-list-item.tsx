@@ -23,7 +23,7 @@ export default function ContactsListItem({
       <div className="flex h-full items-center justify-center">
         <UserAvatar className="m-2 h-11 w-11 rounded-md" username={name} />
       </div>
-      <div className="flex w-full flex-col items-start">
+      <div className="flex w-full flex-col items-start py-1">
         <p className="text-lg">{name}</p>
         <p className="text-xs text-stone-400">Friends since {joinedAtTime}</p>
       </div>

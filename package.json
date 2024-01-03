@@ -12,6 +12,7 @@
   "dependencies": {
     "@dicebear/collection": "^5.3.5",
     "@dicebear/core": "^5.3.5",
+    "@heroicons/react": "^2.1.1",
     "@hookform/resolvers": "^3.3.3",
     "@prisma/client": "^5.7.1",
     "@radix-ui/react-dialog": "^1.0.5",
