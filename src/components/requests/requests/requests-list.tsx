@@ -18,13 +18,14 @@ export default function RequestsList({
   requestsList: FriendRequestsProps;
   type: string;
 }) {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [declineLoading, setdeclineLoading] = useState<boolean>(false);
+  const [acceptLoading, setAcceptLoading] = useState<boolean>(false);
   const { deleteRequest } = useRequests();
 
   const { setUpdatedContacts } = useContacts();
 
   const handleCancelRequest = (reqId: string) => {
-    setLoading(true);
+    setdeclineLoading(true);
     const cancelRequest = async () => {
       await axios
         .delete('/api/user/request', {
@@ -34,16 +35,16 @@ export default function RequestsList({
           if (res.data.statusCode === 200 || res.data.statusCode === 404) {
             deleteRequest(reqId);
           } else {
-            setLoading(false);
+            setdeclineLoading(false);
           }
         });
-      setLoading(false);
+      setdeclineLoading(false);
     };
     cancelRequest();
   };
 
   const handleAcceptRequest = (reqId: string) => {
-    setLoading(true);
+    setAcceptLoading(true);
     const acceptRequest = async () => {
       const res = await axios.post('/api/user/contact', {
         requestId: reqId,
@@ -51,15 +52,14 @@ export default function RequestsList({
         receiverId: requestsList.receiverId
       });
       if (res.data.statusCode === 200) {
-        console.log(res.data.body.data);
         const contact = res.data.body.data;
         contact.username = requestsList.username;
         setUpdatedContacts(contact);
         deleteRequest(reqId);
       } else {
-        setLoading(false);
+        setAcceptLoading(false);
       }
-      setLoading(false);
+      setAcceptLoading(false);
     };
     acceptRequest();
   };
@@ -81,21 +81,21 @@ export default function RequestsList({
           {' '}
           <button
             className="group rounded-full bg-black p-2 transition hover:bg-white/15 "
-            disabled={loading}
+            disabled={declineLoading || acceptLoading}
             onClick={() => handleAcceptRequest(requestsList.id)}
           >
-            {loading ? (
+            {acceptLoading ? (
               <Loader2 className="h-5 w-5 animate-spin text-stone-400" />
             ) : (
               <Check className="h-5 w-5 text-stone-400 transition group-hover:text-green-500 " />
             )}
           </button>
           <button
-            disabled={loading}
+            disabled={declineLoading || acceptLoading}
             className="group rounded-full bg-black p-2 transition hover:bg-white/15 "
             onClick={() => handleCancelRequest(requestsList.id)}
           >
-            {loading ? (
+            {declineLoading ? (
               <Loader2 className="h-5 w-5 animate-spin text-stone-400" />
             ) : (
               <X className="h-5 w-5 text-stone-400 transition group-hover:text-red-500 " />
@@ -104,11 +104,11 @@ export default function RequestsList({
         </div>
       ) : (
         <button
-          disabled={loading}
+          disabled={declineLoading || acceptLoading}
           className="group rounded-full bg-black p-2 transition hover:bg-white/15"
           onClick={() => handleCancelRequest(requestsList.id)}
         >
-          {loading ? (
+          {declineLoading ? (
             <Loader2 className="h-5 w-5 animate-spin text-stone-400" />
           ) : (
             <X className="h-5 w-5 text-stone-400 transition group-hover:text-red-500 " />
