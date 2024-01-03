@@ -130,7 +130,7 @@ export default function NavigationSidebar() {
           </div>
         )}
       </div>
-      <MobileViewSidebar className="absolute sm:hidden" />
+      <MobileViewSidebar className="block sm:hidden" />
     </>
   );
 }

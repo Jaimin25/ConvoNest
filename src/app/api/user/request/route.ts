@@ -161,7 +161,7 @@ export async function DELETE(req: NextRequest) {
     }
   } else {
     return NextResponse.json({
-      statusCode: 400,
+      statusCode: 404,
       body: {
         message: 'No friend request found'
       }

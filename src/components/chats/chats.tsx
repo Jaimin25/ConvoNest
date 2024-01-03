@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default function Chats() {
-  return <div className="w-full">Chats</div>;
+  return <div className="h-full w-full">Chats</div>;
 }

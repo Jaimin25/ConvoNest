@@ -1,14 +1,8 @@
 import React from 'react';
-import { Menu } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Bell, Contact, Mail, Users } from 'lucide-react';
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger
-} from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 
 export default function MobileViewSidebar({
@@ -16,20 +10,58 @@ export default function MobileViewSidebar({
 }: {
   className?: string;
 }) {
+  const location = usePathname();
+
   return (
-    <Sheet>
-      <SheetTrigger className={cn(className, 'mt-2 p-2')}>
-        <Menu className="h-7 w-7" />
-      </SheetTrigger>
-      <SheetContent side={'left'}>
-        <SheetHeader>
-          <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-          <SheetDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </SheetDescription>
-        </SheetHeader>
-      </SheetContent>
-    </Sheet>
+    <div
+      className={cn(
+        'order-2 flex w-full items-center justify-center py-4 sm:flex dark:bg-black/50',
+        className
+      )}
+    >
+      <div className="flex w-full items-center justify-center gap-y-2 px-2 *:w-full *:cursor-pointer *:self-center">
+        <Link href="/users">
+          <div className="flex w-full items-center justify-center gap-x-2 rounded-md p-2 transition">
+            <Users
+              className={cn(
+                'h-7 w-7',
+                location === '/users' ? 'fill-white' : 'fill-none'
+              )}
+            />
+          </div>
+        </Link>
+        <Link href="/chats">
+          <div className="flex w-full items-center justify-center gap-x-2 rounded-md p-2 transition">
+            <Mail
+              className={cn(
+                'h-7 w-7',
+                location === '/chats' ? 'fill-white' : 'fill-none'
+              )}
+            />
+          </div>
+        </Link>
+
+        <Link href="/requests">
+          <div className="flex w-full items-center justify-center gap-x-2 rounded-md p-2 transition">
+            <Bell
+              className={cn(
+                'h-7 w-7',
+                location === '/requests' ? 'fill-white' : 'fill-none'
+              )}
+            />
+          </div>
+        </Link>
+        <Link href="/contacts">
+          <div className="flex w-full items-center justify-center gap-x-2 rounded-md p-2 transition">
+            <Contact
+              className={cn(
+                'h-7 w-7',
+                location === '/contacts' ? 'fill-white' : 'fill-none'
+              )}
+            />
+          </div>
+        </Link>
+      </div>
+    </div>
   );
 }

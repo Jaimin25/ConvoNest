@@ -9,8 +9,8 @@ import SentRequests from './requests/sent-requests';
 
 export default function FriendRequests() {
   return (
-    <div className="flex w-full items-center justify-center">
-      <Card className="h-5/6 w-10/12 border-0 px-4 sm:h-5/6 sm:w-1/2 lg:w-1/3 dark:bg-black/50">
+    <div className="flex h-[85%] w-full flex-1 items-center justify-center sm:h-full">
+      <Card className="h-[90%] w-10/12 border-0 px-4 sm:h-5/6 sm:w-1/2 lg:w-1/3 dark:bg-black/50">
         <CardHeader>
           <CardTitle>Friend Requests</CardTitle>
         </CardHeader>

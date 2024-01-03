@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Check, X } from 'lucide-react';
+import { Check, Loader2, X } from 'lucide-react';
 
 import { useContacts } from '@/components/providers/contacts-provider';
 import {
@@ -29,10 +29,8 @@ export default function RequestsList({
       const res = await axios.delete('/api/user/request', {
         data: { sentRequstId: reqId }
       });
-
-      if (res.data.statusCode === 200) {
-        deleteRequest(reqId);
-      } else {
+      if (res.data.statusCode === 200 || res.data.statusCode === 404) {
+        deleteRequest(res.data.body.data.id);
         setLoading(false);
       }
       setLoading(false);
@@ -82,14 +80,22 @@ export default function RequestsList({
             disabled={loading}
             onClick={() => handleAcceptRequest(requestsList.id)}
           >
-            <Check className="h-5 w-5 text-stone-400 transition group-hover:text-green-500 " />
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin text-stone-400" />
+            ) : (
+              <Check className="h-5 w-5 text-stone-400 transition group-hover:text-green-500 " />
+            )}
           </button>
           <button
             disabled={loading}
             className="group rounded-full bg-black p-2 transition hover:bg-white/15 "
             onClick={() => handleCancelRequest(requestsList.id)}
           >
-            <X className="h-5 w-5 text-stone-400 transition group-hover:text-red-500 " />
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin text-stone-400" />
+            ) : (
+              <X className="h-5 w-5 text-stone-400 transition group-hover:text-red-500 " />
+            )}
           </button>
         </div>
       ) : (
@@ -98,7 +104,11 @@ export default function RequestsList({
           className="group rounded-full bg-black p-2 transition hover:bg-white/15"
           onClick={() => handleCancelRequest(requestsList.id)}
         >
-          <X className="h-5 w-5 text-stone-400 transition group-hover:text-red-500 " />
+          {loading ? (
+            <Loader2 className="h-5 w-5 animate-spin text-stone-400" />
+          ) : (
+            <X className="h-5 w-5 text-stone-400 transition group-hover:text-red-500 " />
+          )}
         </button>
       )}
     </>
