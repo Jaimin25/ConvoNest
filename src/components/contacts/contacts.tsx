@@ -67,7 +67,7 @@ export default function Contacts() {
           </CardContent>
         </Card>
       ) : null}
-      <Card className="h-1/2 w-10/12 flex-1 border-0 px-4 sm:h-5/6 sm:w-1/2 lg:w-1/3 dark:bg-black/50">
+      <Card className="h-1/2 w-10/12 flex-1 border-0 px-4 sm:h-[95%] sm:w-1/2 lg:w-1/3 dark:bg-black/50">
         <CardHeader>
           <CardTitle>Contacts</CardTitle>
         </CardHeader>

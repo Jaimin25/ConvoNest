@@ -7,6 +7,7 @@ import { ProfilesProvider } from '@/components/providers/profiles-provider';
 import { RequestsProvider } from '@/components/providers/requests-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { UserProvider } from '@/components/providers/user-provider';
+import { Toaster } from '@/components/ui/sonner';
 
 import '../globals.css';
 
@@ -33,7 +34,10 @@ export default function RootLayout({
             <UserProvider>
               <ContactsProvider>
                 <RequestsProvider>
-                  <Dashboard>{children}</Dashboard>
+                  <Dashboard>
+                    {children}
+                    <Toaster duration={1500} />
+                  </Dashboard>
                 </RequestsProvider>
               </ContactsProvider>
             </UserProvider>

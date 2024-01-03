@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Loader2, MailPlus } from 'lucide-react';
+import { toast } from 'sonner';
 
 import {
   Dialog,
@@ -52,6 +53,7 @@ export default function AddFriendModal({
         const sentRequest = res.data.body.data;
         sentRequest.username = name;
         setUpdatedRequests(sentRequest);
+        toast.success('Friend Request Sent');
         setIsOpen(false);
         setLoading(false);
       } else {
