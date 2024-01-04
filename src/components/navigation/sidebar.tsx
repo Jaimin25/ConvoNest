@@ -3,7 +3,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Contact, Loader2, LogOut } from 'lucide-react';
+import {
+  Contact,
+  Loader2,
+  LogOut
+} from 'lucide-react';
 
 import useSupabase from '@/hooks/useSupabase';
 import { cn } from '@/lib/utils';
@@ -49,7 +53,7 @@ export default function NavigationSidebar() {
                 location === '/users' ? 'bg-white/5' : 'bg-none'
               )}
             >
-              <UsersIcon className="h-8 w-8" />
+              <UsersIcon className='w-7 h-7'/>
               Users
             </div>
           </Link>
@@ -60,7 +64,7 @@ export default function NavigationSidebar() {
                 location === '/chats' ? 'bg-white/5' : 'bg-none'
               )}
             >
-              <EnvelopeIcon className="h-8 w-8" />
+              <EnvelopeIcon className="h-7 w-7" />
               Chats
             </div>
           </Link>
@@ -72,7 +76,7 @@ export default function NavigationSidebar() {
                 location === '/requests' ? 'bg-white/5' : 'bg-none'
               )}
             >
-              <BellIcon className="h-8 w-8" />
+              <BellIcon className="h-7 w-7" />
               Requests
             </div>
           </Link>
@@ -83,7 +87,7 @@ export default function NavigationSidebar() {
                 location === '/contacts' ? 'bg-white/5' : 'bg-none'
               )}
             >
-              <Contact className="h-8 w-8" />
+              <Contact className="h-7 w-7" />
               Contacts
             </div>
           </Link>
