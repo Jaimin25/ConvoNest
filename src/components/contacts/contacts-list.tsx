@@ -21,7 +21,7 @@ export default function ContactsList() {
             contacts.map((user) => (
               <ContactsListItem
                 key={user.id}
-                id={user.id}
+                id={user.user2Id}
                 name={user.username}
                 createdAt={user.createdAt}
               />

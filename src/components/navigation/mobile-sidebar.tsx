@@ -10,6 +10,7 @@ import {
   UsersIcon as UsersIconSolid
 } from '@heroicons/react/24/solid';
 
+import { useRequests } from '../providers/requests-provider';
 import { useUser } from '../providers/user-provider';
 import { Skeleton } from '../ui/skeleton';
 import UserAvatar from '../user-avatar';
@@ -20,7 +21,9 @@ export default function MobileViewSidebar({
   className?: string;
 }) {
   const location = usePathname();
-  const { username } = useUser();
+  const { username, user } = useUser();
+
+  const { requests } = useRequests();
 
   return (
     <div
@@ -52,9 +55,19 @@ export default function MobileViewSidebar({
         <Link href="/requests">
           <div className="flex w-full items-center justify-center gap-x-2 rounded-md p-2 transition">
             {location === '/requests' ? (
-              <BellIconSolid className="h-6 w-6" />
+              <div className="relative">
+                <BellIconSolid className="h-6 w-6" />
+                {requests.some((rq) => rq.receiverId === user.id) ? (
+                  <div className="absolute right-0 top-0 h-2 w-2 rounded-full bg-red-500" />
+                ) : null}
+              </div>
             ) : (
-              <BellIcon className="h-6 w-6" />
+              <div className="relative">
+                <BellIcon className="h-6 w-6" />
+                {requests.some((rq) => rq.receiverId === user.id) ? (
+                  <div className="absolute right-0 top-0 h-2 w-2 rounded-full bg-red-500" />
+                ) : null}
+              </div>
             )}
           </div>
         </Link>

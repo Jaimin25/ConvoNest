@@ -3,17 +3,15 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import {
-  Contact,
-  Loader2,
-  LogOut
-} from 'lucide-react';
+import { Contact, Loader2, LogOut } from 'lucide-react';
 
 import useSupabase from '@/hooks/useSupabase';
 import { cn } from '@/lib/utils';
 import { BellIcon, EnvelopeIcon, UsersIcon } from '@heroicons/react/24/outline';
 
+import { useRequests } from '../providers/requests-provider';
 import { useUser } from '../providers/user-provider';
+import { Badge } from '../ui/badge';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Skeleton } from '../ui/skeleton';
 import UserAvatar from '../user-avatar';
@@ -21,10 +19,12 @@ import UserAvatar from '../user-avatar';
 import MobileViewSidebar from './mobile-sidebar';
 
 export default function NavigationSidebar() {
-  const { username } = useUser();
+  const { username, user } = useUser();
   const location = usePathname();
 
   const router = useRouter();
+
+  const { requests } = useRequests();
 
   const [loading, setLoading] = useState(false);
 
@@ -53,7 +53,7 @@ export default function NavigationSidebar() {
                 location === '/users' ? 'bg-white/5' : 'bg-none'
               )}
             >
-              <UsersIcon className='w-7 h-7'/>
+              <UsersIcon className="h-7 w-7" />
               Users
             </div>
           </Link>
@@ -78,6 +78,11 @@ export default function NavigationSidebar() {
             >
               <BellIcon className="h-7 w-7" />
               Requests
+              {requests.some((rq) => rq.receiverId === user.id) ? (
+                <Badge className="ml-auto bg-red-500" variant={'outline'}>
+                  {requests.filter((rq) => rq.receiverId === user.id).length}
+                </Badge>
+              ) : null}
             </div>
           </Link>
           <Link href="/contacts">

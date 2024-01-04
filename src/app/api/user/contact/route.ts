@@ -131,3 +131,85 @@ export async function POST(req: NextRequest) {
     });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  const { senderId, receiverId } = await req.json();
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return NextResponse.json({
+      statusCode: 401,
+      body: {
+        message: 'Unauthorized'
+      }
+    });
+  }
+  console.log(senderId, receiverId);
+  const isFriends = await db.friends.findFirst({
+    where: {
+      OR: [
+        {
+          user1Id: senderId,
+          user2Id: receiverId
+        },
+        {
+          user1Id: receiverId,
+          user2Id: senderId
+        }
+      ]
+    }
+  });
+
+  if (isFriends) {
+    const removeFriendOne = await db.friends.deleteMany({
+      where: {
+        user1Id: senderId,
+        user2Id: receiverId
+      }
+    });
+
+    if (removeFriendOne) {
+      const removeFriendTwo = await db.friends.deleteMany({
+        where: {
+          user1Id: receiverId,
+          user2Id: senderId
+        }
+      });
+
+      if (removeFriendTwo) {
+        return NextResponse.json({
+          statusCode: 200,
+          body: {
+            message: 'Removed contact',
+            data: receiverId
+          }
+        });
+      } else {
+        return NextResponse.json({
+          statusCode: 500,
+          body: {
+            message: 'Internal server error'
+          }
+        });
+      }
+    } else {
+      return NextResponse.json({
+        statusCode: 500,
+        body: {
+          message: 'Internal server error'
+        }
+      });
+    }
+  } else {
+    return NextResponse.json({
+      statusCode: 404,
+      body: {
+        message: 'Not in contacts'
+      }
+    });
+  }
+}

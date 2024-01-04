@@ -21,12 +21,14 @@ interface ContactsProps {
 interface ContactsContextProps {
   contacts: ContactsProps[];
   setUpdatedContacts: (data: ContactsProps) => void;
+  removeContact: (id: string) => void;
   loading: boolean;
 }
 
 const ContactsContext = createContext<ContactsContextProps>({
   contacts: [],
   setUpdatedContacts: () => {},
+  removeContact: () => {},
   loading: false
 });
 
@@ -70,8 +72,16 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
     setContacts([...contacts, data]);
   };
 
+  const removeContact = (id: string) => {
+    const index = contacts.findIndex((contact) => contact.id === id);
+    contacts.splice(index, 1);
+    setContacts([...contacts]);
+  };
+
   return (
-    <ContactsContext.Provider value={{ contacts, loading, setUpdatedContacts }}>
+    <ContactsContext.Provider
+      value={{ contacts, loading, setUpdatedContacts, removeContact }}
+    >
       {children}
     </ContactsContext.Provider>
   );
