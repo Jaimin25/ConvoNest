@@ -3,17 +3,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import {
-  Bell,
-  Contact,
-  Loader2,
-  LogOut,
-  MessageSquareText,
-  Users
-} from 'lucide-react';
+import { Contact, Loader2, LogOut } from 'lucide-react';
 
 import useSupabase from '@/hooks/useSupabase';
 import { cn } from '@/lib/utils';
+import { BellIcon, EnvelopeIcon, UsersIcon } from '@heroicons/react/24/outline';
 
 import { useUser } from '../providers/user-provider';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
@@ -55,7 +49,7 @@ export default function NavigationSidebar() {
                 location === '/users' ? 'bg-white/5' : 'bg-none'
               )}
             >
-              <Users className="h-7 w-7" />
+              <UsersIcon className="h-8 w-8" />
               Users
             </div>
           </Link>
@@ -66,7 +60,7 @@ export default function NavigationSidebar() {
                 location === '/chats' ? 'bg-white/5' : 'bg-none'
               )}
             >
-              <MessageSquareText className="h-7 w-7" />
+              <EnvelopeIcon className="h-8 w-8" />
               Chats
             </div>
           </Link>
@@ -78,7 +72,7 @@ export default function NavigationSidebar() {
                 location === '/requests' ? 'bg-white/5' : 'bg-none'
               )}
             >
-              <Bell className="h-7 w-7" />
+              <BellIcon className="h-8 w-8" />
               Requests
             </div>
           </Link>
@@ -89,7 +83,7 @@ export default function NavigationSidebar() {
                 location === '/contacts' ? 'bg-white/5' : 'bg-none'
               )}
             >
-              <Contact className="h-7 w-7" />
+              <Contact className="h-8 w-8" />
               Contacts
             </div>
           </Link>
