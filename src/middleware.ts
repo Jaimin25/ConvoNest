@@ -85,6 +85,7 @@ export const config = {
     '/users',
     '/requests',
     '/contacts',
-    '/chats'
+    '/chats',
+    '/chats/c/:chatId*'
   ]
 };

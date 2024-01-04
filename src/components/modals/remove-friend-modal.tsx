@@ -83,10 +83,8 @@ export default function RemoveFriendModal({
               not be able to chat with them.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
-            <Button className="" variant={'secondary'}>
-              Cancel
-            </Button>
+          <DialogFooter className="flex gap-y-2">
+            <Button variant={'secondary'}>Cancel</Button>
             <Button
               className="space-x-2 bg-red-600"
               variant={'ghost'}

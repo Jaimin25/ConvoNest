@@ -1,7 +1,17 @@
 import React from 'react';
 
-import Chats from '@/components/chats/chats';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function ChatsPage() {
-  return <Chats />;
+  return (
+    <div className="mr-4 h-full w-full flex-1 py-4">
+      <Card className="h-full w-full border-0 px-4 dark:bg-black/50">
+        <CardContent className="h-full">
+          <div className="flex h-full w-full items-center justify-center">
+            <p>Card Content</p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
