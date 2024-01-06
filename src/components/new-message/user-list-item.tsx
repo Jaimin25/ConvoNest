@@ -32,10 +32,10 @@ export default function UsersListItem({
 
   return (
     <div
-      className="m-1 flex items-center gap-x-4 rounded p-1 px-2 transition hover:cursor-pointer hover:bg-white/15"
+      className="bg-red m-1 flex items-center gap-x-4 rounded p-1 px-2 transition hover:cursor-pointer hover:bg-white/15"
       onClick={handleClick}
     >
-      <Checkbox checked={checked} />
+      <Checkbox checked={checked} className="dark:border-white/50" />
       <div className="flex h-full items-center justify-center">
         <UserAvatar className="m-2 h-11 w-11 rounded-md" username={name} />
       </div>

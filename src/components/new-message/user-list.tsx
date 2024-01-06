@@ -6,7 +6,7 @@ import { Braces } from 'lucide-react';
 import { User } from '@prisma/client';
 
 import { useContacts } from '../providers/contacts-provider';
-import SkeletonProfile from '../skeletons/profile-skeleton';
+import UserDialogSkeleton from '../skeletons/user-dialog-skeleton';
 
 import UsersListItem from './user-list-item';
 
@@ -43,10 +43,15 @@ export default function UserList({
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
+      {/* <div className="flex gap-x-2">
+        <Search className="m-auto h-5 w-5 text-gray-500" />
+        <Input
+          placeholder="Search your contacts"
+          className="flex-1 focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+      </div> */}
       {loading ? (
-        <div className="w-1/2">
-          <SkeletonProfile />
-        </div>
+        <UserDialogSkeleton />
       ) : (
         <div className="flex h-full flex-col overflow-y-auto">
           {contacts.length > 0 ? (

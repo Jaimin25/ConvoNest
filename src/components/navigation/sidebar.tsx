@@ -44,8 +44,8 @@ export default function NavigationSidebar() {
 
   return (
     <>
-      <div className="hidden h-full w-[256px] flex-col items-center justify-center py-4 sm:flex dark:bg-black/50">
-        <div className="flex w-[256px] flex-1 flex-col gap-y-2 px-2 *:w-full *:cursor-pointer *:self-center">
+      <div className="hidden h-full w-[245px] flex-col items-center justify-center py-4 md:flex dark:bg-black/50">
+        <div className="flex w-[245px] flex-1 flex-col gap-y-2 px-2 *:w-full *:cursor-pointer *:self-center">
           <Link href="/users">
             <div
               className={cn(
@@ -61,7 +61,9 @@ export default function NavigationSidebar() {
             <div
               className={cn(
                 'flex w-full items-center gap-x-2 rounded-md p-2 transition hover:bg-white/15',
-                location === '/chats' ? 'bg-white/5' : 'bg-none'
+                location === '/chats' || location.includes('/chats/c/')
+                  ? 'bg-white/5'
+                  : 'bg-none'
               )}
             >
               <EnvelopeIcon className="h-7 w-7" />
@@ -133,7 +135,7 @@ export default function NavigationSidebar() {
           </div>
         )}
       </div>
-      <MobileViewSidebar className="block sm:hidden" />
+      <MobileViewSidebar className="block md:hidden" />
     </>
   );
 }

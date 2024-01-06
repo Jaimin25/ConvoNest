@@ -33,9 +33,9 @@ export default function Contacts() {
     logout();
   };
   return (
-    <div className="flex h-[85%] w-full flex-1 flex-col items-center justify-center gap-y-2 py-4 sm:h-full">
+    <div className="flex h-[85%] w-full flex-1 flex-col items-center justify-center gap-y-2 py-4 md:h-full">
       {username ? (
-        <Card className="block w-10/12 border-0 px-4 sm:hidden sm:h-5/6 sm:w-1/2 lg:w-1/3 dark:bg-black/50">
+        <Card className="block w-10/12 border-0 px-4 md:hidden md:h-5/6 md:w-1/2 lg:w-1/3 dark:bg-black/50">
           <CardHeader>
             <CardTitle>
               <div className="flex items-center">
@@ -58,7 +58,7 @@ export default function Contacts() {
               </div>
             </CardTitle>
           </CardHeader>
-          <CardContent className="h-5/6 px-2 sm:h-5/6">
+          <CardContent className="h-5/6 px-2 md:h-5/6">
             <div className="flex flex-col gap-y-1">
               <p>
                 Username: <span className="text-lg font-bold">{username}</span>
@@ -67,11 +67,11 @@ export default function Contacts() {
           </CardContent>
         </Card>
       ) : null}
-      <Card className="h-1/2 w-10/12 flex-1 border-0 px-4 sm:h-[95%] sm:w-1/2 lg:w-1/3 dark:bg-black/50">
+      <Card className="h-1/2 w-10/12 flex-1 border-0 px-4 md:h-[95%] md:w-1/2 lg:w-1/3 dark:bg-black/50">
         <CardHeader>
           <CardTitle>Contacts</CardTitle>
         </CardHeader>
-        <CardContent className="h-5/6 px-2 sm:h-5/6">
+        <CardContent className="h-5/6 px-2 md:h-5/6">
           <ContactsList />
         </CardContent>
       </Card>

@@ -1,7 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { joinTimeFormat } from '@/lib/joinTimeFormat';
+import { cn } from '@/lib/utils';
 import { UserGroupIcon } from '@heroicons/react/24/outline';
 import { User } from '@prisma/client';
 
@@ -12,10 +14,10 @@ export default function ChatsListItem({
   id,
   name,
   isGroup,
-  adminId,
+  // adminId,
   lastMessage,
   users,
-  createdAt,
+  // createdAt,
   updatedAt
 }: {
   id: string;
@@ -27,6 +29,8 @@ export default function ChatsListItem({
   createdAt: Date;
   updatedAt: Date;
 }) {
+  const location = usePathname();
+
   const { user } = useUser();
   const updatedAtTime = joinTimeFormat(updatedAt);
 
@@ -35,7 +39,13 @@ export default function ChatsListItem({
   return (
     <Link
       href={`/chats/c/${id}`}
-      className="m-1 flex items-center gap-x-4 rounded p-1 px-2 transition hover:cursor-pointer hover:bg-white/15"
+      className={cn(
+        'm-1 flex items-center gap-x-4 rounded p-1 px-2 transition hover:cursor-pointer hover:bg-white/15',
+        location.substring(location.indexOf('/chats/c/'), location.length) ===
+          `/chats/c/${id}`
+          ? 'bg-white/10'
+          : 'bg-none'
+      )}
     >
       <div className="flex h-full items-center justify-center">
         {isGroup ? (

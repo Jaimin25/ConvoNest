@@ -41,7 +41,7 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
     const fetchChats = async () => {
       const res = await axios.get('/api/user/chat');
       const chats = res.data.chats;
-      console.log(res.data);
+
       setChats(chats);
       setLoading(false);
     };

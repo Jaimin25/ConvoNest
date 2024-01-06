@@ -48,7 +48,7 @@ export default function RemoveFriendModal({
           receiverId: id
         }
       });
-      console.log(res.data);
+
       if (res.data.statusCode === 200) {
         const sentRequest = res.data.body.data;
         removeContact(sentRequest.id);

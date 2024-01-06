@@ -12,7 +12,7 @@ export default function ChatsList() {
   const { loading, chats } = useChats();
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden">
+    <div className="flex h-full w-full flex-col overflow-hidden pb-4">
       {loading ? (
         <SkeletonProfile />
       ) : (

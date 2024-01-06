@@ -44,7 +44,7 @@ export default function MobileViewSidebar({
         </Link>
         <Link href="/chats">
           <div className="flex w-full items-center justify-center gap-x-2 rounded-md p-2 transition">
-            {location === '/chats' ? (
+            {location === '/chats' || location.includes('/chats/c/') ? (
               <EnvelopIconSolid className="h-6 w-6" />
             ) : (
               <EnvelopeIcon className="h-6 w-6" />

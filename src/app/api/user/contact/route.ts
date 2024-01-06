@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
             statusCode: 200,
             body: {
               message: 'Friend request accepted',
-              data: friendOne
+              data: friendTwo
             }
           });
         } else {
@@ -148,7 +148,7 @@ export async function DELETE(req: NextRequest) {
       }
     });
   }
-  console.log(senderId, receiverId);
+
   const isFriends = await db.friends.findFirst({
     where: {
       OR: [

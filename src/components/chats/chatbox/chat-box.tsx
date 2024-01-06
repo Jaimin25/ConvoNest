@@ -11,8 +11,8 @@ export default function ChatBox() {
   return (
     <div className="w-full flex-1 px-4 py-4 md:mr-4 md:px-0">
       <Card className="h-full w-full border-0 dark:bg-black/50">
-        <CardHeader>
-          <CardTitle>Andrew</CardTitle>
+        <CardHeader className="mb-6 p-1 md:mb-0 md:p-6">
+          <CardTitle className="ml-8 md:ml-0">Andrew</CardTitle>
         </CardHeader>
         <CardContent className="h-[87%] flex-1">
           <div className="flex h-full w-full flex-col justify-center">

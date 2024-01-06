@@ -16,8 +16,8 @@ export default function FriendRequests() {
   const { requests } = useRequests();
   const { user } = useUser();
   return (
-    <div className="flex h-[85%] w-full flex-1 flex-col items-center justify-center py-4 sm:h-full">
-      <Card className="h-[90%] w-10/12 flex-1 border-0 px-4 sm:h-[95%] sm:w-1/2 lg:w-1/3 dark:bg-black/50">
+    <div className="flex h-[85%] w-full flex-1 flex-col items-center justify-center py-4 md:h-full">
+      <Card className="h-[90%] w-10/12 flex-1 border-0 px-4 md:h-[95%] md:w-1/2 lg:w-1/3 dark:bg-black/50">
         <CardHeader>
           <CardTitle>Friend Requests</CardTitle>
         </CardHeader>

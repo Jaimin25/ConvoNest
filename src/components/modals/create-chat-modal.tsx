@@ -42,52 +42,33 @@ export default function CreateChatModal() {
     setUsers([]);
   };
 
+  const createChat = async () => {
+    const res = await axios.post('/api/user/chat', {
+      isGroup: users.length > 1,
+      adminId: users.length > 1 ? user.id : null,
+      name: chatName ? chatName : null,
+      userIds: [...users.map((user) => user.id), user.id]
+    });
+    const data = res.data;
+
+    if (res.data.statusCode === 200) {
+      setUpdatedChats(data.body.chat);
+      setLoading(false);
+    } else if (res.data.statusCode === 403) {
+      toast.error(res.data.body.message);
+      setLoading(false);
+    }
+    setOpenNameModal(false);
+    setIsOpen(false);
+    setLoading(false);
+  };
+
   const handleCreateChat = () => {
     if (users.length === 1) {
       setLoading(true);
-      const createChat = async () => {
-        const res = await axios.post('/api/user/chat', {
-          isGroup: users.length > 1,
-          adminId: null,
-          name: null,
-          userIds: [...users.map((user) => user.id), user.id]
-        });
-        const data = res.data;
-        console.log(data);
-        if (res.data.statusCode === 200) {
-          setUpdatedChats(data.body.chat);
-          setLoading(false);
-        } else {
-          toast.error(res.data.body.message);
-          setLoading(false);
-        }
-        setOpenNameModal(false);
-        setIsOpen(false);
-        setLoading(false);
-      };
       createChat();
-    } else if (users.length > 1 && chatName.length > 3) {
+    } else if (users.length > 1 && chatName.length >= 3) {
       setLoading(true);
-      const createChat = async () => {
-        const res = await axios.post('/api/user/chat', {
-          isGroup: users.length > 1,
-          adminId: user.id,
-          name: chatName,
-          userIds: [...users.map((user) => user.id), user.id]
-        });
-        const data = res.data;
-        console.log(data);
-        if (res.data.statusCode === 200) {
-          setUpdatedChats(data.body.chat);
-          setLoading(false);
-        } else if (res.data.statusCode === 403) {
-          toast.error(res.data.body.message);
-          setLoading(false);
-        }
-        setOpenNameModal(false);
-        setIsOpen(false);
-        setLoading(false);
-      };
       createChat();
     } else {
       setOpenNameModal(true);
@@ -145,7 +126,11 @@ export default function CreateChatModal() {
                 disabled={chatName.length < 3 || loading}
                 onClick={handleCreateChat}
               >
-                Create
+                {loading ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  'Create'
+                )}
               </Button>
             </DialogFooter>
           </DialogContent>
