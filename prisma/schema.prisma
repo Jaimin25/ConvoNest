@@ -28,6 +28,7 @@ model Chat {
   isGroup   Boolean  @default(false)
   name      String?
   adminId   String?
+  lastMessage String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

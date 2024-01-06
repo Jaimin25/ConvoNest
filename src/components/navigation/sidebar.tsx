@@ -44,8 +44,8 @@ export default function NavigationSidebar() {
 
   return (
     <>
-      <div className="hidden h-full w-1/5 flex-col items-center justify-center py-4 sm:flex dark:bg-black/50">
-        <div className="flex w-full flex-1 flex-col gap-y-2 px-2 *:w-full *:cursor-pointer *:self-center">
+      <div className="hidden h-full w-[256px] flex-col items-center justify-center py-4 sm:flex dark:bg-black/50">
+        <div className="flex w-[256px] flex-1 flex-col gap-y-2 px-2 *:w-full *:cursor-pointer *:self-center">
           <Link href="/users">
             <div
               className={cn(

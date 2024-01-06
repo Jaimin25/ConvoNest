@@ -9,12 +9,12 @@ import { FaceSmileIcon, GifIcon } from '@heroicons/react/24/outline';
 
 export default function ChatBox() {
   return (
-    <div className="mx-4 w-full flex-1 py-4 md:mr-4">
+    <div className="w-full flex-1 px-4 py-4 md:mr-4 md:px-0">
       <Card className="h-full w-full border-0 dark:bg-black/50">
         <CardHeader>
           <CardTitle>Andrew</CardTitle>
         </CardHeader>
-        <CardContent className="h-[85%] flex-1">
+        <CardContent className="h-[87%] flex-1">
           <div className="flex h-full w-full flex-col justify-center">
             <div className="mb-2 flex-1 space-y-2 overflow-y-auto px-2">
               <div className="w-full">

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import Dashboard from '@/components/dashboard/dashboard';
+import { ChatsProvider } from '@/components/providers/chats-provider';
 import { ContactsProvider } from '@/components/providers/contacts-provider';
 import { ProfilesProvider } from '@/components/providers/profiles-provider';
 import { RequestsProvider } from '@/components/providers/requests-provider';
@@ -32,14 +33,16 @@ export default function RootLayout({
         >
           <ProfilesProvider>
             <UserProvider>
-              <ContactsProvider>
-                <RequestsProvider>
-                  <Dashboard>
-                    {children}
-                    <Toaster duration={1500} position="top-right" />
-                  </Dashboard>
-                </RequestsProvider>
-              </ContactsProvider>
+              <ChatsProvider>
+                <ContactsProvider>
+                  <RequestsProvider>
+                    <Dashboard>
+                      {children}
+                      <Toaster duration={1500} position="top-right" />
+                    </Dashboard>
+                  </RequestsProvider>
+                </ContactsProvider>
+              </ChatsProvider>
             </UserProvider>
           </ProfilesProvider>
         </ThemeProvider>

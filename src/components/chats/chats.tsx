@@ -1,10 +1,10 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import ContactsList from '../contacts/contacts-list';
-import { Button } from '../ui/button';
+import CreateChatModal from '../modals/create-chat-modal';
+
+import ChatsList from './chats-list';
 
 export default function Chats() {
   return (
@@ -14,17 +14,12 @@ export default function Chats() {
           <CardTitle>
             <div className="flex items-center">
               <p>Chats</p>
-              <Button
-                className="ml-auto rounded-md p-2 transition-colors hover:bg-white/10"
-                variant={'ghost'}
-              >
-                <Plus className="h-5 w-5" />
-              </Button>
+              <CreateChatModal />
             </div>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <ContactsList />
+        <CardContent className="h-5/6 px-2 sm:h-5/6">
+          <ChatsList />
         </CardContent>
       </Card>
     </div>

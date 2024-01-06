@@ -3,12 +3,13 @@
 import React from 'react';
 import { Braces } from 'lucide-react';
 
-import ContactsListItem from '../contacts/contacts-list-item';
-import { useContacts } from '../providers/contacts-provider';
+import { useChats } from '../providers/chats-provider';
 import SkeletonProfile from '../skeletons/profile-skeleton';
 
-export default function ContactsList() {
-  const { loading, contacts } = useContacts();
+import ChatsListItem from './chats-list-item';
+
+export default function ChatsList() {
+  const { loading, chats } = useChats();
 
   return (
     <div className="flex h-full w-full flex-col overflow-hidden">
@@ -16,13 +17,17 @@ export default function ContactsList() {
         <SkeletonProfile />
       ) : (
         <div className="flex h-full flex-col overflow-y-auto">
-          {contacts.length > 0 ? (
-            contacts.map((user) => (
-              <ContactsListItem
-                key={user.id}
-                id={user.user2Id}
-                name={user.username}
-                createdAt={user.createdAt}
+          {chats.length > 0 ? (
+            chats.map((chat) => (
+              <ChatsListItem
+                key={chat.id}
+                id={chat.id}
+                isGroup={chat.isGroup}
+                adminId={chat.adminId}
+                users={chat.users}
+                name={chat.name}
+                createdAt={chat.createdAt}
+                updatedAt={chat.updatedAt}
               />
             ))
           ) : (

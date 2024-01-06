@@ -39,13 +39,13 @@ export async function POST(req: NextRequest) {
       }
     } else {
       return NextResponse.json({
-        statusCode: 400,
+        statusCode: 403,
         error: 'User with email already exists'
       });
     }
   } else {
     return NextResponse.json({
-      statusCode: 400,
+      statusCode: 403,
       error: 'Username already exists'
     });
   }
