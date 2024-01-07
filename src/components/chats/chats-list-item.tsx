@@ -24,7 +24,7 @@ export default function ChatsListItem({
   name: string | null;
   isGroup: boolean;
   adminId: string | null;
-  lastMessage?: string;
+  lastMessage?: string | null;
   users: User[];
   createdAt: Date;
   updatedAt: Date;

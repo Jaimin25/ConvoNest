@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import Dashboard from '@/components/dashboard/dashboard';
 import { ChatsProvider } from '@/components/providers/chats-provider';
 import { ContactsProvider } from '@/components/providers/contacts-provider';
+import MessagesProvider from '@/components/providers/messages-provider';
 import { ProfilesProvider } from '@/components/providers/profiles-provider';
 import { RequestsProvider } from '@/components/providers/requests-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
@@ -36,10 +37,12 @@ export default function RootLayout({
               <ChatsProvider>
                 <ContactsProvider>
                   <RequestsProvider>
-                    <Dashboard>
-                      {children}
-                      <Toaster duration={1500} position="top-right" />
-                    </Dashboard>
+                    <MessagesProvider>
+                      <Dashboard>
+                        {children}
+                        <Toaster duration={1500} position="top-right" />
+                      </Dashboard>
+                    </MessagesProvider>
                   </RequestsProvider>
                 </ContactsProvider>
               </ChatsProvider>

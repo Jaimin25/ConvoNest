@@ -26,6 +26,7 @@ export default function ChatsList() {
                 adminId={chat.adminId}
                 users={chat.users}
                 name={chat.name}
+                lastMessage={chat.lastMessage}
                 createdAt={chat.createdAt}
                 updatedAt={chat.updatedAt}
               />

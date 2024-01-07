@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import { type User } from '@prisma/client';
 
-interface ChatsProps {
+export interface ChatsProps {
   id: string;
   isGroup: boolean;
   name: string | null;
@@ -20,12 +20,14 @@ interface ChatsContextProps {
   chats: ChatsProps[];
   loading: boolean;
   setUpdatedChats: (data: ChatsProps) => void;
+  setLastMessage: (chatId: string, message: string) => void;
 }
 
 const ChatsContext = createContext<ChatsContextProps>({
   chats: [],
   loading: false,
-  setUpdatedChats: () => {}
+  setUpdatedChats: () => {},
+  setLastMessage: () => {}
 });
 
 export const useChats = () => {
@@ -52,8 +54,25 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
     setChats([...chats, data]);
   };
 
+  const setLastMessage = (chatId: string, message: string) => {
+    const newChats = chats.map((chat) => {
+      if (chat.id === chatId) {
+        return {
+          ...chat,
+          lastMessage: message
+        };
+      } else {
+        return chat;
+      }
+    });
+
+    setChats(newChats);
+  };
+
   return (
-    <ChatsContext.Provider value={{ chats, loading, setUpdatedChats }}>
+    <ChatsContext.Provider
+      value={{ chats, loading, setUpdatedChats, setLastMessage }}
+    >
       {children}
     </ChatsContext.Provider>
   );

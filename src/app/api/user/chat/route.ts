@@ -105,6 +105,9 @@ export async function GET() {
         }
       }
     },
+    orderBy: {
+      updatedAt: 'desc'
+    },
     include: {
       users: true
     }
