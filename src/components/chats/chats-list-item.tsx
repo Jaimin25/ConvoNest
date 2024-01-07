@@ -65,7 +65,9 @@ export default function ChatsListItem({
         )}
         {lastMessage ? (
           <p className="text-sm text-stone-400">
-            {lastMessage} • {updatedAtTime}
+            {lastMessage.length > 5
+              ? lastMessage.substring(0, 4) + '... • ' + updatedAtTime
+              : lastMessage + ' • ' + updatedAtTime}
           </p>
         ) : (
           <p className="text-xs text-stone-400">{updatedAtTime}</p>

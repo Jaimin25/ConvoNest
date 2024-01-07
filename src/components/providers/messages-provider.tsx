@@ -7,6 +7,7 @@ import { Messages } from '@prisma/client';
 
 interface MessagesContextProps {
   messages: { chatId: string; messages: Messages[] }[];
+  loading: boolean;
   addMessages: (chatId: string) => void;
   updateMessages: (chatId: string, data: Messages) => void;
 }
@@ -18,6 +19,7 @@ export interface MessagesProps {
 
 const MessagesContext = createContext<MessagesContextProps>({
   messages: [],
+  loading: false,
   addMessages: () => {},
   updateMessages: () => {}
 });
@@ -32,16 +34,18 @@ export default function MessagesProvider({
   children: React.ReactNode;
 }) {
   const [messages, setMessages] = useState<MessagesProps[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const addMessages = (chatId: string) => {
     const fetchMessages = async () => {
-      console.log('this is called');
+      setLoading(true);
       const res = await axios.get('/api/user/message', {
         params: {
           chatId
         }
       });
       if (res.data.statusCode === 200) {
+        setLoading(false);
         setMessages((messages) => [
           ...messages,
           {
@@ -51,7 +55,9 @@ export default function MessagesProvider({
         ]);
       } else if (res.data.statusCode === 403) {
         // console.log(res.data);
+        setLoading(false);
       }
+      setLoading(false);
     };
 
     if (!messages.some((message) => message.chatId === chatId)) {
@@ -70,7 +76,9 @@ export default function MessagesProvider({
   };
 
   return (
-    <MessagesContext.Provider value={{ messages, addMessages, updateMessages }}>
+    <MessagesContext.Provider
+      value={{ messages, loading, addMessages, updateMessages }}
+    >
       {children}
     </MessagesContext.Provider>
   );

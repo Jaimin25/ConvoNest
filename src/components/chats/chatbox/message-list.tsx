@@ -8,6 +8,7 @@ import {
   useMessages
 } from '@/components/providers/messages-provider';
 import { useUser } from '@/components/providers/user-provider';
+import SkeletonMessage from '@/components/skeletons/message-skeleton';
 import UserAvatar from '@/components/user-avatar';
 import { cn } from '@/lib/utils';
 
@@ -19,7 +20,7 @@ export default function MessageList({
   chat: ChatsProps;
 }) {
   const { user } = useUser();
-  const { messages } = useMessages();
+  const { messages, loading } = useMessages();
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -35,7 +36,10 @@ export default function MessageList({
       className="mb-2 flex-1 space-y-2 overflow-y-auto scroll-smooth px-2"
       ref={ref}
     >
-      {message &&
+      {loading ? (
+        <SkeletonMessage />
+      ) : (
+        message &&
         chat &&
         message.messages.map((message) => (
           <div
@@ -47,7 +51,7 @@ export default function MessageList({
           >
             <div
               className={cn(
-                'flex w-1/2 gap-x-2',
+                'flex w-4/5 gap-x-2 sm:w-1/2',
                 message.userId === user.id && ' place-content-end '
               )}
             >
@@ -71,7 +75,8 @@ export default function MessageList({
               </p>
             </div>
           </div>
-        ))}
+        ))
+      )}
     </div>
   );
 }

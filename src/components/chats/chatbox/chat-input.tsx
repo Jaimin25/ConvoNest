@@ -8,6 +8,13 @@ import { useMessages } from '@/components/providers/messages-provider';
 import { useUser } from '@/components/providers/user-provider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover';
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
 import { FaceSmileIcon, GifIcon } from '@heroicons/react/24/outline';
 
 export default function ChatInput({ chatId }: { chatId: string }) {
@@ -41,7 +48,21 @@ export default function ChatInput({ chatId }: { chatId: string }) {
   return (
     <div className="flex w-full items-center gap-x-2">
       <GifIcon className="h-8 w-8 cursor-pointer" />
-      <FaceSmileIcon className="h-8 w-8 cursor-pointer" />
+      <Popover>
+        <PopoverTrigger>
+          <FaceSmileIcon className="h-8 w-8 cursor-pointer" />
+        </PopoverTrigger>
+        <PopoverContent>
+          {' '}
+          <Picker
+            data={data}
+            onEmojiSelect={(emoji: data.Skin) => {
+              setMessageVal(messageVal + emoji.native);
+            }}
+          />
+        </PopoverContent>
+      </Popover>
+
       <Input
         value={messageVal}
         className="outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
