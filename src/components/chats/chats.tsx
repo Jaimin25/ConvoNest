@@ -33,7 +33,7 @@ export default function Chats() {
         </Card>
       </div>
       <Sheet>
-        <SheetTrigger className="absolute m-5 md:hidden">
+        <SheetTrigger className="absolute m-8 md:hidden">
           <Menu />
         </SheetTrigger>
         <SheetContent side={'left'} className="border-none">

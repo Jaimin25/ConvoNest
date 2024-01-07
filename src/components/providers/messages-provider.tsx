@@ -35,6 +35,7 @@ export default function MessagesProvider({
 
   const addMessages = (chatId: string) => {
     const fetchMessages = async () => {
+      console.log('this is called');
       const res = await axios.get('/api/user/message', {
         params: {
           chatId
@@ -49,14 +50,14 @@ export default function MessagesProvider({
           }
         ]);
       } else if (res.data.statusCode === 403) {
-        console.log(res.data);
+        // console.log(res.data);
       }
     };
 
     if (!messages.some((message) => message.chatId === chatId)) {
       fetchMessages();
     } else {
-      console.log(messages);
+      // console.log(messages);
     }
   };
 
@@ -64,7 +65,7 @@ export default function MessagesProvider({
     const message = messages.find((message) => message.chatId === chatId);
     if (message) {
       message.messages.push(data);
-      setMessages([message]);
+      setMessages([...messages, message]);
     }
   };
 

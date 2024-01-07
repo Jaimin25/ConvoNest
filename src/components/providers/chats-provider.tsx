@@ -59,13 +59,18 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
       if (chat.id === chatId) {
         return {
           ...chat,
-          lastMessage: message
+          lastMessage: message,
+          updatedAt: new Date()
         };
       } else {
         return chat;
       }
     });
-
+    newChats.sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+    console.log(newChats);
     setChats(newChats);
   };
 

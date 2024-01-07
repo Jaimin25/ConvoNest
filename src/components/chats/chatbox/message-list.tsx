@@ -1,25 +1,43 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useRef } from 'react';
 
 import { ChatsProps } from '@/components/providers/chats-provider';
-import { MessagesProps } from '@/components/providers/messages-provider';
+import {
+  MessagesProps,
+  useMessages
+} from '@/components/providers/messages-provider';
 import { useUser } from '@/components/providers/user-provider';
 import UserAvatar from '@/components/user-avatar';
 import { cn } from '@/lib/utils';
 
 export default function MessageList({
-  messages,
+  message,
   chat
 }: {
-  messages: MessagesProps;
+  message: MessagesProps;
   chat: ChatsProps;
 }) {
   const { user } = useUser();
+  const { messages } = useMessages();
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    console.log('work');
+    if (ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+    }
+  }, [messages, message]);
 
   return (
-    <div className="mb-2 flex-1 space-y-2 overflow-y-auto px-2">
-      {messages &&
+    <div
+      className="mb-2 flex-1 space-y-2 overflow-y-auto scroll-smooth px-2"
+      ref={ref}
+    >
+      {message &&
         chat &&
-        messages.messages.map((message) => (
+        message.messages.map((message) => (
           <div
             key={message.id}
             className={cn(
@@ -35,9 +53,8 @@ export default function MessageList({
             >
               <UserAvatar
                 username={
-                  chat.users[0].id === message.userId
-                    ? chat.users[0].name
-                    : chat.users[1].name
+                  chat.users.find((u) => u.id === message.userId)
+                    ?.name as string
                 }
                 className={cn(
                   'mt-auto h-8 w-8 rounded-full',

@@ -17,7 +17,9 @@ export const joinTimeFormat = (joinedAt: Date) => {
     return `${hours}h`;
   } else if (minutes > 0) {
     return `${minutes}m`;
-  } else {
+  } else if (seconds > 1) {
     return `${seconds}s`;
+  } else {
+    return `now`;
   }
 };
