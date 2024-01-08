@@ -54,7 +54,6 @@ export default function MessagesProvider({
           }
         ]);
       } else if (res.data.statusCode === 403) {
-        // console.log(res.data);
         setLoading(false);
       }
       setLoading(false);

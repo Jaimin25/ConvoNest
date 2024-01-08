@@ -70,7 +70,6 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
       (a, b) =>
         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
     );
-    console.log(newChats);
     setChats(newChats);
   };
 

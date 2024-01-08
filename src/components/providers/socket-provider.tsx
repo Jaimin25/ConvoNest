@@ -22,9 +22,8 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
     const URL =
       process.env.NODE_ENV === 'production'
         ? 'https://convonest-backend.onrender.com'
-        : 'http://localhost:4000';
+        : 'https://convonest-backend.onrender.com';
     if (user && user.id) {
-      console.log(user);
       const newSocket = io(URL as string, {
         query: {
           userId: user.id

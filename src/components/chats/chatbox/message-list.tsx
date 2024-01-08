@@ -25,7 +25,6 @@ export default function MessageList({
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log('work');
     if (ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight;
     }
