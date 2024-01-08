@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Info } from 'lucide-react';
 
@@ -44,7 +46,7 @@ export default function ChatBox({ chatId }: { chatId: string }) {
           <div className="flex h-full w-full flex-col justify-center">
             <MessageList message={message} chat={chat} />
 
-            <ChatInput chatId={chatId} />
+            <ChatInput chat={chat} />
           </div>
         </CardContent>
       </Card>

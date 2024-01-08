@@ -7,6 +7,7 @@ import { ContactsProvider } from '@/components/providers/contacts-provider';
 import MessagesProvider from '@/components/providers/messages-provider';
 import { ProfilesProvider } from '@/components/providers/profiles-provider';
 import { RequestsProvider } from '@/components/providers/requests-provider';
+import { SocketProvider } from '@/components/providers/socket-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { UserProvider } from '@/components/providers/user-provider';
 import { Toaster } from '@/components/ui/sonner';
@@ -34,18 +35,20 @@ export default function RootLayout({
         >
           <ProfilesProvider>
             <UserProvider>
-              <ChatsProvider>
-                <ContactsProvider>
-                  <RequestsProvider>
-                    <MessagesProvider>
-                      <Dashboard>
-                        {children}
-                        <Toaster duration={1500} position="top-right" />
-                      </Dashboard>
-                    </MessagesProvider>
-                  </RequestsProvider>
-                </ContactsProvider>
-              </ChatsProvider>
+              <SocketProvider>
+                <ChatsProvider>
+                  <ContactsProvider>
+                    <RequestsProvider>
+                      <MessagesProvider>
+                        <Dashboard>
+                          {children}
+                          <Toaster duration={1500} position="top-right" />
+                        </Dashboard>
+                      </MessagesProvider>
+                    </RequestsProvider>
+                  </ContactsProvider>
+                </ChatsProvider>
+              </SocketProvider>
             </UserProvider>
           </ProfilesProvider>
         </ThemeProvider>

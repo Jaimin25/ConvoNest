@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { BellIcon, EnvelopeIcon, UsersIcon } from '@heroicons/react/24/outline';
 
 import { useRequests } from '../providers/requests-provider';
+import { useSocket } from '../providers/socket-provider';
 import { useUser } from '../providers/user-provider';
 import { Badge } from '../ui/badge';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
@@ -21,6 +22,8 @@ import MobileViewSidebar from './mobile-sidebar';
 export default function NavigationSidebar() {
   const { username, user } = useUser();
   const location = usePathname();
+
+  const { socket } = useSocket();
 
   const router = useRouter();
 
@@ -36,6 +39,7 @@ export default function NavigationSidebar() {
       const data = await supabase.auth.signOut();
       setLoading(false);
       if (!data.error) {
+        socket?.disconnect();
         router.refresh();
       }
     };
