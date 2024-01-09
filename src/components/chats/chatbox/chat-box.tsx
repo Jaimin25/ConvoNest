@@ -9,6 +9,7 @@ import {
   useMessages
 } from '@/components/providers/messages-provider';
 import { useUser } from '@/components/providers/user-provider';
+import { SocketIndicator } from '@/components/socket-indicator';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import ChatInput from './chat-input';
@@ -39,6 +40,9 @@ export default function ChatBox({ chatId }: { chatId: string }) {
         <CardHeader className="mb-3 pt-4 md:mb-0 md:p-6">
           <CardTitle className="ml-8 flex md:ml-0">
             {receiver}
+            <div className="mr-2 flex w-full items-center justify-end">
+              <SocketIndicator />
+            </div>
             <Info className="ml-auto h-5 w-5" />
           </CardTitle>
         </CardHeader>
