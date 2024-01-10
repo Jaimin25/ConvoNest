@@ -68,9 +68,11 @@ export default function AddFriendModal({
   };
 
   return (
-    <div className="w-full">
+    <div>
       <Dialog open={isOpen} onOpenChange={handleChange}>
-        <DialogTrigger className="w-full">{children}</DialogTrigger>
+        <DialogTrigger className="flex h-9 w-9 items-center justify-center">
+          {children}
+        </DialogTrigger>
         <DialogContent className="border-none">
           <DialogHeader>
             <DialogTitle>

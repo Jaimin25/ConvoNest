@@ -68,13 +68,12 @@ export default function ChatInput({ chat }: { chat: ChatsProps }) {
 
   return (
     <div className="flex w-full items-center gap-x-2">
-      <GifIcon className="h-8 w-8 cursor-pointer" />
+      <GifIcon className="hidden h-8 w-8 cursor-pointer md:block" />
       <Popover>
         <PopoverTrigger>
-          <FaceSmileIcon className="h-8 w-8 cursor-pointer" />
+          <FaceSmileIcon className="hidden h-7 w-7 cursor-pointer md:block" />
         </PopoverTrigger>
-        <PopoverContent>
-          {' '}
+        <PopoverContent className="w-auto rounded-xl p-0">
           <Picker
             data={data}
             onEmojiSelect={(emoji: data.Skin) => {
