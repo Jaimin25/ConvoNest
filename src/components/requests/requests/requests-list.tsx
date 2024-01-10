@@ -9,6 +9,8 @@ import {
   FriendRequestsProps,
   useRequests
 } from '@/components/providers/requests-provider';
+import { useSocket } from '@/components/providers/socket-provider';
+import { useUser } from '@/components/providers/user-provider';
 import UserAvatar from '@/components/user-avatar';
 
 export default function RequestsList({
@@ -22,7 +24,11 @@ export default function RequestsList({
   const [acceptLoading, setAcceptLoading] = useState<boolean>(false);
   const { deleteRequest } = useRequests();
 
+  const { user, username } = useUser();
+
   const { setUpdatedContacts } = useContacts();
+
+  const { socket } = useSocket();
 
   const handleCancelRequest = (reqId: string) => {
     setdeclineLoading(true);
@@ -34,6 +40,7 @@ export default function RequestsList({
         .then((res) => {
           if (res.data.statusCode === 200 || res.data.statusCode === 404) {
             deleteRequest(reqId);
+            socket?.emit(`user:${user.id}:cancel-request`, res.data.body.data);
           } else {
             setdeclineLoading(false);
           }
@@ -55,6 +62,9 @@ export default function RequestsList({
         const contact = res.data.body.data;
         contact.username = requestsList.username;
         setUpdatedContacts(contact);
+        socket?.emit(`user:${user.id}:accept-request`, {
+          data: { contact, username }
+        });
         deleteRequest(reqId);
       } else {
         setAcceptLoading(false);

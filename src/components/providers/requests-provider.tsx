@@ -6,6 +6,7 @@ import axios from 'axios';
 import { type FriendRequests } from '@prisma/client';
 
 import { useProfiles } from './profiles-provider';
+import { useSocket } from './socket-provider';
 import { useUser } from './user-provider';
 
 export type FriendRequestsProps = {
@@ -40,6 +41,32 @@ export function RequestsProvider({ children }: { children: React.ReactNode }) {
 
   const { user } = useUser();
   const { users } = useProfiles();
+
+  const { socket } = useSocket();
+
+  useEffect(() => {
+    socket?.on(`user:${user.id}:receive-request`, (data) => {
+      setRequests([...requests, data]);
+    });
+
+    socket?.on(`user:${user.id}:cancel-request`, (data) => {
+      const index = requests.findIndex((request) => request.id === data);
+
+      requests.splice(index, 1);
+      setRequests([...requests]);
+    });
+
+    socket?.on(`user:${user.id}:receive-accept-request`, (data) => {
+      const index = requests.findIndex((request) => request.id === data.id);
+
+      requests.splice(index, 1);
+      setRequests([...requests]);
+    });
+
+    () => {
+      socket?.off(`user:${user.id}:receive-request`);
+    };
+  }, [socket, user, setRequests, requests]);
 
   useEffect(() => {
     setLoading(true);

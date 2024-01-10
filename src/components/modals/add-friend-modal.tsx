@@ -17,6 +17,7 @@ import { DialogTrigger } from '@radix-ui/react-dialog';
 
 import { useContacts } from '../providers/contacts-provider';
 import { useRequests } from '../providers/requests-provider';
+import { useSocket } from '../providers/socket-provider';
 import { useUser } from '../providers/user-provider';
 import { Button } from '../ui/button';
 import UserAvatar from '../user-avatar';
@@ -36,9 +37,11 @@ export default function AddFriendModal({
   const [loading, setLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { user } = useUser();
+  const { user, username } = useUser();
 
   const { contacts } = useContacts();
+
+  const { socket } = useSocket();
 
   const { requests, setUpdatedRequests } = useRequests();
 
@@ -56,7 +59,11 @@ export default function AddFriendModal({
         toast.success('Friend Request Sent');
         setIsOpen(false);
         setLoading(false);
+        socket?.emit(`user:${user.id}:send-request`, {
+          data: { sentRequest, username }
+        });
       } else {
+        setIsOpen(false);
         setLoading(false);
       }
     };

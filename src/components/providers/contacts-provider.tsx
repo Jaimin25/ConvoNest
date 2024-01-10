@@ -2,10 +2,12 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 import { Friends } from '@prisma/client';
 
 import { useProfiles } from './profiles-provider';
+import { useSocket } from './socket-provider';
 import { useUser } from './user-provider';
 
 interface ContactsProps {
@@ -42,6 +44,19 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
 
   const { user } = useUser();
   const { users } = useProfiles();
+
+  const { socket } = useSocket();
+
+  useEffect(() => {
+    socket?.on(`user:${user.id}:receive-accept-request`, (data) => {
+      setContacts([...contacts, data]);
+      toast.success(`${data.username} added to your contacts`);
+    });
+
+    () => {
+      socket?.off(`user:${user.id}:receive-accept-request`);
+    };
+  }, [socket, setContacts, contacts, user]);
 
   useEffect(() => {
     setLoading(true);
