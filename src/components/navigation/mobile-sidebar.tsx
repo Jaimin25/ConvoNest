@@ -58,14 +58,14 @@ export default function MobileViewSidebar({
               <div className="relative">
                 <BellIconSolid className="h-6 w-6" />
                 {requests.some((rq) => rq.receiverId === user.id) ? (
-                  <div className="absolute right-0 top-0 h-2 w-2 rounded-full bg-red-500" />
+                  <div className="absolute right-0 top-0 h-[10px] w-[10px] rounded-full bg-red-500" />
                 ) : null}
               </div>
             ) : (
               <div className="relative">
                 <BellIcon className="h-6 w-6" />
                 {requests.some((rq) => rq.receiverId === user.id) ? (
-                  <div className="absolute right-0 top-0 h-2 w-2 rounded-full bg-red-500" />
+                  <div className="absolute right-0 top-0 h-[10px] w-[10px] rounded-full bg-red-500" />
                 ) : null}
               </div>
             )}

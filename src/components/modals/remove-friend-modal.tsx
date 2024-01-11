@@ -49,12 +49,13 @@ export default function RemoveFriendModal({
         }
       });
 
+      console.log(res);
       if (res.data.statusCode === 200) {
         const sentRequest = res.data.body.data;
         removeContact(sentRequest.id);
         toast.success('Removed Friend');
       } else if (res.data.statusCode === 404) {
-        removeContact(id);
+        // removeContact(id);
       }
       setLoading(false);
       setIsOpen(false);

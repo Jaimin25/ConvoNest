@@ -49,6 +49,10 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     socket?.on(`user:${user.id}:receive-accept-request`, (data) => {
+      if (data.user2Id === user.id) {
+        data.user2Id = data.user1Id;
+        data.user1Id = user.id;
+      }
       setContacts([...contacts, data]);
       toast.success(`${data.username} added to your contacts`);
     });

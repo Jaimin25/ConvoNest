@@ -82,7 +82,7 @@ export default function NavigationSidebar() {
                 location === '/requests' ? 'bg-white/5' : 'bg-none'
               )}
             >
-              <BellIcon className="h-7 w-7" />
+              <BellIcon className="h-8 w-8" />
               Requests
               {requests.some((rq) => rq.receiverId === user.id) ? (
                 <Badge className="ml-auto bg-red-500" variant={'outline'}>
