@@ -10,6 +10,7 @@ import {
   UsersIcon as UsersIconSolid
 } from '@heroicons/react/24/solid';
 
+import { useMessages } from '../providers/messages-provider';
 import { useRequests } from '../providers/requests-provider';
 import { useUser } from '../providers/user-provider';
 import { Skeleton } from '../ui/skeleton';
@@ -21,8 +22,9 @@ export default function MobileViewSidebar({
   className?: string;
 }) {
   const location = usePathname();
-  const { username, user } = useUser();
 
+  const { username, user } = useUser();
+  const { unreadMessages } = useMessages();
   const { requests } = useRequests();
 
   return (
@@ -45,9 +47,19 @@ export default function MobileViewSidebar({
         <Link href="/chats">
           <div className="flex w-full items-center justify-center gap-x-2 rounded-md p-2 transition">
             {location === '/chats' || location.includes('/chats/c/') ? (
-              <EnvelopIconSolid className="h-6 w-6" />
+              <div className="relative">
+                <EnvelopIconSolid className="h-6 w-6" />
+                {unreadMessages && unreadMessages.length > 0 && (
+                  <div className="absolute -right-1 top-0 h-[10px] w-[10px] rounded-full bg-red-500" />
+                )}
+              </div>
             ) : (
-              <EnvelopeIcon className="h-6 w-6" />
+              <div className="relative">
+                <EnvelopeIcon className="h-6 w-6" />
+                {unreadMessages && unreadMessages.length > 0 && (
+                  <div className="absolute -right-1 top-0 h-[10px] w-[10px] rounded-full bg-red-500" />
+                )}
+              </div>
             )}
           </div>
         </Link>
@@ -57,16 +69,16 @@ export default function MobileViewSidebar({
             {location === '/requests' ? (
               <div className="relative">
                 <BellIconSolid className="h-6 w-6" />
-                {requests.some((rq) => rq.receiverId === user.id) ? (
+                {requests.some((rq) => rq.receiverId === user.id) && (
                   <div className="absolute right-0 top-0 h-[10px] w-[10px] rounded-full bg-red-500" />
-                ) : null}
+                )}
               </div>
             ) : (
               <div className="relative">
                 <BellIcon className="h-6 w-6" />
-                {requests.some((rq) => rq.receiverId === user.id) ? (
+                {requests.some((rq) => rq.receiverId === user.id) && (
                   <div className="absolute right-0 top-0 h-[10px] w-[10px] rounded-full bg-red-500" />
-                ) : null}
+                )}
               </div>
             )}
           </div>

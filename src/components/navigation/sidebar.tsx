@@ -9,6 +9,7 @@ import useSupabase from '@/hooks/useSupabase';
 import { cn } from '@/lib/utils';
 import { BellIcon, EnvelopeIcon, UsersIcon } from '@heroicons/react/24/outline';
 
+import { useMessages } from '../providers/messages-provider';
 import { useRequests } from '../providers/requests-provider';
 import { useSocket } from '../providers/socket-provider';
 import { useUser } from '../providers/user-provider';
@@ -20,18 +21,21 @@ import UserAvatar from '../user-avatar';
 import MobileViewSidebar from './mobile-sidebar';
 
 export default function NavigationSidebar() {
-  const { username, user } = useUser();
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
   const location = usePathname();
 
   const { socket } = useSocket();
-
-  const router = useRouter();
-
+  const { username, user } = useUser();
   const { requests } = useRequests();
-
-  const [loading, setLoading] = useState(false);
-
   const { supabase } = useSupabase();
+  const { unreadMessages } = useMessages();
+
+  const totalUnreadMessages = unreadMessages.reduce(
+    (count, msg) => count + msg.count,
+    0
+  );
 
   const handleLogout = () => {
     setLoading(true);
@@ -72,6 +76,16 @@ export default function NavigationSidebar() {
             >
               <EnvelopeIcon className="h-7 w-7" />
               Chats
+              {totalUnreadMessages > 0 &&
+                (!(totalUnreadMessages > 100) ? (
+                  <Badge className="ml-auto bg-red-500" variant={'outline'}>
+                    {totalUnreadMessages}
+                  </Badge>
+                ) : (
+                  <Badge className="ml-auto bg-red-500" variant={'outline'}>
+                    100+
+                  </Badge>
+                ))}
             </div>
           </Link>
 
@@ -82,7 +96,7 @@ export default function NavigationSidebar() {
                 location === '/requests' ? 'bg-white/5' : 'bg-none'
               )}
             >
-              <BellIcon className="h-8 w-8" />
+              <BellIcon className="h-7 w-7" />
               Requests
               {requests.some((rq) => rq.receiverId === user.id) ? (
                 <Badge className="ml-auto bg-red-500" variant={'outline'}>

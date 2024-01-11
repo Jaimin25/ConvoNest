@@ -7,7 +7,9 @@ import { cn } from '@/lib/utils';
 import { UserGroupIcon } from '@heroicons/react/24/outline';
 import { User } from '@prisma/client';
 
+import { useMessages } from '../providers/messages-provider';
 import { useUser } from '../providers/user-provider';
+import { Badge } from '../ui/badge';
 import UserAvatar from '../user-avatar';
 
 export default function ChatsListItem({
@@ -36,6 +38,8 @@ export default function ChatsListItem({
 
   const receiver = users[0].id !== user.id ? users[0] : users[1];
 
+  const { unreadMessages } = useMessages();
+
   return (
     <Link
       href={`/chats/c/${id}`}
@@ -58,11 +62,28 @@ export default function ChatsListItem({
         )}
       </div>
       <div className="flex w-full flex-col items-start py-1">
-        {isGroup ? (
-          <p className="text-lg">{name}</p>
-        ) : (
-          <p className="text-lg">{receiver.name}</p>
-        )}
+        <div className="flex w-full">
+          {isGroup ? (
+            <p className="text-lg">{name} </p>
+          ) : (
+            <p className="text-lg">{receiver.name} </p>
+          )}
+          {unreadMessages
+            ? unreadMessages.map(
+                (msg, index) =>
+                  msg.chatId === id && (
+                    <Badge
+                      className="ml-auto bg-red-500"
+                      variant={'outline'}
+                      key={index}
+                    >
+                      {msg.count}
+                    </Badge>
+                  )
+              )
+            : null}
+        </div>
+
         {lastMessage ? (
           <p className="text-sm text-stone-400">
             {lastMessage.length > 5

@@ -1,4 +1,7 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,10 +14,28 @@ import {
 } from '@/components/ui/sheet';
 
 import CreateChatModal from '../modals/create-chat-modal';
+import { useMessages } from '../providers/messages-provider';
 
 import ChatsList from './chats-list';
 
 export default function Chats() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { unreadMessages } = useMessages();
+  const totalUnreadMessages = unreadMessages.reduce(
+    (count, msg) => count + msg.count,
+    0
+  );
+
+  const location = usePathname();
+
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [location]);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
     <>
       <div className="hidden h-full w-1/3 items-center px-4 py-4 md:flex">
@@ -32,15 +53,30 @@ export default function Chats() {
           </CardContent>
         </Card>
       </div>
-      <Sheet>
+      <Sheet open={isSidebarOpen} onOpenChange={toggleSidebar}>
         <SheetTrigger className="absolute m-8 md:hidden">
-          <Menu />
+          <div className="relative">
+            <Menu />
+            {totalUnreadMessages > 0 && (
+              <div className="absolute -right-1 -top-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-xs text-white" />
+            )}
+          </div>
         </SheetTrigger>
         <SheetContent side={'left'} className="border-none">
           <SheetHeader>
             <SheetTitle>
               <div className="flex items-center">
                 <p>Chats</p>
+                {totalUnreadMessages > 0 &&
+                  (!(totalUnreadMessages > 100) ? (
+                    <div className="ml-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white">
+                      {totalUnreadMessages}
+                    </div>
+                  ) : (
+                    <div className="ml-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white">
+                      100+
+                    </div>
+                  ))}
                 <CreateChatModal />
               </div>
             </SheetTitle>

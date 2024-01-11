@@ -10,9 +10,10 @@ export default function ChatBoxPage({
 }: {
   params: { chatId: string };
 }) {
-  const { addMessages } = useMessages();
+  const { addMessages, clearUnreadMessages } = useMessages();
   useEffect(() => {
     addMessages(params.chatId);
-  }, [params.chatId, addMessages]);
+    clearUnreadMessages(params.chatId);
+  }, [params.chatId, addMessages, clearUnreadMessages]);
   return <ChatBox chatId={params.chatId} />;
 }

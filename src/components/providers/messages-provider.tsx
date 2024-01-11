@@ -1,26 +1,40 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 import { Messages } from '@prisma/client';
 
-interface MessagesContextProps {
-  messages: { chatId: string; messages: Messages[] }[];
-  loading: boolean;
-  addMessages: (chatId: string) => void;
-  updateMessages: (chatId: string, data: Messages) => void;
-}
-
+import { useChats } from './chats-provider';
+import { useSocket } from './socket-provider';
+import { useUser } from './user-provider';
 export interface MessagesProps {
   chatId: string;
   messages: Messages[];
 }
 
+export interface UnreadMessages {
+  chatId: string;
+  count: number;
+}
+
+interface MessagesContextProps {
+  messages: { chatId: string; messages: Messages[] }[];
+  loading: boolean;
+  unreadMessages: UnreadMessages[];
+  addMessages: (chatId: string) => void;
+  clearUnreadMessages: (chatId: string) => void;
+  updateMessages: (chatId: string, data: Messages) => void;
+}
+
 const MessagesContext = createContext<MessagesContextProps>({
   messages: [],
   loading: false,
+  unreadMessages: [],
   addMessages: () => {},
+  clearUnreadMessages: () => {},
   updateMessages: () => {}
 });
 
@@ -35,6 +49,89 @@ export default function MessagesProvider({
 }) {
   const [messages, setMessages] = useState<MessagesProps[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [unreadMessages, setUnreadMessages] = useState<UnreadMessages[]>([]);
+
+  const { user } = useUser();
+  const { socket } = useSocket();
+  const { setLastMessage, chats } = useChats();
+
+  const location = usePathname();
+
+  useEffect(() => {
+    const unreadMessages = localStorage.getItem('unread-messages');
+    if (unreadMessages) {
+      setUnreadMessages(JSON.parse(unreadMessages));
+    }
+  }, []);
+
+  useEffect(() => {
+    socket?.on(`chat:${user.id}:receive-message`, (data) => {
+      const currentChatId = location
+        .substring(location.indexOf('/c/') + 3, location.length)
+        .toString();
+      const message = messages.find(
+        (message) => message.chatId === data.chatId
+      );
+      if (message) {
+        message.messages.push(data);
+        setMessages([...messages, message]);
+      } else {
+        setMessages([
+          ...messages,
+          {
+            chatId: data.chatId,
+            messages: [data]
+          }
+        ]);
+      }
+      if (currentChatId !== data.chatId) {
+        const chat = chats.find((chat) => chat.id === data.chatId);
+        const toast_msg = chat?.isGroup
+          ? 'Message in ' + chat?.name
+          : chat?.users.find((us) => us.id !== user.id)?.name +
+            ' sent you a message';
+        toast.info(`${toast_msg}`);
+      }
+
+      console.log(unreadMessages);
+      if (data.chatId !== currentChatId) {
+        const unreadChat = unreadMessages.find(
+          (messages) => messages.chatId === data.chatId
+        );
+
+        if (unreadChat) {
+          unreadChat.count += 1;
+          setUnreadMessages((prevMessages) =>
+            prevMessages.map((item) =>
+              item.chatId === data.chatId ? unreadChat : item
+            )
+          );
+          localStorage.setItem(
+            'unread-messages',
+            JSON.stringify(unreadMessages)
+          );
+        } else {
+          setUnreadMessages([
+            ...unreadMessages,
+            { chatId: data.chatId, count: 1 }
+          ]);
+          localStorage.setItem(
+            'unread-messages',
+            JSON.stringify([
+              ...unreadMessages,
+              { chatId: data.chatId, count: 1 }
+            ])
+          );
+        }
+      }
+      setLastMessage(data.chatId, data.content);
+    });
+
+    return () => {
+      socket?.off(`chat:${user.id}:receive-message`);
+    };
+  }, [socket, user, messages, setLastMessage, location, unreadMessages, chats]);
 
   const addMessages = (chatId: string) => {
     const fetchMessages = async () => {
@@ -74,9 +171,25 @@ export default function MessagesProvider({
     }
   };
 
+  const clearUnreadMessages = (chatId: string) => {
+    const index = unreadMessages.findIndex((msgs) => msgs.chatId === chatId);
+
+    if (index === -1) return;
+    unreadMessages.splice(index, 1);
+    setUnreadMessages([...unreadMessages]);
+    localStorage.setItem('unread-messages', JSON.stringify(unreadMessages));
+  };
+
   return (
     <MessagesContext.Provider
-      value={{ messages, loading, addMessages, updateMessages }}
+      value={{
+        messages,
+        loading,
+        addMessages,
+        updateMessages,
+        unreadMessages,
+        clearUnreadMessages
+      }}
     >
       {children}
     </MessagesContext.Provider>

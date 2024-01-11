@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 import { ChatsProps, useChats } from '@/components/providers/chats-provider';
@@ -25,17 +25,6 @@ export default function ChatInput({ chat }: { chat: ChatsProps }) {
   const { user } = useUser();
   const [messageVal, setMessageVal] = useState<string>('');
   const { socket } = useSocket();
-
-  useEffect(() => {
-    socket?.on(`chat:${user.id}:receive-message`, (data) => {
-      updateMessages(data.chatId, data);
-      setLastMessage(data.chatId, data.content);
-    });
-
-    return () => {
-      socket?.off(`chat:${user.id}:receive-message`);
-    };
-  }, [socket, user, updateMessages, setLastMessage]);
 
   const handleSendMessage = () => {
     if (!messageVal) return;
