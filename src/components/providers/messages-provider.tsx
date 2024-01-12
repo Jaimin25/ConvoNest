@@ -77,13 +77,20 @@ export default function MessagesProvider({
         message.messages.push(data);
         setMessages([...messages, message]);
       } else {
-        setMessages([
-          ...messages,
-          {
-            chatId: data.chatId,
-            messages: [data]
+        const loadMessages = async () => {
+          const msgs = await fetchMessages(data.chatId);
+          if (msgs) {
+            msgs.push(data);
           }
-        ]);
+          setMessages([
+            ...messages,
+            {
+              chatId: data.chatId,
+              messages: msgs
+            }
+          ]);
+        };
+        loadMessages();
       }
       if (currentChatId !== data.chatId) {
         const chat = chats.find((chat) => chat.id === data.chatId);
@@ -94,7 +101,6 @@ export default function MessagesProvider({
         toast.info(`${toast_msg}`);
       }
 
-      console.log(unreadMessages);
       if (data.chatId !== currentChatId) {
         const unreadChat = unreadMessages.find(
           (messages) => messages.chatId === data.chatId
@@ -132,6 +138,19 @@ export default function MessagesProvider({
       socket?.off(`chat:${user.id}:receive-message`);
     };
   }, [socket, user, messages, setLastMessage, location, unreadMessages, chats]);
+
+  const fetchMessages = async (chatId: string) => {
+    const res = await axios.get('/api/user/message', {
+      params: {
+        chatId
+      }
+    });
+    if (res.data.statusCode === 200) {
+      return await res.data.messages;
+    } else {
+      setLoading(false);
+    }
+  };
 
   const addMessages = (chatId: string) => {
     const fetchMessages = async () => {
