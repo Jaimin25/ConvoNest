@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Info } from 'lucide-react';
 
+import ConvoInfoModal from '@/components/modals/conversation-info-modal';
 import { ChatsProps, useChats } from '@/components/providers/chats-provider';
 import {
   MessagesProps,
@@ -36,18 +36,18 @@ export default function ChatBox({ chatId }: { chatId: string }) {
 
   return (
     <div className="w-full flex-1 px-4 py-4 md:mr-4 md:px-0">
-      <Card className="h-full w-full flex-1 border-0 dark:bg-black/50">
-        <CardHeader className="mb-3 pt-4 md:mb-0 md:p-6">
-          <CardTitle className="ml-8 flex md:ml-0">
+      <Card className="h-full w-full flex-1 border-0 pb-16 md:pb-20 dark:bg-black/50">
+        <CardHeader className="flex-1 pt-2 md:p-4 md:px-6 md:pt-6">
+          <CardTitle className="ml-8 flex items-center md:ml-0">
             {receiver}
             <div className="mr-2 flex w-full items-center justify-end">
               <SocketIndicator />
             </div>
-            <Info className="ml-auto h-5 w-5" />
+            <ConvoInfoModal chat={chat} />
           </CardTitle>
         </CardHeader>
-        <CardContent className="h-[87%] flex-1">
-          <div className="flex h-full w-full flex-col justify-center">
+        <CardContent className="h-full flex-1 px-2 md:px-6">
+          <div className="flex h-full w-full flex-1 flex-col justify-center">
             <MessageList message={message} chat={chat} />
 
             <ChatInput chat={chat} />

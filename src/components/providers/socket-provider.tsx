@@ -3,6 +3,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
+import useSupabase from '@/hooks/useSupabase';
+
 import { useUser } from './user-provider';
 
 interface SocketContextProps {
@@ -23,6 +25,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const { user } = useUser();
+  const { session } = useSupabase();
 
   useEffect(() => {
     let newSocket: Socket;
@@ -33,7 +36,8 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
     if (user && user.id) {
       newSocket = io(URL as string, {
         query: {
-          userId: user.id
+          userId: user.id,
+          token: session?.access_token
         }
       });
       newSocket.on('connect', () => {
@@ -49,7 +53,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
     () => {
       newSocket.disconnect();
     };
-  }, [user]);
+  }, [user, session]);
 
   return (
     <SocketContext.Provider value={{ socket, isConnected }}>

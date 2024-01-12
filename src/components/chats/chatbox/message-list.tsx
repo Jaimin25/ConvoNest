@@ -40,41 +40,60 @@ export default function MessageList({
       ) : (
         message &&
         chat &&
-        message.messages.map((message) => (
-          <div
-            key={message.id}
-            className={cn(
-              'w-full',
-              message.userId === user.id && ' flex place-content-end '
-            )}
-          >
+        message.messages.map((message) => {
+          const sentAt = new Date(message.createdAt);
+          return (
             <div
+              key={message.id}
               className={cn(
-                'flex w-4/5 gap-x-2 sm:w-1/2',
-                message.userId === user.id && ' place-content-end '
+                'w-full',
+                message.userId === user.id && ' flex place-content-end '
               )}
             >
-              <UserAvatar
-                username={
-                  chat.users.find((u) => u.id === message.userId)
-                    ?.name as string
-                }
+              <div
                 className={cn(
-                  'mt-auto h-8 w-8 rounded-full',
-                  message.userId === user.id && 'order-2'
-                )}
-              />
-              <p
-                className={cn(
-                  'rounded-3xl bg-gray-500 p-3',
-                  message.userId === user.id ? 'rounded-br-md' : 'rounded-bl-md'
+                  'flex w-4/5 gap-x-2 sm:w-1/2',
+                  message.userId === user.id && ' place-content-end '
                 )}
               >
-                {message.content}
-              </p>
+                <UserAvatar
+                  username={
+                    chat.users.find((u) => u.id === message.userId)
+                      ?.name as string
+                  }
+                  className={cn(
+                    'mt-auto h-8 w-8 rounded-full',
+                    message.userId === user.id && 'order-2'
+                  )}
+                />
+                <div
+                  className={cn(
+                    'flex items-end gap-x-1 rounded-3xl bg-slate-500 p-3',
+                    message.userId === user.id
+                      ? 'rounded-br-md'
+                      : 'rounded-bl-md'
+                  )}
+                >
+                  <div>
+                    <p className="text-lg font-semibold">
+                      {chat.isGroup &&
+                        (chat.users.find(
+                          (u) => u.id !== user.id && u.id === message.userId
+                        )?.name as string)}
+                    </p>
+                    <p className="text-sm">{message.content}</p>
+                  </div>
+                  <p className="text-[10px] text-gray-800">
+                    {sentAt.toLocaleTimeString('en-US', {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        ))
+          );
+        })
       )}
     </div>
   );
