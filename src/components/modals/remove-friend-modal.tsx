@@ -16,6 +16,7 @@ import {
 import { DialogTrigger } from '@radix-ui/react-dialog';
 
 import { useContacts } from '../providers/contacts-provider';
+import { useSocket } from '../providers/socket-provider';
 import { useUser } from '../providers/user-provider';
 import { Button } from '../ui/button';
 import UserAvatar from '../user-avatar';
@@ -36,7 +37,7 @@ export default function RemoveFriendModal({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { user } = useUser();
-
+  const { socket } = useSocket();
   const { removeContact } = useContacts();
 
   const handleRequest = () => {
@@ -49,11 +50,14 @@ export default function RemoveFriendModal({
         }
       });
 
-      console.log(res);
       if (res.data.statusCode === 200) {
-        const sentRequest = res.data.body.data;
-        removeContact(sentRequest.id);
+        const receiverId = res.data.body.data;
+        removeContact(receiverId);
+        console.log(receiverId);
         toast.success('Removed Friend');
+        socket?.emit(`user:${user.id}:send-remove-friend`, {
+          receiverId
+        });
       } else if (res.data.statusCode === 404) {
         // removeContact(id);
       }
@@ -68,9 +72,11 @@ export default function RemoveFriendModal({
   };
 
   return (
-    <div className="w-full">
+    <div>
       <Dialog open={isOpen} onOpenChange={handleChange}>
-        <DialogTrigger className="w-full">{children}</DialogTrigger>
+        <DialogTrigger className="flex h-9 w-9 items-center justify-center">
+          {children}
+        </DialogTrigger>
         <DialogContent className="border-none">
           <DialogHeader>
             <DialogTitle>
