@@ -53,7 +53,6 @@ export default function RemoveFriendModal({
       if (res.data.statusCode === 200) {
         const receiverId = res.data.body.data;
         removeContact(receiverId);
-        console.log(receiverId);
         toast.success('Removed Friend');
         socket?.emit(`user:${user.id}:send-remove-friend`, {
           receiverId
