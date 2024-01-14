@@ -57,6 +57,14 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
       toast.success(`${data.username} added to your contacts`);
     });
 
+    socket?.on(`user:${user.id}:receive-remove-friend`, (data) => {
+      const index = contacts.findIndex(
+        (contact) => contact.id === data.receiverId
+      );
+      contacts.splice(index, 1);
+      setContacts([...contacts]);
+    });
+
     () => {
       socket?.off(`user:${user.id}:receive-accept-request`);
     };
