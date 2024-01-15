@@ -24,6 +24,9 @@ export async function GET() {
   const contacts = await db.friends.findMany({
     where: {
       user1Id: userId
+    },
+    orderBy: {
+      createdAt: 'desc'
     }
   });
 

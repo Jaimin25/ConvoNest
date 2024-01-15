@@ -64,7 +64,7 @@ export default function ChatInput({
     sendMessage();
   };
 
-  if (!disabled)
+  if (!disabled && chat)
     return (
       <div className="flex w-full cursor-not-allowed items-center gap-x-2">
         <Input
@@ -98,15 +98,17 @@ export default function ChatInput({
         className="outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
         onChange={(e) => setMessageVal(e.target.value)}
       />
-      <Button
-        disabled={loading}
-        type="submit"
-        variant={'ghost'}
-        className="rounded-md bg-sky-500 p-3"
-        onClick={handleSendMessage}
-      >
-        Send
-      </Button>
+      {chat && (
+        <Button
+          disabled={loading}
+          type="submit"
+          variant={'ghost'}
+          className="rounded-md bg-sky-500 p-3"
+          onClick={handleSendMessage}
+        >
+          Send
+        </Button>
+      )}
     </div>
   );
 }

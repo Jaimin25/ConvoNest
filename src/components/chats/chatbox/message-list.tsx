@@ -31,10 +31,7 @@ export default function MessageList({
   }, [messages, message]);
 
   return (
-    <div
-      className="mb-2 flex-1 space-y-2 overflow-y-auto scroll-smooth px-2"
-      ref={ref}
-    >
+    <div className="mb-2 flex-1 space-y-2 overflow-y-auto px-2" ref={ref}>
       {loading ? (
         <SkeletonMessage />
       ) : (

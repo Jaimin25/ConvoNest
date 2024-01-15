@@ -95,6 +95,9 @@ export async function GET() {
           receiverId: userId
         }
       ]
+    },
+    orderBy: {
+      updatedAt: 'desc'
     }
   });
 

@@ -23,6 +23,7 @@ export interface UnreadMessages {
 interface MessagesContextProps {
   messages: { chatId: string; messages: Messages[] }[];
   loading: boolean;
+  error: string | null;
   unreadMessages: UnreadMessages[];
   addMessages: (chatId: string) => void;
   clearUnreadMessages: (chatId: string) => void;
@@ -32,6 +33,7 @@ interface MessagesContextProps {
 const MessagesContext = createContext<MessagesContextProps>({
   messages: [],
   loading: false,
+  error: null,
   unreadMessages: [],
   addMessages: () => {},
   clearUnreadMessages: () => {},
@@ -48,6 +50,7 @@ export default function MessagesProvider({
   children: React.ReactNode;
 }) {
   const [messages, setMessages] = useState<MessagesProps[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const [unreadMessages, setUnreadMessages] = useState<UnreadMessages[]>([]);
@@ -154,6 +157,7 @@ export default function MessagesProvider({
   };
 
   const addMessages = (chatId: string) => {
+    setError(null);
     const fetchMessages = async () => {
       setLoading(true);
       const res = await axios.get('/api/user/message', {
@@ -162,6 +166,7 @@ export default function MessagesProvider({
         }
       });
       if (res.data.statusCode === 200) {
+        setError(null);
         setLoading(false);
         setMessages((messages) => [
           ...messages,
@@ -171,6 +176,7 @@ export default function MessagesProvider({
           }
         ]);
       } else if (res.data.statusCode === 403) {
+        setError("You don't have access to this chat");
         setLoading(false);
       }
       setLoading(false);
@@ -205,6 +211,7 @@ export default function MessagesProvider({
       value={{
         messages,
         loading,
+        error,
         addMessages,
         updateMessages,
         unreadMessages,

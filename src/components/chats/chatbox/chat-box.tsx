@@ -19,7 +19,7 @@ import MessageList from './message-list';
 export default function ChatBox({ chatId }: { chatId: string }) {
   const { user } = useUser();
   const { chats } = useChats();
-  const { messages } = useMessages();
+  const { messages, error } = useMessages();
 
   const chat = chats.find((chat) => chat.id === chatId) as ChatsProps;
 
@@ -46,6 +46,20 @@ export default function ChatBox({ chatId }: { chatId: string }) {
           (contact.user1Id === chat?.users[1].id &&
             contact.user2Id === chat?.users[0].id)
       );
+
+  if (error) {
+    return (
+      <div className="w-full flex-1 px-4 py-4 md:mr-4 md:px-0">
+        <Card className="h-full w-full flex-1 border-0 pb-16 md:pb-20 dark:bg-black/50">
+          <CardContent className="h-full flex-1 px-2 md:px-6">
+            <div className="flex h-full flex-1 items-center justify-center text-lg text-red-500">
+              {error}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex-1 px-4 py-4 md:mr-4 md:px-0">

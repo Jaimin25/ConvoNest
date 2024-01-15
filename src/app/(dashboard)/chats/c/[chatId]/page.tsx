@@ -14,6 +14,6 @@ export default function ChatBoxPage({
   useEffect(() => {
     addMessages(params.chatId);
     clearUnreadMessages(params.chatId);
-  }, [params.chatId, addMessages, clearUnreadMessages]);
+  }, [params.chatId]);
   return <ChatBox chatId={params.chatId} />;
 }

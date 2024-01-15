@@ -24,6 +24,9 @@ export async function GET() {
       NOT: {
         id: session.user.id
       }
+    },
+    orderBy: {
+      createdAt: 'desc'
     }
   });
 
