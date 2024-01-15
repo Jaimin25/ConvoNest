@@ -54,7 +54,7 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
         data.user1Id = user.id;
       }
       setContacts([...contacts, data]);
-      toast.success(`${data.username} added to your contacts`);
+      toast.success(`${data.username} accepted your request`);
     });
 
     socket?.on(`user:${user.id}:receive-remove-friend`, (data) => {
@@ -68,7 +68,7 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
     () => {
       socket?.off(`user:${user.id}:receive-accept-request`);
     };
-  }, [socket, setContacts, contacts, user]);
+  }, [socket, setContacts, user]);
 
   useEffect(() => {
     setLoading(true);

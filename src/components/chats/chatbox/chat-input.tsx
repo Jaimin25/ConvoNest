@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 import { ChatsProps, useChats } from '@/components/providers/chats-provider';
 import { useMessages } from '@/components/providers/messages-provider';
@@ -18,7 +19,13 @@ import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { FaceSmileIcon, GifIcon } from '@heroicons/react/24/outline';
 
-export default function ChatInput({ chat }: { chat: ChatsProps }) {
+export default function ChatInput({
+  chat,
+  disabled
+}: {
+  chat: ChatsProps;
+  disabled?: boolean;
+}) {
   const [loading, setLoading] = useState<boolean>(false);
   const { updateMessages } = useMessages();
   const { setLastMessage } = useChats();
@@ -48,12 +55,26 @@ export default function ChatInput({ chat }: { chat: ChatsProps }) {
         setMessageVal('');
         setLoading(false);
       } else {
+        toast.error(res.data.error);
+        setMessageVal('');
         setLoading(false);
       }
       setLoading(false);
     };
     sendMessage();
   };
+
+  if (!disabled)
+    return (
+      <div className="flex w-full cursor-not-allowed items-center gap-x-2">
+        <Input
+          value={'This user is not in your contact list'}
+          className="outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          disabled={true}
+          onChange={(e) => setMessageVal(e.target.value)}
+        />
+      </div>
+    );
 
   return (
     <div className="flex w-full items-center gap-x-2">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Info } from 'lucide-react';
+import { Info, ShieldAlert } from 'lucide-react';
 
 import {
   Dialog,
@@ -50,7 +50,12 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
                           />
                         </div>
                         <div className="flex w-full flex-col items-start">
-                          <p className="text-lg">{chatUser.name}</p>
+                          <p className="flex items-center gap-x-1 text-lg">
+                            {chatUser.name}
+                            {chatUser.id === chat.adminId && (
+                              <ShieldAlert className="h-5 w-5 text-indigo-500" />
+                            )}
+                          </p>
                           <p className="text-xs text-stone-400">
                             Joined {joinedAtTime} ago
                           </p>

@@ -92,6 +92,7 @@ export default function MessagesProvider({
         };
         loadMessages();
       }
+
       if (currentChatId !== data.chatId) {
         const chat = chats.find((chat) => chat.id === data.chatId);
         const toast_msg = chat?.isGroup

@@ -58,7 +58,7 @@ export default function RemoveFriendModal({
           receiverId
         });
       } else if (res.data.statusCode === 404) {
-        // removeContact(id);
+        removeContact(id);
       }
       setLoading(false);
       setIsOpen(false);

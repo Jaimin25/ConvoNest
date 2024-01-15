@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 import { type FriendRequests } from '@prisma/client';
 
@@ -45,7 +46,9 @@ export function RequestsProvider({ children }: { children: React.ReactNode }) {
   const { socket } = useSocket();
 
   useEffect(() => {
+    console.log(socket);
     socket?.on(`user:${user.id}:receive-request`, (data) => {
+      toast.info(`${data.username} sent you a friend request`);
       setRequests([...requests, data]);
     });
 
@@ -58,7 +61,6 @@ export function RequestsProvider({ children }: { children: React.ReactNode }) {
 
     socket?.on(`user:${user.id}:receive-accept-request`, (data) => {
       const index = requests.findIndex((request) => request.id === data.id);
-
       requests.splice(index, 1);
       setRequests([...requests]);
     });
@@ -66,7 +68,7 @@ export function RequestsProvider({ children }: { children: React.ReactNode }) {
     () => {
       socket?.off(`user:${user.id}:receive-request`);
     };
-  }, [socket, user, setRequests, requests]);
+  }, [socket, user, setRequests]);
 
   useEffect(() => {
     setLoading(true);
