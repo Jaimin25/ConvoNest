@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 
 import { ChatsProps } from '@/components/providers/chats-provider';
 import {
@@ -10,7 +11,7 @@ import {
 import { useUser } from '@/components/providers/user-provider';
 import SkeletonMessage from '@/components/skeletons/message-skeleton';
 import UserAvatar from '@/components/user-avatar';
-import { cn } from '@/lib/utils';
+import { cn, isImageOrGif, isURL } from '@/lib/utils';
 
 export default function MessageList({
   message,
@@ -38,6 +39,10 @@ export default function MessageList({
         message &&
         chat &&
         message.messages.map((message) => {
+          const isImage = isURL(message.content)
+            ? isImageOrGif(message.content)
+            : false;
+
           const sentAt = new Date(message.createdAt);
           return (
             <div
@@ -63,30 +68,40 @@ export default function MessageList({
                     message.userId === user.id && 'order-2'
                   )}
                 />
-                <div
-                  className={cn(
-                    'flex items-end gap-x-1 rounded-3xl bg-slate-500 p-3',
-                    message.userId === user.id
-                      ? 'rounded-br-md'
-                      : 'rounded-bl-md'
-                  )}
-                >
-                  <div>
-                    <p className="text-lg font-semibold">
-                      {chat.isGroup &&
-                        (chat.users.find(
-                          (u) => u.id !== user.id && u.id === message.userId
-                        )?.name as string)}
+                {!isImage ? (
+                  <div
+                    className={cn(
+                      'flex items-end gap-x-1 rounded-3xl bg-slate-500 p-3',
+                      message.userId === user.id
+                        ? 'rounded-br-md'
+                        : 'rounded-bl-md'
+                    )}
+                  >
+                    <div>
+                      <p className="text-lg font-semibold">
+                        {chat.isGroup &&
+                          (chat.users.find(
+                            (u) => u.id !== user.id && u.id === message.userId
+                          )?.name as string)}
+                      </p>
+                      <p className="text-sm">{message.content}</p>
+                    </div>
+                    <p className="text-[10px] text-gray-800">
+                      {sentAt.toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
                     </p>
-                    <p className="text-sm">{message.content}</p>
                   </div>
-                  <p className="text-[10px] text-gray-800">
-                    {sentAt.toLocaleTimeString('en-US', {
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </p>
-                </div>
+                ) : (
+                  <Image
+                    width="500"
+                    height="300"
+                    src={message.content}
+                    alt="image"
+                    className="rounded-2xl"
+                  />
+                )}
               </div>
             </div>
           );

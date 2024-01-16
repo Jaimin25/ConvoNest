@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 
+import { GifModal } from '@/components/modals/gif-modal';
 import { ChatsProps, useChats } from '@/components/providers/chats-provider';
 import { useMessages } from '@/components/providers/messages-provider';
 import { useSocket } from '@/components/providers/socket-provider';
@@ -27,10 +28,10 @@ export default function ChatInput({
   disabled?: boolean;
 }) {
   const [loading, setLoading] = useState<boolean>(false);
+  const [messageVal, setMessageVal] = useState<string>('');
   const { updateMessages } = useMessages();
   const { setLastMessage } = useChats();
   const { user } = useUser();
-  const [messageVal, setMessageVal] = useState<string>('');
   const { socket } = useSocket();
 
   const handleSendMessage = () => {
@@ -78,10 +79,12 @@ export default function ChatInput({
 
   return (
     <div className="flex w-full items-center gap-x-2">
-      <GifIcon className="hidden h-8 w-8 cursor-pointer md:block" />
+      <GifModal>
+        <GifIcon className="h-6 w-6 cursor-pointer" />
+      </GifModal>
       <Popover>
         <PopoverTrigger>
-          <FaceSmileIcon className="hidden h-7 w-7 cursor-pointer md:block" />
+          <FaceSmileIcon className="hidden h-6 w-6 cursor-pointer md:block" />
         </PopoverTrigger>
         <PopoverContent className="w-auto rounded-xl p-0">
           <Picker
