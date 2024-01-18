@@ -40,7 +40,6 @@ const Components = ({ width }: { width: number }) => {
           key={searchKey}
           columns={2}
           hideAttribution={true}
-          useTransform={true}
           fetchGifs={fetchGifs}
           width={width}
           className="gif-modal h-[350px] sm:w-[250px]"
