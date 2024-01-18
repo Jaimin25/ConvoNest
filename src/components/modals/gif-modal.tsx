@@ -60,7 +60,7 @@ export function GifModal({ children }: { children: React.ReactNode }) {
         <ResizeObserver
           onResize={({ width }) => {
             setWidth(width / 2);
-            window && setIsDesktop(window.innerWidth >= 768);
+            window && setIsDesktop(window.innerWidth > 768);
           }}
         />
 
@@ -83,7 +83,7 @@ export function GifModal({ children }: { children: React.ReactNode }) {
           } else {
             setWidth(width);
           }
-          window && setIsDesktop(window.innerWidth >= 768);
+          window && setIsDesktop(window.innerWidth > 768);
         }}
       />
       <Dialog>
