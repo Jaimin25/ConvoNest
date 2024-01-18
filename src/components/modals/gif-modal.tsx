@@ -1,14 +1,19 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import ResizeObserver from 'react-resize-observer';
 
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTrigger
 } from '@/components/ui/dialog';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover';
 import {
   Grid,
   SearchBar,
@@ -16,28 +21,29 @@ import {
   SearchContextManager
 } from '@giphy/react-components';
 
-const SearchExperience = () => (
+const SearchExperience = ({ width }: { width: number }) => (
   <SearchContextManager
     apiKey={process.env.NEXT_PUBLIC_GIPHY_API_KEY as string}
+    options={{ sort: 'relevant' }}
   >
-    <Components />
+    <Components width={width} />
   </SearchContextManager>
 );
 
-const Components = () => {
+const Components = ({ width }: { width: number }) => {
   const { fetchGifs, searchKey } = useContext(SearchContext);
   return (
-    <div className="flex h-[400px] w-full flex-col items-center justify-center">
+    <div className="flex h-[400px] w-full flex-col items-center justify-center pt-3">
       <SearchBar className="w-full" />
-
-      <div className="overflow-y-auto">
+      <div className="flex flex-col overflow-y-auto py-1">
         <Grid
           key={searchKey}
-          columns={3}
+          columns={2}
           hideAttribution={true}
-          width={470}
+          useTransform={true}
           fetchGifs={fetchGifs}
-          className="h-[350px]"
+          width={width}
+          className="gif-modal h-[350px] sm:w-[250px]"
         />
       </div>
     </div>
@@ -45,16 +51,51 @@ const Components = () => {
 };
 
 export function GifModal({ children }: { children: React.ReactNode }) {
+  const [width, setWidth] = useState(200);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+
+  if (isDesktop) {
+    return (
+      <>
+        <ResizeObserver
+          onResize={({ width }) => {
+            setWidth(width / 2);
+            window && setIsDesktop(window.innerWidth >= 768);
+          }}
+        />
+
+        <Popover>
+          <PopoverTrigger>{children}</PopoverTrigger>
+          <PopoverContent className="w-auto">
+            <SearchExperience width={width} />
+          </PopoverContent>
+        </Popover>
+      </>
+    );
+  }
+
   return (
-    <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
+    <>
+      <ResizeObserver
+        onResize={({ width }) => {
+          if (width > 425) {
+            setWidth(450);
+          } else {
+            setWidth(width);
+          }
+          window && setIsDesktop(window.innerWidth >= 768);
+        }}
+      />
+      <Dialog>
+        <DialogTrigger>{children}</DialogTrigger>
+        <DialogContent>
           <DialogDescription>
-            <SearchExperience />
+            <div>
+              <SearchExperience width={width} />
+            </div>
           </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

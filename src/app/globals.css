@@ -21,3 +21,7 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.gif-modal .loader {
+  visibility: hidden;
+}
