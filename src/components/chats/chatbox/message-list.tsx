@@ -95,11 +95,11 @@ export default function MessageList({
                   </div>
                 ) : (
                   <Image
-                    width="200"
-                    height="100"
+                    width="100"
+                    height="50"
                     src={message.content}
                     alt="image"
-                    className="h-100 w-200 m-2 aspect-auto rounded-2xl object-contain"
+                    className="h-50 w-100 m-2 aspect-auto rounded-2xl object-contain"
                   />
                 )}
               </div>
