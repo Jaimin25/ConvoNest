@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import axios from 'axios';
+import { X } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { GifModal } from '@/components/modals/gif-modal';
@@ -29,40 +31,53 @@ export default function ChatInput({
 }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [messageVal, setMessageVal] = useState<string>('');
+  const [gifUrl, setGifUrl] = useState<string>('');
+
   const { updateMessages } = useMessages();
   const { setLastMessage } = useChats();
   const { user } = useUser();
   const { socket } = useSocket();
 
-  const handleSendMessage = () => {
-    if (!messageVal) return;
-    setLoading(true);
-    const sendMessage = async () => {
-      const res = await axios.post('/api/user/message', {
-        chatId: chat.id,
-        content: messageVal,
-        userId: user.id
-      });
+  const sendMessage = async (content: string) => {
+    const res = await axios.post('/api/user/message', {
+      chatId: chat.id,
+      content: content,
+      userId: user.id
+    });
 
-      if (res.data.statusCode === 200) {
-        socket?.emit(`chat:${user.id}:send-message`, {
-          message: res.data.message,
-          userId: chat.users
-            .filter((users) => users.id !== user.id)
-            .map((user) => user.id)
-        });
-        updateMessages(chat.id, res.data.message);
-        setLastMessage(chat.id, messageVal);
-        setMessageVal('');
-        setLoading(false);
-      } else {
-        toast.error(res.data.error);
-        setMessageVal('');
-        setLoading(false);
-      }
+    if (res.data.statusCode === 200) {
+      socket?.emit(`chat:${user.id}:send-message`, {
+        message: res.data.message,
+        userId: chat.users
+          .filter((users) => users.id !== user.id)
+          .map((user) => user.id)
+      });
+      updateMessages(chat.id, res.data.message);
+      setLastMessage(chat.id, content);
+      setMessageVal('');
+      setGifUrl('');
       setLoading(false);
-    };
-    sendMessage();
+    } else {
+      toast.error(res.data.error);
+      setMessageVal('');
+      setGifUrl('');
+      setLoading(false);
+    }
+    setLoading(false);
+  };
+
+  const handleSendMessage = () => {
+    if (!messageVal && !gifUrl) return;
+
+    setLoading(true);
+    if (messageVal && gifUrl) {
+      sendMessage(gifUrl);
+      setTimeout(() => sendMessage(messageVal), 250);
+    } else if (messageVal) {
+      sendMessage(messageVal);
+    } else if (gifUrl) {
+      sendMessage(gifUrl);
+    }
   };
 
   if (!disabled && chat)
@@ -78,40 +93,61 @@ export default function ChatInput({
     );
 
   return (
-    <div className="flex w-full items-center gap-x-2">
-      <GifModal>
-        <GifIcon className="h-6 w-6 cursor-pointer" />
-      </GifModal>
-      <Popover>
-        <PopoverTrigger>
-          <FaceSmileIcon className="hidden h-6 w-6 cursor-pointer md:block" />
-        </PopoverTrigger>
-        <PopoverContent className="w-auto rounded-xl p-0">
-          <Picker
-            data={data}
-            onEmojiSelect={(emoji: data.Skin) => {
-              setMessageVal(messageVal + emoji.native);
-            }}
-          />
-        </PopoverContent>
-      </Popover>
-
-      <Input
-        value={messageVal}
-        className="outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-        onChange={(e) => setMessageVal(e.target.value)}
-      />
-      {chat && (
-        <Button
-          disabled={loading}
-          type="submit"
-          variant={'ghost'}
-          className="rounded-md bg-sky-500 p-3"
-          onClick={handleSendMessage}
-        >
-          Send
-        </Button>
+    <div className="flex w-full flex-col gap-x-2">
+      {gifUrl && (
+        <div className="flex">
+          <div className="relative">
+            <Image
+              src={gifUrl}
+              alt="gif"
+              width={200}
+              height={200}
+              className="m-2 aspect-video rounded-xl object-contain"
+            />
+            <Button
+              className="absolute right-0 top-0 h-6 w-6 rounded-full p-0"
+              onClick={() => setGifUrl('')}
+            >
+              <X className="h-4 w-5" />
+            </Button>
+          </div>
+        </div>
       )}
+      <div className="flex w-full items-center gap-x-2">
+        <GifModal setGifUrl={setGifUrl}>
+          <GifIcon className="h-6 w-6 cursor-pointer" />
+        </GifModal>
+        <Popover>
+          <PopoverTrigger>
+            <FaceSmileIcon className="hidden h-6 w-6 cursor-pointer md:block" />
+          </PopoverTrigger>
+          <PopoverContent className="w-auto rounded-xl p-0">
+            <Picker
+              data={data}
+              onEmojiSelect={(emoji: data.Skin) => {
+                setMessageVal(messageVal + emoji.native);
+              }}
+            />
+          </PopoverContent>
+        </Popover>
+
+        <Input
+          value={messageVal}
+          className="outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          onChange={(e) => setMessageVal(e.target.value)}
+        />
+        {chat && (
+          <Button
+            disabled={loading}
+            type="submit"
+            variant={'ghost'}
+            className="rounded-md bg-sky-500 p-3"
+            onClick={handleSendMessage}
+          >
+            Send
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

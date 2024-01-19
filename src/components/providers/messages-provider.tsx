@@ -193,6 +193,7 @@ export default function MessagesProvider({
     const message = messages.find((message) => message.chatId === chatId);
     if (message) {
       message.messages.push(data);
+      message.messages.sort();
       setMessages([...messages, message]);
     }
   };

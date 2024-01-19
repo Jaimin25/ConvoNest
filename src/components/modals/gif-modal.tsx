@@ -1,6 +1,7 @@
 'use client';
 
-import { useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
+import GifPicker, { Theme } from 'gif-picker-react';
 import ResizeObserver from 'react-resize-observer';
 
 import {
@@ -14,44 +15,21 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover';
-import {
-  Grid,
-  SearchBar,
-  SearchContext,
-  SearchContextManager
-} from '@giphy/react-components';
 
-const SearchExperience = ({ width }: { width: number }) => (
-  <SearchContextManager
-    apiKey={process.env.NEXT_PUBLIC_GIPHY_API_KEY as string}
-    options={{ sort: 'relevant' }}
-  >
-    <Components width={width} />
-  </SearchContextManager>
-);
-
-const Components = ({ width }: { width: number }) => {
-  const { fetchGifs, searchKey } = useContext(SearchContext);
-  return (
-    <div className="flex h-[400px] w-full flex-col items-center justify-center pt-3">
-      <SearchBar className="w-full" />
-      <div className="flex flex-col overflow-y-auto py-1">
-        <Grid
-          key={searchKey}
-          columns={2}
-          hideAttribution={true}
-          fetchGifs={fetchGifs}
-          width={width}
-          className="gif-modal h-[350px] sm:w-[250px]"
-        />
-      </div>
-    </div>
-  );
-};
-
-export function GifModal({ children }: { children: React.ReactNode }) {
+export function GifModal({
+  children,
+  setGifUrl
+}: {
+  children: React.ReactNode;
+  setGifUrl: React.Dispatch<React.SetStateAction<string>>;
+}) {
+  const [open, setIsOpen] = useState<boolean>(false);
   const [width, setWidth] = useState(200);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    setIsDesktop(window.innerWidth >= 768);
+  }, []);
 
   if (isDesktop) {
     return (
@@ -59,14 +37,21 @@ export function GifModal({ children }: { children: React.ReactNode }) {
         <ResizeObserver
           onResize={({ width }) => {
             setWidth(width / 2);
-            window && setIsDesktop(window.innerWidth >= 768);
+            setIsDesktop(window.innerWidth >= 768);
           }}
         />
 
-        <Popover>
+        <Popover onOpenChange={setIsOpen} open={open}>
           <PopoverTrigger>{children}</PopoverTrigger>
-          <PopoverContent className="w-auto">
-            <SearchExperience width={width} />
+          <PopoverContent className="w-auto rounded-xl p-0">
+            <GifPicker
+              theme={Theme.AUTO}
+              onGifClick={(gif) => {
+                setGifUrl(gif.url);
+                setIsOpen(false);
+              }}
+              tenorApiKey={process.env.NEXT_PUBLIC_TENOR_API_KEY as string}
+            />
           </PopoverContent>
         </Popover>
       </>
@@ -82,16 +67,22 @@ export function GifModal({ children }: { children: React.ReactNode }) {
           } else {
             setWidth(width);
           }
-          window && setIsDesktop(window.innerWidth >= 768);
+          setIsDesktop(window.innerWidth >= 768);
         }}
       />
-      <Dialog>
+      <Dialog onOpenChange={setIsOpen} open={open}>
         <DialogTrigger>{children}</DialogTrigger>
         <DialogContent>
-          <DialogDescription>
-            <div>
-              <SearchExperience width={width} />
-            </div>
+          <DialogDescription className="pt-4">
+            <GifPicker
+              theme={Theme.AUTO}
+              width={width}
+              onGifClick={(gif) => {
+                setGifUrl(gif.url);
+                setIsOpen(false);
+              }}
+              tenorApiKey={process.env.NEXT_PUBLIC_TENOR_API_KEY as string}
+            />
           </DialogDescription>
         </DialogContent>
       </Dialog>
