@@ -72,7 +72,7 @@ export default function ChatInput({
     setLoading(true);
     if (messageVal && gifUrl) {
       sendMessage(gifUrl);
-      setTimeout(() => sendMessage(messageVal), 250);
+      setTimeout(() => sendMessage(messageVal), 100);
     } else if (messageVal) {
       sendMessage(messageVal);
     } else if (gifUrl) {
