@@ -92,6 +92,7 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
   const removeContact = useCallback(
     (id: string) => {
       const index = contacts.findIndex((contact) => contact.id === id);
+      if (index === -1) return;
       contacts.splice(index, 1);
       setContacts([...contacts]);
     },

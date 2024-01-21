@@ -103,6 +103,7 @@ export function RequestsProvider({ children }: { children: React.ReactNode }) {
 
   const deleteRequest = (id: string) => {
     const index = requests.findIndex((request) => request.id === id);
+    if (index === -1) return;
 
     requests.splice(index, 1);
     setRequests([...requests]);
