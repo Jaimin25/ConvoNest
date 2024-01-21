@@ -1,33 +1,40 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { Info, ShieldAlert } from 'lucide-react';
 
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
 import { joinTimeFormat } from '@/lib/joinTimeFormat';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 import { ChatsProps } from '../providers/chats-provider';
 import { useUser } from '../providers/user-provider';
+import { Button } from '../ui/button';
 import UserAvatar from '../user-avatar';
 
 export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   const date = chat && new Date(chat.createdAt);
   const { user } = useUser();
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger className="mx-2 ml-auto rounded-full p-2 hover:cursor-pointer hover:bg-white/15">
         <div>
-          <Info className="mx-2 ml-auto h-10 w-10 rounded-full p-2 hover:cursor-pointer hover:bg-white/15" />
+          <Info className="h-6 w-6" />
         </div>
       </DialogTrigger>
       <DialogContent className="border-0">
-        <DialogHeader>
+        <DialogHeader className="text-left">
           <DialogTitle>Conversation Info</DialogTitle>
           <DialogDescription>
             <p className="">
@@ -67,6 +74,31 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
               })}
           </DialogDescription>
         </DialogHeader>
+        <DialogFooter>
+          {!confirmDelete ? (
+            <Button
+              variant={'ghost'}
+              className="space-x-1 bg-red-500"
+              onClick={() => setConfirmDelete(true)}
+            >
+              <TrashIcon className="h-5 w-5" />
+              <p>Delete</p>
+            </Button>
+          ) : (
+            <>
+              <Button
+                onClick={() => setConfirmDelete(false)}
+                variant={'secondary'}
+                className="mt-2"
+              >
+                Cancel
+              </Button>
+              <Button variant={'destructive'} className="bg-green-500">
+                <p>Confirm</p>
+              </Button>
+            </>
+          )}
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
