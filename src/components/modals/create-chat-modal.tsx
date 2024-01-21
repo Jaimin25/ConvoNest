@@ -36,10 +36,10 @@ export default function CreateChatModal() {
   const [openNameModal, setOpenNameModal] = useState<boolean>(false);
 
   const handleOpen = () => {
+    setUsers([]);
     setChatName('');
     setIsOpen(!isOpen);
     setOpenNameModal(false);
-    setUsers([]);
   };
 
   const createChat = async () => {
@@ -77,19 +77,34 @@ export default function CreateChatModal() {
 
   return (
     <Dialog onOpenChange={handleOpen} open={isOpen}>
-      {!openNameModal ? (
-        <>
-          <DialogTrigger className="ml-auto rounded-md p-3 transition-colors hover:bg-white/15">
-            <MailPlus className="h-5 w-5" />
-          </DialogTrigger>
-          <DialogContent className="border-none">
-            <DialogHeader>
-              <DialogTitle>New message</DialogTitle>
-              <DialogDescription>
+      <>
+        <DialogTrigger className="ml-auto rounded-md p-3 transition-colors hover:bg-white/15">
+          <MailPlus className="h-5 w-5" />
+        </DialogTrigger>
+        <DialogContent className="border-none">
+          <DialogHeader>
+            <DialogTitle>
+              {!openNameModal ? 'New message' : 'Enter name'}
+            </DialogTitle>
+            <DialogDescription>
+              {!openNameModal ? (
                 <UserList setUsers={setUsers} />
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
+              ) : (
+                <>
+                  <p>Enter a name for your group chat.</p>
+                  <Input
+                    className="mt-2"
+                    placeholder="Group name"
+                    onChange={(e) => {
+                      setChatName(e.target.value);
+                    }}
+                  />
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            {!openNameModal ? (
               <Button
                 disabled={users.length < 1 || loading}
                 onClick={handleCreateChat}
@@ -102,26 +117,7 @@ export default function CreateChatModal() {
                   'Create'
                 )}
               </Button>
-            </DialogFooter>
-          </DialogContent>
-        </>
-      ) : (
-        <>
-          <DialogContent className="border-none">
-            <DialogHeader>
-              <DialogTitle>Enter name</DialogTitle>
-              <DialogDescription>
-                Enter a name for your group chat.
-                <Input
-                  className="mt-2"
-                  placeholder="Group name"
-                  onChange={(e) => {
-                    setChatName(e.target.value);
-                  }}
-                />
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
+            ) : (
               <Button
                 disabled={chatName.length < 3 || loading}
                 onClick={handleCreateChat}
@@ -132,10 +128,24 @@ export default function CreateChatModal() {
                   'Create'
                 )}
               </Button>
-            </DialogFooter>
-          </DialogContent>
-        </>
-      )}
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </>
+
+      {/* <>
+        <DialogContent className="border-none">
+          <DialogHeader>
+            <DialogTitle></DialogTitle>
+            <DialogDescription>
+              
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            
+          </DialogFooter>
+        </DialogContent>
+      </> */}
     </Dialog>
   );
 }

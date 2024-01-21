@@ -51,7 +51,9 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const setUpdatedChats = (data: ChatsProps) => {
-    setChats([...chats, data]);
+    chats.unshift(data);
+    console.log(chats);
+    setChats([...chats]);
   };
 
   const setLastMessage = (chatId: string, message: string) => {

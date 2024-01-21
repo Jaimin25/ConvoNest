@@ -80,7 +80,7 @@ export default function ChatInput({
     }
   };
 
-  if (!disabled && chat)
+  if (!disabled || !chat)
     return (
       <div className="flex w-full cursor-not-allowed items-center gap-x-2">
         <Input

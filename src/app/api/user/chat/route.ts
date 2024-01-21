@@ -24,13 +24,14 @@ export async function POST(req: NextRequest) {
   const chatExists = await db.chat.findFirst({
     where: {
       isGroup: isGroup,
-      AND: userIds.map((userId: string) => ({
-        users: {
-          some: {
-            id: userId
+      users: {
+        every: {
+          // Correct usage of 'every'
+          id: {
+            in: userIds
           }
         }
-      }))
+      }
     },
     include: {
       users: true

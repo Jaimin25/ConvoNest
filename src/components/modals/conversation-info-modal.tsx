@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Info, ShieldAlert } from 'lucide-react';
 
 import {
@@ -13,7 +13,6 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { joinTimeFormat } from '@/lib/joinTimeFormat';
-import { TrashIcon } from '@heroicons/react/24/outline';
 
 import { ChatsProps } from '../providers/chats-provider';
 import { useUser } from '../providers/user-provider';
@@ -21,8 +20,6 @@ import { Button } from '../ui/button';
 import UserAvatar from '../user-avatar';
 
 export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
-  const [confirmDelete, setConfirmDelete] = useState(false);
-
   const date = chat && new Date(chat.createdAt);
   const { user } = useUser();
 
@@ -75,29 +72,9 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          {!confirmDelete ? (
-            <Button
-              variant={'ghost'}
-              className="space-x-1 bg-red-500"
-              onClick={() => setConfirmDelete(true)}
-            >
-              <TrashIcon className="h-5 w-5" />
-              <p>Delete</p>
-            </Button>
-          ) : (
-            <>
-              <Button
-                onClick={() => setConfirmDelete(false)}
-                variant={'secondary'}
-                className="mt-2 sm:mt-0"
-              >
-                Cancel
-              </Button>
-              <Button variant={'destructive'} className="bg-green-500">
-                <p>Confirm</p>
-              </Button>
-            </>
-          )}
+          <Button variant={'ghost'} className="space-x-1 bg-red-500">
+            <p>Close</p>
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
