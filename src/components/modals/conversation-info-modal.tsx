@@ -89,7 +89,7 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
               <Button
                 onClick={() => setConfirmDelete(false)}
                 variant={'secondary'}
-                className="mt-2"
+                className="mt-2 sm:mt-0"
               >
                 Cancel
               </Button>
