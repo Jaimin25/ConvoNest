@@ -97,7 +97,8 @@ export function RequestsProvider({ children }: { children: React.ReactNode }) {
   }, [user, users]);
 
   const setUpdatedRequests = (data: FriendRequestsProps) => {
-    setRequests([...requests, data]);
+    requests.unshift(data);
+    setRequests([...requests]);
   };
 
   const deleteRequest = (id: string) => {

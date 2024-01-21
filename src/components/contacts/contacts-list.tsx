@@ -18,12 +18,13 @@ export default function ContactsList() {
       ) : (
         <div className="flex h-full flex-col overflow-y-auto">
           {contacts.length > 0 ? (
-            contacts.map((user) => (
+            contacts.map((contact) => (
               <ContactsListItem
-                key={user.id}
-                id={user.user2Id}
-                name={user.username}
-                createdAt={user.createdAt}
+                key={contact.id}
+                id={contact.user2Id}
+                name={contact.username}
+                contactId={contact.id}
+                createdAt={contact.createdAt}
               />
             ))
           ) : (

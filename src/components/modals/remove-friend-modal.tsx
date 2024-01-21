@@ -25,12 +25,14 @@ interface RemoveFriendModalProps {
   children: React.ReactNode;
   id: string;
   name: string;
+  contactId: string;
   avatar: string;
 }
 
 export default function RemoveFriendModal({
   children,
   id,
+  contactId,
   name
 }: RemoveFriendModalProps) {
   const [loading, setLoading] = useState<boolean>(false);
@@ -52,13 +54,14 @@ export default function RemoveFriendModal({
 
       if (res.data.statusCode === 200) {
         const receiverId = res.data.body.data;
-        removeContact(receiverId);
+        removeContact(contactId);
         toast.success('Removed Friend');
         socket?.emit(`user:${user.id}:send-remove-friend`, {
-          receiverId
+          contactId: contactId,
+          receiverId: receiverId
         });
       } else if (res.data.statusCode === 404) {
-        removeContact(id);
+        removeContact(contactId);
       }
       setLoading(false);
       setIsOpen(false);

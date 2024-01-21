@@ -11,10 +11,12 @@ import UserAvatar from '../user-avatar';
 export default function ContactsListItem({
   id,
   name,
+  contactId,
   createdAt
 }: {
   id: string;
   name: string;
+  contactId: string;
   createdAt: Date;
 }) {
   const avatar = generateAvatar(name);
@@ -30,7 +32,12 @@ export default function ContactsListItem({
         <p className="text-lg">{name}</p>
         <p className="text-xs text-stone-400">Friends since {joinedAtTime}</p>
       </div>
-      <RemoveFriendModal id={id} name={name} avatar={avatar}>
+      <RemoveFriendModal
+        id={id}
+        name={name}
+        avatar={avatar}
+        contactId={contactId}
+      >
         <UserMinusIcon className="block h-9 w-9 rounded-full bg-black p-2 transition hover:text-red-500 md:hidden md:bg-none md:group-hover:block md:group-hover:bg-black" />
       </RemoveFriendModal>
     </div>

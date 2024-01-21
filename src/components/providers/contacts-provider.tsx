@@ -1,6 +1,13 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 
@@ -47,28 +54,7 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
 
   const { socket } = useSocket();
 
-  useEffect(() => {
-    socket?.on(`user:${user.id}:receive-accept-request`, (data) => {
-      if (data.user2Id === user.id) {
-        data.user2Id = data.user1Id;
-        data.user1Id = user.id;
-      }
-      setContacts([...contacts, data]);
-      toast.success(`${data.username} accepted your request`);
-    });
-
-    socket?.on(`user:${user.id}:receive-remove-friend`, (data) => {
-      const index = contacts.findIndex(
-        (contact) => contact.id === data.receiverId
-      );
-      contacts.splice(index, 1);
-      setContacts([...contacts]);
-    });
-
-    () => {
-      socket?.off(`user:${user.id}:receive-accept-request`);
-    };
-  }, [socket, setContacts, user]);
+  const prevContacts = useRef(contacts);
 
   useEffect(() => {
     setLoading(true);
@@ -95,15 +81,44 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
     fetchContacts();
   }, [user, users]);
 
-  const setUpdatedContacts = (data: ContactsProps) => {
-    setContacts([...contacts, data]);
-  };
+  const setUpdatedContacts = useCallback(
+    (data: ContactsProps) => {
+      contacts.unshift(data);
+      setContacts([...contacts]);
+    },
+    [contacts, setContacts]
+  );
 
-  const removeContact = (id: string) => {
-    const index = contacts.findIndex((contact) => contact.id === id);
-    contacts.splice(index, 1);
-    setContacts([...contacts]);
-  };
+  const removeContact = useCallback(
+    (id: string) => {
+      const index = contacts.findIndex((contact) => contact.id === id);
+      contacts.splice(index, 1);
+      setContacts([...contacts]);
+    },
+    [contacts, setContacts]
+  );
+
+  useEffect(() => {
+    socket?.on(`user:${user.id}:receive-accept-request`, (data) => {
+      if (data.user2Id === user.id) {
+        data.user2Id = data.user1Id;
+        data.user1Id = user.id;
+      }
+      setUpdatedContacts(data);
+      if (prevContacts.current.length === contacts.length) {
+        toast.success(`${data.username} accepted your request`);
+      }
+    });
+
+    socket?.on(`user:${user.id}:receive-remove-friend`, (data) => {
+      removeContact(data.contactId);
+    });
+
+    () => {
+      socket?.off(`user:${user.id}:receive-accept-request`);
+      socket?.off(`user:${user.id}:receive-remove-request`);
+    };
+  }, [socket, user, removeContact, setUpdatedContacts, contacts]);
 
   return (
     <ContactsContext.Provider
