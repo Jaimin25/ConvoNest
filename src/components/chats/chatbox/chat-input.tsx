@@ -103,6 +103,7 @@ export default function ChatInput({
               width={200}
               height={200}
               className="m-2 aspect-video rounded-xl object-contain"
+              priority
             />
             <Button
               className="absolute right-0 top-0 h-6 w-6 rounded-full p-0"

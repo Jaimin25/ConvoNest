@@ -100,6 +100,7 @@ export default function MessageList({
                     src={message.content}
                     alt="image"
                     className="m-2 aspect-auto rounded-2xl object-contain"
+                    priority
                   />
                 )}
               </div>
