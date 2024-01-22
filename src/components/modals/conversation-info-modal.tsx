@@ -85,51 +85,52 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          {chat.isGroup && chat.adminId === user.id ? (
-            confirmDelete ? (
-              <>
+          {chat &&
+            (chat.isGroup && chat.adminId === user.id ? (
+              confirmDelete ? (
+                <>
+                  <Button
+                    onClick={() => setConfirmDelete(false)}
+                    variant={'secondary'}
+                    className="mt-2 sm:mt-0"
+                  >
+                    Cancel
+                  </Button>
+                  <Button variant={'destructive'}>Confirm</Button>
+                </>
+              ) : (
                 <Button
-                  onClick={() => setConfirmDelete(false)}
-                  variant={'secondary'}
-                  className="mt-2 sm:mt-0"
+                  variant={'ghost'}
+                  className="space-x-1 bg-red-500"
+                  onClick={() => setConfirmDelete(true)}
                 >
-                  Cancel
+                  <TrashIcon className="h-5 w-5" />
+                  <p>Delete</p>
                 </Button>
-                <Button variant={'destructive'}>Confirm</Button>
-              </>
+              )
             ) : (
-              <Button
-                variant={'ghost'}
-                className="space-x-1 bg-red-500"
-                onClick={() => setConfirmDelete(true)}
-              >
-                <TrashIcon className="h-5 w-5" />
-                <p>Delete</p>
-              </Button>
-            )
-          ) : (
-            !chat.isGroup &&
-            (confirmDelete ? (
-              <>
+              !chat.isGroup &&
+              (confirmDelete ? (
+                <>
+                  <Button
+                    onClick={() => setConfirmDelete(false)}
+                    variant={'secondary'}
+                  >
+                    Cancel
+                  </Button>
+                  <Button variant={'destructive'}>Confirm</Button>
+                </>
+              ) : (
                 <Button
-                  onClick={() => setConfirmDelete(false)}
-                  variant={'secondary'}
+                  variant={'ghost'}
+                  className="space-x-1 bg-red-500"
+                  onClick={() => setConfirmDelete(true)}
                 >
-                  Cancel
+                  <TrashIcon className="h-5 w-5" />
+                  <p>Delete</p>
                 </Button>
-                <Button variant={'destructive'}>Confirm</Button>
-              </>
-            ) : (
-              <Button
-                variant={'ghost'}
-                className="space-x-1 bg-red-500"
-                onClick={() => setConfirmDelete(true)}
-              >
-                <TrashIcon className="h-5 w-5" />
-                <p>Delete</p>
-              </Button>
-            ))
-          )}
+              ))
+            ))}
         </DialogFooter>
       </DialogContent>
     </Dialog>
