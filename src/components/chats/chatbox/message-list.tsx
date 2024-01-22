@@ -29,10 +29,10 @@ export default function MessageList({
     if (ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight;
     }
-  }, [messages, message]);
+  }, [message, messages]);
 
   return (
-    <div className="mb-2 flex-1 space-y-2 overflow-y-auto px-2" ref={ref}>
+    <div className="mb-2 flex-1 space-y-2 overflow-y-scroll px-2" ref={ref}>
       {loading ? (
         <SkeletonMessage />
       ) : (
