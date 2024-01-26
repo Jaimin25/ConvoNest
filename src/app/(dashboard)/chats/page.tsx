@@ -8,7 +8,7 @@ export default function ChatsPage() {
       <Card className="h-full w-full border-0 px-4 dark:bg-black/50">
         <CardContent className="h-full">
           <div className="flex h-full w-full items-center justify-center">
-            <p>Card Content</p>
+            <p>Work in progress</p>
           </div>
         </CardContent>
       </Card>
