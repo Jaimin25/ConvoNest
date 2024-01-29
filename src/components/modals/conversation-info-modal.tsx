@@ -35,7 +35,7 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
       <DialogContent className="border-0">
         <DialogHeader className="text-left">
           <DialogTitle>
-            {!confirmDelete ? 'Conversation Info' : 'Delete Chat'}
+            {!confirmDelete ? 'Details' : 'Delete Chat'}
           </DialogTitle>
           <DialogDescription>
             {!confirmDelete ? (
