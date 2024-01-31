@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { Loader2, MailPlus } from 'lucide-react';
 import { toast } from 'sonner';
@@ -35,6 +36,8 @@ export default function CreateChatModal() {
 
   const [openNameModal, setOpenNameModal] = useState<boolean>(false);
 
+  const router = useRouter();
+
   const handleOpen = () => {
     setUsers([]);
     setChatName('');
@@ -53,6 +56,7 @@ export default function CreateChatModal() {
 
     if (res.data.statusCode === 200) {
       setUpdatedChats(data.body.chat);
+      router.push(`/chats/c/${data.body.chat.id}`);
       setLoading(false);
     } else if (res.data.statusCode === 403) {
       toast.error(res.data.body.message);

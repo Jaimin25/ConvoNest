@@ -21,13 +21,15 @@ interface ChatsContextProps {
   loading: boolean;
   setUpdatedChats: (data: ChatsProps) => void;
   setLastMessage: (chatId: string, message: string) => void;
+  removeChat: (chatId: string) => void;
 }
 
 const ChatsContext = createContext<ChatsContextProps>({
   chats: [],
   loading: false,
   setUpdatedChats: () => {},
-  setLastMessage: () => {}
+  setLastMessage: () => {},
+  removeChat: () => {}
 });
 
 export const useChats = () => {
@@ -52,7 +54,13 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
 
   const setUpdatedChats = (data: ChatsProps) => {
     chats.unshift(data);
-    console.log(chats);
+    setChats([...chats]);
+  };
+
+  const removeChat = (chatId: string) => {
+    const index = chats.findIndex((chat) => chat.id === chatId);
+    if (index === -1) return;
+    chats.splice(index, 1);
     setChats([...chats]);
   };
 
@@ -77,7 +85,7 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ChatsContext.Provider
-      value={{ chats, loading, setUpdatedChats, setLastMessage }}
+      value={{ chats, loading, setUpdatedChats, setLastMessage, removeChat }}
     >
       {children}
     </ChatsContext.Provider>

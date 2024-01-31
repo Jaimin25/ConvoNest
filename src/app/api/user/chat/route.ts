@@ -128,3 +128,65 @@ export async function GET() {
     });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  const { chatId } = await req.json();
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return NextResponse.json({
+      statusCode: 401,
+      body: {
+        message: 'Unauthorized'
+      }
+    });
+  }
+
+  const userId = session.user.id;
+
+  const chat = await db.chat.findFirst({
+    where: {
+      id: chatId,
+      users: {
+        some: {
+          id: userId
+        }
+      }
+    },
+    include: {
+      users: true
+    }
+  });
+
+  if (chat) {
+    const deleteMsg = await db.messages.deleteMany({
+      where: {
+        chatId: chatId
+      }
+    });
+    if (deleteMsg) {
+      await db.chat.delete({
+        where: {
+          id: chatId
+        }
+      });
+      return NextResponse.json({
+        statusCode: 200,
+        body: {
+          message: 'Chat deleted'
+        }
+      });
+    }
+  } else {
+    return NextResponse.json({
+      statusCode: 404,
+      body: {
+        message: 'Chat not found'
+      }
+    });
+  }
+}

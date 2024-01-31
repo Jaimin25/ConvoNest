@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Info, ShieldAlert } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { Info, Loader2, ShieldAlert } from 'lucide-react';
 
 import {
   Dialog,
@@ -15,7 +17,7 @@ import {
 import { joinTimeFormat } from '@/lib/joinTimeFormat';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
-import { ChatsProps } from '../providers/chats-provider';
+import { ChatsProps, useChats } from '../providers/chats-provider';
 import { useUser } from '../providers/user-provider';
 import { Button } from '../ui/button';
 import UserAvatar from '../user-avatar';
@@ -24,6 +26,28 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const date = chat && new Date(chat.createdAt);
   const { user } = useUser();
+  const { removeChat } = useChats();
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleDelete = () => {
+    setLoading(true);
+
+    const deleteChat = async () => {
+      const res = await axios.delete('/api/user/chat', {
+        data: { chatId: chat.id }
+      });
+
+      if (res.data.statusCode === 200) {
+        removeChat(chat.id);
+        router.push('/chats');
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    };
+    deleteChat();
+  };
 
   return (
     <Dialog onOpenChange={() => setConfirmDelete(false)}>
@@ -96,13 +120,25 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
                   >
                     Cancel
                   </Button>
-                  <Button variant={'destructive'}>Confirm</Button>
+                  <Button
+                    variant={'destructive'}
+                    onClick={() => handleDelete()}
+                  >
+                    {!loading ? (
+                      'Confirm'
+                    ) : (
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                    )}
+                  </Button>
                 </>
               ) : (
                 <Button
                   variant={'ghost'}
                   className="space-x-1 bg-red-500"
-                  onClick={() => setConfirmDelete(true)}
+                  onClick={() => {
+                    setConfirmDelete(true);
+                    handleDelete();
+                  }}
                 >
                   <TrashIcon className="h-5 w-5" />
                   <p>Delete</p>
@@ -118,13 +154,24 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
                   >
                     Cancel
                   </Button>
-                  <Button variant={'destructive'}>Confirm</Button>
+                  <Button
+                    variant={'destructive'}
+                    onClick={() => handleDelete()}
+                  >
+                    {!loading ? (
+                      'Confirm'
+                    ) : (
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                    )}
+                  </Button>
                 </>
               ) : (
                 <Button
                   variant={'ghost'}
                   className="space-x-1 bg-red-500"
-                  onClick={() => setConfirmDelete(true)}
+                  onClick={() => {
+                    setConfirmDelete(true);
+                  }}
                 >
                   <TrashIcon className="h-5 w-5" />
                   <p>Delete</p>
