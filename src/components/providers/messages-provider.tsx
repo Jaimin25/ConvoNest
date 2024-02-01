@@ -57,7 +57,7 @@ export default function MessagesProvider({
 
   const { user } = useUser();
   const { socket } = useSocket();
-  const { setLastMessage, chats } = useChats();
+  const { setLastMessage, setUpdatedChats, chats } = useChats();
 
   const location = usePathname();
 
@@ -69,10 +69,15 @@ export default function MessagesProvider({
   }, []);
 
   useEffect(() => {
-    socket?.on(`chat:${user.id}:receive-message`, (data) => {
+    socket?.on(`chat:${user.id}:receive-message`, (data, chatDetails) => {
       const currentChatId = location
         .substring(location.indexOf('/c/') + 3, location.length)
         .toString();
+
+      const chat = chats.find((chat) => chat.id === chatDetails.id);
+      if (!chat) {
+        setUpdatedChats(chatDetails);
+      }
       const message = messages.find(
         (message) => message.chatId === data.chatId
       );
@@ -141,7 +146,16 @@ export default function MessagesProvider({
     return () => {
       socket?.off(`chat:${user.id}:receive-message`);
     };
-  }, [socket, user, messages, setLastMessage, location, unreadMessages, chats]);
+  }, [
+    socket,
+    user,
+    messages,
+    setLastMessage,
+    location,
+    unreadMessages,
+    setUpdatedChats,
+    chats
+  ]);
 
   const fetchMessages = async (chatId: string) => {
     const res = await axios.get('/api/user/message', {
@@ -199,8 +213,8 @@ export default function MessagesProvider({
   };
 
   const clearUnreadMessages = (chatId: string) => {
+    console.log('this is clearUnreadmessage');
     const index = unreadMessages.findIndex((msgs) => msgs.chatId === chatId);
-
     if (index === -1) return;
     unreadMessages.splice(index, 1);
     setUnreadMessages([...unreadMessages]);

@@ -18,15 +18,18 @@ import { joinTimeFormat } from '@/lib/joinTimeFormat';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
 import { ChatsProps, useChats } from '../providers/chats-provider';
+import { useSocket } from '../providers/socket-provider';
 import { useUser } from '../providers/user-provider';
 import { Button } from '../ui/button';
 import UserAvatar from '../user-avatar';
 
 export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
-  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
-  const date = chat && new Date(chat.createdAt);
   const { user } = useUser();
   const { removeChat } = useChats();
+  const { socket } = useSocket();
+
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+  const date = chat && new Date(chat.createdAt);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -39,6 +42,10 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
       });
 
       if (res.data.statusCode === 200) {
+        socket?.emit(`chat:${user.id}:send-delete-chat`, {
+          users: chat.users.filter((chatUser) => chatUser.id !== user.id),
+          chatId: chat.id
+        });
         removeChat(chat.id);
         router.push('/chats');
         setLoading(false);

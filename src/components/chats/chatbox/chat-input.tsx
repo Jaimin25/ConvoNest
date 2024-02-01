@@ -47,6 +47,7 @@ export default function ChatInput({
 
     if (res.data.statusCode === 200) {
       socket?.emit(`chat:${user.id}:send-message`, {
+        chat: chat,
         message: res.data.message,
         userId: chat.users
           .filter((users) => users.id !== user.id)

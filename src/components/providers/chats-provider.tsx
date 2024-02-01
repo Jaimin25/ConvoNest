@@ -1,9 +1,22 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 import { type User } from '@prisma/client';
+
+import { useMessages } from './messages-provider';
+import { useSocket } from './socket-provider';
+import { useUser } from './user-provider';
 
 export interface ChatsProps {
   id: string;
@@ -39,6 +52,11 @@ export const useChats = () => {
 export function ChatsProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState<boolean>(true);
   const [chats, setChats] = useState<ChatsProps[]>([]);
+  const router = useRouter();
+
+  const { clearUnreadMessages } = useMessages();
+  const { socket } = useSocket();
+  const { user } = useUser();
 
   useEffect(() => {
     setLoading(true);
@@ -57,12 +75,37 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
     setChats([...chats]);
   };
 
-  const removeChat = (chatId: string) => {
-    const index = chats.findIndex((chat) => chat.id === chatId);
-    if (index === -1) return;
-    chats.splice(index, 1);
-    setChats([...chats]);
-  };
+  const removeChat = useCallback(
+    (chatId: string) => {
+      const index = chats.findIndex((chat) => chat.id === chatId);
+      if (index === -1) return;
+      chats.splice(index, 1);
+      setChats([...chats]);
+    },
+    [setChats, chats]
+  );
+
+  const prevChat = useRef(chats);
+
+  useEffect(() => {
+    socket?.on(`chat:${user.id}:receive-delete-chat`, (chatId) => {
+      clearUnreadMessages(chatId);
+
+      removeChat(chatId);
+      if (window.location.pathname !== '/chats') {
+        router.push('/chats');
+      }
+      if (prevChat.current.length === chats.length) {
+        if (window.location.pathname === `/chats/c/${chatId}`) {
+          toast.info('Chat has been deleted');
+        }
+      }
+    });
+
+    return () => {
+      socket?.off(`chat:${user.id}:recieve-delete-chat`);
+    };
+  }, [socket, router, user, removeChat, prevChat, chats, clearUnreadMessages]);
 
   const setLastMessage = (chatId: string, message: string) => {
     const newChats = chats.map((chat) => {
