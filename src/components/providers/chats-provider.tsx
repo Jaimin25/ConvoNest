@@ -14,7 +14,6 @@ import { toast } from 'sonner';
 
 import { type User } from '@prisma/client';
 
-import { useMessages } from './messages-provider';
 import { useSocket } from './socket-provider';
 import { useUser } from './user-provider';
 
@@ -54,7 +53,6 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
   const [chats, setChats] = useState<ChatsProps[]>([]);
   const router = useRouter();
 
-  const { clearUnreadMessages } = useMessages();
   const { socket } = useSocket();
   const { user } = useUser();
 
@@ -89,8 +87,6 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     socket?.on(`chat:${user.id}:receive-delete-chat`, (chatId) => {
-      clearUnreadMessages(chatId);
-
       removeChat(chatId);
       if (window.location.pathname !== '/chats') {
         router.push('/chats');
@@ -105,7 +101,7 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
     return () => {
       socket?.off(`chat:${user.id}:recieve-delete-chat`);
     };
-  }, [socket, router, user, removeChat, prevChat, chats, clearUnreadMessages]);
+  }, [socket, user, removeChat, prevChat, chats]);
 
   const setLastMessage = (chatId: string, message: string) => {
     const newChats = chats.map((chat) => {

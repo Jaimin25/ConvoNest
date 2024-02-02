@@ -213,7 +213,6 @@ export default function MessagesProvider({
   };
 
   const clearUnreadMessages = (chatId: string) => {
-    console.log('this is clearUnreadmessage');
     const index = unreadMessages.findIndex((msgs) => msgs.chatId === chatId);
     if (index === -1) return;
     unreadMessages.splice(index, 1);

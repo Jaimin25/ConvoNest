@@ -15,16 +15,33 @@ import {
 
 import CreateChatModal from '../modals/create-chat-modal';
 import { useMessages } from '../providers/messages-provider';
+import { useSocket } from '../providers/socket-provider';
+import { useUser } from '../providers/user-provider';
 
 import ChatsList from './chats-list';
 
 export default function Chats() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { unreadMessages } = useMessages();
+  const { user } = useUser();
+  const { unreadMessages, clearUnreadMessages } = useMessages();
+  const { socket } = useSocket();
+
   const totalUnreadMessages = unreadMessages.reduce(
     (count, msg) => count + msg.count,
     0
   );
+
+  useEffect(() => {
+    socket?.on(`chat:${user.id}:receive-delete-chat`, (chatId) => {
+      const unreadMessages = localStorage.getItem('unread-messages');
+      if (unreadMessages) {
+        clearUnreadMessages(chatId);
+      }
+    });
+    return () => {
+      socket?.off(`chat:${user.id}:recieve-delete-chat`);
+    };
+  }, [socket, user, clearUnreadMessages]);
 
   const location = usePathname();
 

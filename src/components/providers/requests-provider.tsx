@@ -46,7 +46,6 @@ export function RequestsProvider({ children }: { children: React.ReactNode }) {
   const { socket } = useSocket();
 
   useEffect(() => {
-    console.log(socket);
     socket?.on(`user:${user.id}:receive-request`, (data) => {
       toast.info(`${data.username} sent you a friend request`);
       setRequests([...requests, data]);
