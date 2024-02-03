@@ -88,7 +88,7 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     socket?.on(`chat:${user.id}:receive-delete-chat`, (chatId) => {
       removeChat(chatId);
-      if (window.location.pathname !== '/chats') {
+      if (window.location.pathname.includes('/chats/c')) {
         router.push('/chats');
       }
       if (prevChat.current.length === chats.length) {
