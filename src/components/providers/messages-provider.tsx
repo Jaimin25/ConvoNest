@@ -85,7 +85,6 @@ export default function MessagesProvider({
       messages
         .find((chat) => chat.chatId === chatId)
         ?.messages.splice(index as number, 1);
-      console.log(messages);
       setMessages([...messages]);
     },
     [setMessages, messages]
