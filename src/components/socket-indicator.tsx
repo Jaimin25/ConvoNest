@@ -8,8 +8,16 @@ export const SocketIndicator = () => {
 
   if (!isConnected) {
     return (
-      <Badge variant="outline" className="border-none bg-yellow-600 text-white">
-        Connecting
+      <Badge
+        variant="outline"
+        className="space-x-1 border-none bg-yellow-600 text-white"
+      >
+        <p>Connecting</p>
+
+        <span className="relative flex h-2 w-2 items-center justify-center">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
+          <span className="relative inline-flex h-[6px] w-[6px] rounded-full bg-white"></span>
+        </span>
       </Badge>
     );
   }

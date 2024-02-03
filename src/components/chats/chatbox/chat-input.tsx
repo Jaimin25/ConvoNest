@@ -132,23 +132,28 @@ export default function ChatInput({
             />
           </PopoverContent>
         </Popover>
-
-        <Input
-          value={messageVal}
-          className="outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-          onChange={(e) => setMessageVal(e.target.value)}
-        />
-        {chat && (
-          <Button
-            disabled={loading}
-            type="submit"
-            variant={'ghost'}
-            className="rounded-md bg-sky-500 p-3"
-            onClick={handleSendMessage}
-          >
-            Send
-          </Button>
-        )}
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="flex w-full gap-x-2"
+        >
+          <Input
+            value={messageVal}
+            className="flex-1 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+            onSubmit={handleSendMessage}
+            onChange={(e) => setMessageVal(e.target.value)}
+          />
+          {chat && (
+            <Button
+              disabled={loading}
+              type="submit"
+              variant={'ghost'}
+              className="rounded-md bg-sky-500 p-3"
+              onClick={handleSendMessage}
+            >
+              Send
+            </Button>
+          )}
+        </form>
       </div>
     </div>
   );
