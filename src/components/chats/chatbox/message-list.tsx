@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
-import { Loader2, MoreHorizontalIcon } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 import { ChatsProps } from '@/components/providers/chats-provider';
 import {
@@ -12,11 +12,9 @@ import {
 } from '@/components/providers/messages-provider';
 import { useUser } from '@/components/providers/user-provider';
 import SkeletonMessage from '@/components/skeletons/message-skeleton';
-import { Popover, PopoverContent } from '@/components/ui/popover';
 import UserAvatar from '@/components/user-avatar';
 import { cn, isImageOrGif, isURL } from '@/lib/utils';
 import { TrashIcon } from '@heroicons/react/24/solid';
-import { PopoverTrigger } from '@radix-ui/react-popover';
 
 export default function MessageList({
   message,
