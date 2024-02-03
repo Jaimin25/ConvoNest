@@ -7,7 +7,11 @@ import { Contact, Loader2, LogOut } from 'lucide-react';
 
 import useSupabase from '@/hooks/useSupabase';
 import { cn } from '@/lib/utils';
-import { BellIcon, EnvelopeIcon, UsersIcon } from '@heroicons/react/24/outline';
+import {
+  BellIcon,
+  ChatBubbleLeftRightIcon,
+  UsersIcon
+} from '@heroicons/react/24/outline';
 
 import { useMessages } from '../providers/messages-provider';
 import { useRequests } from '../providers/requests-provider';
@@ -74,7 +78,7 @@ export default function NavigationSidebar() {
                   : 'bg-none'
               )}
             >
-              <EnvelopeIcon className="h-7 w-7" />
+              <ChatBubbleLeftRightIcon className="h-7 w-7" />
               Chats
               {totalUnreadMessages > 0 &&
                 (!(totalUnreadMessages > 100) ? (

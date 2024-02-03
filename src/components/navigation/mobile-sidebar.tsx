@@ -3,10 +3,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
-import { BellIcon, EnvelopeIcon, UsersIcon } from '@heroicons/react/24/outline';
+import {
+  BellIcon,
+  ChatBubbleLeftRightIcon,
+  UsersIcon
+} from '@heroicons/react/24/outline';
 import {
   BellIcon as BellIconSolid,
-  EnvelopeIcon as EnvelopIconSolid,
+  ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
   UsersIcon as UsersIconSolid
 } from '@heroicons/react/24/solid';
 
@@ -48,14 +52,14 @@ export default function MobileViewSidebar({
           <div className="flex w-full items-center justify-center gap-x-2 rounded-md p-2 transition">
             {location === '/chats' || location.includes('/chats/c/') ? (
               <div className="relative">
-                <EnvelopIconSolid className="h-6 w-6" />
+                <ChatBubbleLeftRightIconSolid className="h-6 w-6" />
                 {unreadMessages && unreadMessages.length > 0 && (
                   <div className="absolute -right-1 top-0 h-[10px] w-[10px] rounded-full bg-red-500" />
                 )}
               </div>
             ) : (
               <div className="relative">
-                <EnvelopeIcon className="h-6 w-6" />
+                <ChatBubbleLeftRightIcon className="h-6 w-6" />
                 {unreadMessages && unreadMessages.length > 0 && (
                   <div className="absolute -right-1 top-0 h-[10px] w-[10px] rounded-full bg-red-500" />
                 )}
