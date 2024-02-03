@@ -28,6 +28,7 @@ interface MessagesContextProps {
   addMessages: (chatId: string) => void;
   clearUnreadMessages: (chatId: string) => void;
   updateMessages: (chatId: string, data: Messages) => void;
+  removeMessage: (chatId: string, messageId: number) => void;
 }
 
 const MessagesContext = createContext<MessagesContextProps>({
@@ -37,7 +38,8 @@ const MessagesContext = createContext<MessagesContextProps>({
   unreadMessages: [],
   addMessages: () => {},
   clearUnreadMessages: () => {},
-  updateMessages: () => {}
+  updateMessages: () => {},
+  removeMessage: () => {}
 });
 
 export const useMessages = () => {
@@ -220,6 +222,18 @@ export default function MessagesProvider({
     localStorage.setItem('unread-messages', JSON.stringify(unreadMessages));
   };
 
+  const removeMessage = (chatId: string, messageId: number) => {
+    const index = messages
+      .find((message) => message.chatId === chatId)
+      ?.messages.findIndex((msg) => msg.id === messageId);
+    if (index === -1) return;
+    messages
+      .find((chat) => chat.chatId === chatId)
+      ?.messages.splice(index as number, 1);
+    console.log(messages);
+    setMessages([...messages]);
+  };
+
   return (
     <MessagesContext.Provider
       value={{
@@ -229,7 +243,8 @@ export default function MessagesProvider({
         addMessages,
         updateMessages,
         unreadMessages,
-        clearUnreadMessages
+        clearUnreadMessages,
+        removeMessage
       }}
     >
       {children}

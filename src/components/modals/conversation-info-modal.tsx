@@ -144,7 +144,6 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
                   className="space-x-1 bg-red-500"
                   onClick={() => {
                     setConfirmDelete(true);
-                    handleDelete();
                   }}
                 >
                   <TrashIcon className="h-5 w-5" />

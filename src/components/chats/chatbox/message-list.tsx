@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import axios from 'axios';
+import { Loader2, MoreHorizontalIcon } from 'lucide-react';
 
 import { ChatsProps } from '@/components/providers/chats-provider';
 import {
@@ -10,8 +12,11 @@ import {
 } from '@/components/providers/messages-provider';
 import { useUser } from '@/components/providers/user-provider';
 import SkeletonMessage from '@/components/skeletons/message-skeleton';
+import { Popover, PopoverContent } from '@/components/ui/popover';
 import UserAvatar from '@/components/user-avatar';
 import { cn, isImageOrGif, isURL } from '@/lib/utils';
+import { TrashIcon } from '@heroicons/react/24/solid';
+import { PopoverTrigger } from '@radix-ui/react-popover';
 
 export default function MessageList({
   message,
@@ -21,7 +26,9 @@ export default function MessageList({
   chat: ChatsProps;
 }) {
   const { user } = useUser();
-  const { messages, loading } = useMessages();
+  const { messages, loading, removeMessage } = useMessages();
+
+  const [deleteMessageID, setDeleteMessageID] = useState<number | null>(null);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -30,6 +37,26 @@ export default function MessageList({
       ref.current.scrollTop = ref.current.scrollHeight;
     }
   }, [message, messages]);
+
+  const handleDeleteMessage = (id: number) => {
+    const deleteMessage = async () => {
+      const res = await axios.delete('/api/user/message', {
+        data: {
+          messageId: id,
+          chatId: message.chatId
+        }
+      });
+
+      if (res.data.statusCode === 200) {
+        removeMessage(message.chatId, id);
+        setDeleteMessageID(null);
+      } else {
+        setDeleteMessageID(null);
+      }
+    };
+    setDeleteMessageID(id);
+    deleteMessage();
+  };
 
   return (
     <div className="mb-2 flex-1 space-y-2 overflow-y-scroll px-2" ref={ref}>
@@ -49,15 +76,31 @@ export default function MessageList({
               key={message.id}
               className={cn(
                 'w-full',
-                message.userId === user.id && ' flex place-content-end '
+                message.userId === user.id &&
+                  'group flex place-content-end hover:cursor-pointer '
               )}
             >
               <div
                 className={cn(
-                  'flex w-4/5 gap-x-2 sm:w-1/2',
-                  message.userId === user.id && ' place-content-end '
+                  'flex w-4/5 gap-x-2  sm:w-1/2',
+                  message.userId === user.id && '  place-content-end'
                 )}
               >
+                {message.userId === user.id && (
+                  <div
+                    className="hidden self-center group-hover:block"
+                    onClick={() => handleDeleteMessage(message.id)}
+                  >
+                    {!deleteMessageID ? (
+                      <TrashIcon className="h-5 w-5 text-rose-500" />
+                    ) : (
+                      deleteMessageID === message.id && (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      )
+                    )}
+                  </div>
+                )}
+
                 <UserAvatar
                   username={
                     chat.users.find((u) => u.id === message.userId)

@@ -150,3 +150,63 @@ export async function POST(req: NextRequest) {
     });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  const { chatId, messageId } = await req.json();
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
+  if (!session) {
+    return NextResponse.json({
+      statusCode: 401,
+      body: {
+        message: 'Unauthorized'
+      }
+    });
+  }
+
+  const userId = session.user.id;
+
+  const hasAccess = await db.chat.findFirst({
+    where: {
+      id: chatId,
+      users: {
+        some: {
+          id: userId
+        }
+      }
+    }
+  });
+
+  if (!hasAccess) {
+    return NextResponse.json({ statusCode: 403, error: 'Forbidden' });
+  }
+
+  const message = await db.messages.findUnique({
+    where: {
+      id: messageId
+    }
+  });
+
+  if (message) {
+    const deleteMessage = await db.messages.delete({
+      where: {
+        id: messageId,
+        chatId: chatId
+      }
+    });
+
+    if (deleteMessage) {
+      return NextResponse.json({ statusCode: 200 });
+    } else {
+      return NextResponse.json({
+        statusCode: 500,
+        error: 'Internal Server Error'
+      });
+    }
+  } else {
+    return NextResponse.json({ statusCode: 404, error: 'Message not found' });
+  }
+}
