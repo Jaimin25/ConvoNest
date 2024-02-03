@@ -1,6 +1,12 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 import { usePathname } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -69,6 +75,21 @@ export default function MessagesProvider({
       setUnreadMessages(JSON.parse(unreadMessages));
     }
   }, []);
+
+  const removeMessage = useCallback(
+    (chatId: string, messageId: number) => {
+      const index = messages
+        .find((message) => message.chatId === chatId)
+        ?.messages.findIndex((msg) => msg.id === messageId);
+      if (index === -1) return;
+      messages
+        .find((chat) => chat.chatId === chatId)
+        ?.messages.splice(index as number, 1);
+      console.log(messages);
+      setMessages([...messages]);
+    },
+    [setMessages, messages]
+  );
 
   useEffect(() => {
     socket?.on(`chat:${user.id}:receive-message`, (data, chatDetails) => {
@@ -145,8 +166,16 @@ export default function MessagesProvider({
       setLastMessage(data.chatId, data.content);
     });
 
+    socket?.on(
+      `chat:${user.id}:receive-delete-message`,
+      (chatId, messageId) => {
+        removeMessage(chatId, messageId);
+      }
+    );
+
     return () => {
       socket?.off(`chat:${user.id}:receive-message`);
+      socket?.off(`chat:${user.id}:receive-delete-message`);
     };
   }, [
     socket,
@@ -156,7 +185,8 @@ export default function MessagesProvider({
     location,
     unreadMessages,
     setUpdatedChats,
-    chats
+    chats,
+    removeMessage
   ]);
 
   const fetchMessages = async (chatId: string) => {
@@ -220,18 +250,6 @@ export default function MessagesProvider({
     unreadMessages.splice(index, 1);
     setUnreadMessages([...unreadMessages]);
     localStorage.setItem('unread-messages', JSON.stringify(unreadMessages));
-  };
-
-  const removeMessage = (chatId: string, messageId: number) => {
-    const index = messages
-      .find((message) => message.chatId === chatId)
-      ?.messages.findIndex((msg) => msg.id === messageId);
-    if (index === -1) return;
-    messages
-      .find((chat) => chat.chatId === chatId)
-      ?.messages.splice(index as number, 1);
-    console.log(messages);
-    setMessages([...messages]);
   };
 
   return (

@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
-import { Loader2 } from 'lucide-react';
 
 import { ChatsProps } from '@/components/providers/chats-provider';
 import {
   MessagesProps,
   useMessages
 } from '@/components/providers/messages-provider';
+import { useSocket } from '@/components/providers/socket-provider';
 import { useUser } from '@/components/providers/user-provider';
 import SkeletonMessage from '@/components/skeletons/message-skeleton';
 import UserAvatar from '@/components/user-avatar';
@@ -25,8 +25,7 @@ export default function MessageList({
 }) {
   const { user } = useUser();
   const { messages, loading, removeMessage } = useMessages();
-
-  const [deleteMessageID, setDeleteMessageID] = useState<number | null>(null);
+  const { socket } = useSocket();
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -46,13 +45,14 @@ export default function MessageList({
       });
 
       if (res.data.statusCode === 200) {
+        socket?.emit(`chat:${user.id}:send-delete-message`, {
+          chatId: message.chatId,
+          messageId: id,
+          users: chat.users.filter((chatUser) => chatUser.id !== user.id)
+        });
         removeMessage(message.chatId, id);
-        setDeleteMessageID(null);
-      } else {
-        setDeleteMessageID(null);
       }
     };
-    setDeleteMessageID(id);
     deleteMessage();
   };
 
@@ -89,13 +89,7 @@ export default function MessageList({
                     className="hidden self-center group-hover:block"
                     onClick={() => handleDeleteMessage(message.id)}
                   >
-                    {!deleteMessageID ? (
-                      <TrashIcon className="h-5 w-5 text-rose-500" />
-                    ) : (
-                      deleteMessageID === message.id && (
-                        <Loader2 className="h-5 w-5 animate-spin" />
-                      )
-                    )}
+                    <TrashIcon className="h-5 w-5 text-rose-500" />
                   </div>
                 )}
 
