@@ -119,7 +119,7 @@ export function ContactsProvider({ children }: { children: React.ReactNode }) {
       socket?.off(`user:${user.id}:receive-accept-request`);
       socket?.off(`user:${user.id}:receive-remove-request`);
     };
-  }, [socket, user, removeContact, setUpdatedContacts, contacts]);
+  }, [socket, user, removeContact, setUpdatedContacts]);
 
   return (
     <ContactsContext.Provider
