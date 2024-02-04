@@ -52,8 +52,7 @@ export default function SignUpForm() {
         `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.NEXT_PUBLIC_IPGEOLOCATION_API_KEY}`
       );
       const locationdata = await resLocation.json();
-      console.log(locationdata);
-      if (!locationdata.city) return;
+
       values.password = encryptValue(values.password);
 
       const res = await axios.post('/api/auth/signup', {
