@@ -17,6 +17,7 @@ import { useMessages } from '../providers/messages-provider';
 import { useRequests } from '../providers/requests-provider';
 import { useSocket } from '../providers/socket-provider';
 import { useUser } from '../providers/user-provider';
+import { SocketIndicator } from '../socket-indicator';
 import { Badge } from '../ui/badge';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Skeleton } from '../ui/skeleton';
@@ -130,6 +131,7 @@ export default function NavigationSidebar() {
                   username={username}
                 />
                 <p className="text-lg font-semibold">{username}</p>
+                <SocketIndicator />
               </PopoverTrigger>
               <PopoverContent
                 className="flex items-center gap-x-2  hover:cursor-pointer"

@@ -17,6 +17,7 @@ import {
 import { useMessages } from '../providers/messages-provider';
 import { useRequests } from '../providers/requests-provider';
 import { useUser } from '../providers/user-provider';
+import { SocketIndicator } from '../socket-indicator';
 import { Skeleton } from '../ui/skeleton';
 import UserAvatar from '../user-avatar';
 
@@ -90,12 +91,15 @@ export default function MobileViewSidebar({
         <Link href="/contacts">
           <div className="flex w-full items-center justify-center gap-x-2 rounded-md p-2 transition">
             {username ? (
-              <UserAvatar
-                username={username}
-                className="h-6 w-6 rounded-full"
-              />
+              <div className="relative">
+                <UserAvatar
+                  username={username}
+                  className="m-1 h-6 w-6 rounded-full"
+                />
+                <SocketIndicator />
+              </div>
             ) : (
-              <Skeleton className="h-6 w-6 rounded-full" />
+              <Skeleton className="m-1 h-6 w-6 rounded-full" />
             )}
           </div>
         </Link>

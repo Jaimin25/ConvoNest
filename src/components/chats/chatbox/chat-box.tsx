@@ -67,7 +67,7 @@ export default function ChatBox({ chatId }: { chatId: string }) {
         <CardHeader className="flex-1 pt-2 md:p-4 md:px-6 md:pt-6">
           <CardTitle className="ml-8 flex items-center md:ml-0">
             {receiver}
-            <div className="mr-2 flex w-full items-center justify-end">
+            <div className="relative mr-2 flex flex-1 items-center justify-end p-1">
               <SocketIndicator />
             </div>
             <ConvoInfoModal chat={chat} />
