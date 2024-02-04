@@ -50,7 +50,7 @@ export function GifModal({
                 setGifUrl(gif.url);
                 setIsOpen(false);
               }}
-              tenorApiKey={process.env.NEXT_PUBLIC_TENOR_API_KEY as string}
+              tenorApiKey={process.env.TENOR_API_KEY as string}
             />
           </PopoverContent>
         </Popover>
@@ -81,7 +81,7 @@ export function GifModal({
                 setGifUrl(gif.url);
                 setIsOpen(false);
               }}
-              tenorApiKey={process.env.NEXT_PUBLIC_TENOR_API_KEY as string}
+              tenorApiKey={process.env.TENOR_API_KEY as string}
             />
           </DialogDescription>
         </DialogContent>

@@ -1,6 +1,7 @@
 import CryptoJS from 'crypto-js';
 
 export function encryptValue(val: string) {
+  console.log(process.env.CRYPTOJS_KEY);
   return CryptoJS.AES.encrypt(
     val,
     process.env.CRYPTOJS_SECRET_KEY as string

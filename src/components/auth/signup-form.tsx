@@ -49,7 +49,7 @@ export default function SignUpForm() {
     setLoading(true);
     async function signup() {
       const resLocation = await fetch(
-        `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.NEXT_PUBLIC_IPGEOLOCATION_API_KEY}`
+        `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IPGEOLOCATION_API_KEY}`
       );
       const locationdata = await resLocation.json();
 
