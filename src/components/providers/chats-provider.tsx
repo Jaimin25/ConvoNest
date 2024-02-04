@@ -101,7 +101,7 @@ export function ChatsProvider({ children }: { children: React.ReactNode }) {
     return () => {
       socket?.off(`chat:${user.id}:recieve-delete-chat`);
     };
-  }, [socket, user, removeChat, prevChat, chats]);
+  }, [socket, user, removeChat, chats]);
 
   const setLastMessage = (chatId: string, message: string) => {
     const newChats = chats.map((chat) => {
