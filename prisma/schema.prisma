@@ -23,6 +23,16 @@ model User {
   receivedRequests FriendRequests[] @relation("ReceivedFriendRequest")
 }
 
+model UserStats{
+  id        String   @id
+  name      String   @unique
+  city String
+  state String
+  country String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Chat {
   id        String   @id @default(uuid())
   isGroup   Boolean  @default(false)

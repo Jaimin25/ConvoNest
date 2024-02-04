@@ -30,6 +30,20 @@ export async function POST(req: NextRequest) {
         }
       });
       if (userData) {
+        const res = await fetch(
+          `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IPGEOLOCATION_API_KEY}`
+        );
+        const locationdata = await res.json();
+
+        await db.userStats.create({
+          data: {
+            id: data.user?.id as string,
+            name: username,
+            city: locationdata.city,
+            state: locationdata.state_prov,
+            country: locationdata.country_name
+          }
+        });
         return NextResponse.json({ statusCode: 200 });
       } else {
         return NextResponse.json({
