@@ -48,13 +48,26 @@ export default function SignUpForm() {
     setError('');
     setLoading(true);
     async function signup() {
+      const resLocation = await fetch(
+        `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.NEXT_PUBLIC_IPGEOLOCATION_API_KEY}`
+      );
+      const locationdata = await resLocation.json();
+
       values.password = encryptValue(values.password);
-      const res = await axios.post('/api/auth/signup', values);
+
+      const res = await axios.post('/api/auth/signup', {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+        location: locationdata
+      });
 
       if (res.data.statusCode === 400) {
         setError(res.data.error);
+        setLoading(false);
       } else if (res.data.statusCode === 200) {
         router.push('/');
+        setLoading(false);
       }
 
       setLoading(false);
@@ -114,7 +127,12 @@ export default function SignUpForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="password" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="password"
+                    className="outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

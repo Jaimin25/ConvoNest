@@ -6,7 +6,8 @@ import { db } from '@/lib/db';
 import { createSupabaseServerClient } from '../../lib/supabase';
 
 export async function POST(req: NextRequest) {
-  const { username, email, password } = await req.json();
+  const res = await req.json();
+  const { username, email, password, location } = res;
   const originalPassword = decryptValue(password);
   const supabase = await createSupabaseServerClient();
 
@@ -30,18 +31,13 @@ export async function POST(req: NextRequest) {
         }
       });
       if (userData) {
-        const res = await fetch(
-          `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IPGEOLOCATION_API_KEY}`
-        );
-        const locationdata = await res.json();
-
         await db.userStats.create({
           data: {
             id: data.user?.id as string,
             name: username,
-            city: locationdata.city,
-            state: locationdata.state_prov,
-            country: locationdata.country_name
+            city: location.city,
+            state: location.state_prov,
+            country: location.country_name
           }
         });
         return NextResponse.json({ statusCode: 200 });
