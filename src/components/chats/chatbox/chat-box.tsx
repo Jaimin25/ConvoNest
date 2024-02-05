@@ -101,7 +101,7 @@ export default function ChatBox({ chatId }: { chatId: string }) {
         <CardHeader className="flex-1 pb-2 pr-2 pt-2 md:p-4 md:px-6 md:pt-6">
           <CardTitle className="ml-8 flex items-center md:ml-0">
             <div className={'flex flex-col items-start gap-x-2'}>
-              <div className="flex items-center gap-x-1">
+              <div className="flex items-center gap-x-2">
                 {receiver}
 
                 {chat && chat ? (

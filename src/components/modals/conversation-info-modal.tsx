@@ -94,7 +94,7 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
                             />
                           </div>
                           <div className="flex w-full flex-col items-start">
-                            <p className="flex items-center gap-x-1 text-lg">
+                            <p className="flex items-center gap-x-2 text-lg">
                               {user.id === chatUser.id && '(You) '}
                               {chatUser.name}
                               {chatUser.id === chat.adminId && (

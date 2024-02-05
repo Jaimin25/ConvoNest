@@ -71,7 +71,7 @@ export default function Contacts() {
         <CardHeader>
           <CardTitle>Contacts</CardTitle>
         </CardHeader>
-        <CardContent className="h-5/6 px-2 md:h-5/6">
+        <CardContent className="h-4/5 px-2 md:h-5/6">
           <ContactsList />
         </CardContent>
       </Card>
