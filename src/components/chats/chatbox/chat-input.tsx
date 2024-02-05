@@ -144,7 +144,7 @@ export default function ChatInput({
           </div>
         </div>
       )}
-      <div className="flex w-full items-center gap-x-2">
+      <div className="flex w-full items-center justify-center gap-x-1 md:gap-x-2">
         <GifModal setGifUrl={setGifUrl}>
           <GifIcon className="h-6 w-6 cursor-pointer" />
         </GifModal>
