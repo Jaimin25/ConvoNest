@@ -18,8 +18,10 @@ import { joinTimeFormat } from '@/lib/joinTimeFormat';
 import { TrashIcon } from '@heroicons/react/24/outline';
 
 import { ChatsProps, useChats } from '../providers/chats-provider';
+import { useProfiles } from '../providers/profiles-provider';
 import { useSocket } from '../providers/socket-provider';
 import { useUser } from '../providers/user-provider';
+import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import UserAvatar from '../user-avatar';
 
@@ -27,6 +29,7 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
   const { user } = useUser();
   const { removeChat } = useChats();
   const { socket } = useSocket();
+  const { onlineUsers } = useProfiles();
 
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const date = chat && new Date(chat.createdAt);
@@ -97,6 +100,25 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
                               {chatUser.id === chat.adminId && (
                                 <ShieldAlert className="h-5 w-5 text-indigo-500" />
                               )}
+
+                              {user.id !== chatUser.id &&
+                                (onlineUsers.some(
+                                  (userId) => userId === chatUser.id
+                                ) ? (
+                                  <Badge
+                                    variant={'outline'}
+                                    className="flex  h-5 justify-center bg-emerald-500 text-xs"
+                                  >
+                                    online
+                                  </Badge>
+                                ) : (
+                                  <Badge
+                                    variant={'outline'}
+                                    className="flex bg-red-500 text-xs"
+                                  >
+                                    offline
+                                  </Badge>
+                                ))}
                             </p>
                             <p className="text-xs text-stone-400">
                               Joined {joinedAtTime} ago

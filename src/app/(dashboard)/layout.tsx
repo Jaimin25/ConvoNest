@@ -33,9 +33,9 @@ export default function RootLayout({
           defaultTheme="dark"
           disableTransitionOnChange
         >
-          <ProfilesProvider>
-            <UserProvider>
-              <SocketProvider>
+          <UserProvider>
+            <SocketProvider>
+              <ProfilesProvider>
                 <ChatsProvider>
                   <ContactsProvider>
                     <RequestsProvider>
@@ -48,9 +48,9 @@ export default function RootLayout({
                     </RequestsProvider>
                   </ContactsProvider>
                 </ChatsProvider>
-              </SocketProvider>
-            </UserProvider>
-          </ProfilesProvider>
+              </ProfilesProvider>
+            </SocketProvider>
+          </UserProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -126,7 +126,7 @@ export default function MessagesProvider({
       if (currentChatId !== data.chatId) {
         const chat = chats.find((chat) => chat.id === data.chatId);
         const toast_msg = chat?.isGroup
-          ? 'Message in ' + chat?.name
+          ? 'New message in ' + chat?.name
           : chat?.users.find((us) => us.id !== user.id)?.name +
             ' sent you a message';
         toast.info(`${toast_msg}`);

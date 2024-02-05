@@ -42,10 +42,12 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
       });
       newSocket.on('connect', () => {
         setIsConnected(true);
+        newSocket.emit('get-online-users');
       });
 
       newSocket.on('disconnect', () => {
         setIsConnected(false);
+        newSocket.emit('get-online-users');
       });
       setSocket(newSocket);
     }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
 import { X } from 'lucide-react';
@@ -38,6 +38,35 @@ export default function ChatInput({
   const { user } = useUser();
   const { socket } = useSocket();
 
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (isTyping) {
+        if (!chat) return;
+
+        socket?.emit(
+          `chat:${user.id}:send-typing`,
+          chat?.users
+            .filter((users) => users.id !== user.id)
+            .map((user) => user.id),
+          chat?.id
+        );
+      } else {
+        if (!chat) return;
+        socket?.emit(
+          `chat:${user.id}:send-stop-typing`,
+          chat?.users
+            .filter((users) => users.id !== user.id)
+            .map((user) => user.id),
+          chat?.id
+        );
+      }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [isTyping, socket]);
+
   const sendMessage = async (content: string) => {
     const res = await axios.post('/api/user/message', {
       chatId: chat.id,
@@ -69,7 +98,7 @@ export default function ChatInput({
 
   const handleSendMessage = () => {
     if (!messageVal && !gifUrl) return;
-
+    setIsTyping(false);
     setLoading(true);
     if (messageVal && gifUrl) {
       sendMessage(gifUrl);
@@ -137,10 +166,18 @@ export default function ChatInput({
           className="flex w-full gap-x-2"
         >
           <Input
+            autoComplete="off"
+            id="input"
             value={messageVal}
             className="flex-1 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-            onSubmit={handleSendMessage}
-            onChange={(e) => setMessageVal(e.target.value)}
+            onSubmit={() => {
+              handleSendMessage();
+            }}
+            onChange={(e) => {
+              setMessageVal(e.target.value);
+              setIsTyping(true);
+              setTimeout(() => setIsTyping(false), 3000);
+            }}
           />
           {chat && (
             <Button
