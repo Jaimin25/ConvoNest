@@ -48,11 +48,26 @@ export default function SignUpForm() {
     setError('');
     setLoading(true);
     async function signup() {
-      const resLocation = await fetch(
-        `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IPGEOLOCATION_API_KEY}`
-      );
-      const locationdata = await resLocation.json();
-
+      let locationdata = null;
+      try {
+        const resLocation = await axios.get(
+          `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.IPGEOLOCATION_API_KEY}`,
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        locationdata = resLocation.data;
+      } catch (err) {
+        // console.log(err);
+      }
+      if (!locationdata) {
+        setError('Turn off your ad blocker and try again!');
+        setLoading(false);
+        return;
+      }
       values.password = encryptValue(values.password);
 
       const res = await axios.post('/api/auth/signup', {
@@ -62,7 +77,7 @@ export default function SignUpForm() {
         location: locationdata
       });
 
-      if (res.data.statusCode === 400) {
+      if (res.data.statusCode === 403) {
         setError(res.data.error);
         setLoading(false);
       } else if (res.data.statusCode === 200) {
