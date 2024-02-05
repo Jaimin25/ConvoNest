@@ -103,15 +103,13 @@ export default function MessagesProvider({
       const message = messages.find(
         (message) => message.chatId === data.chatId
       );
+
       if (message) {
         message.messages.push(data);
         setMessages([...messages, message]);
       } else {
         const loadMessages = async () => {
           const msgs = await fetchMessages(data.chatId);
-          if (msgs) {
-            msgs.push(data);
-          }
           setMessages([
             ...messages,
             {

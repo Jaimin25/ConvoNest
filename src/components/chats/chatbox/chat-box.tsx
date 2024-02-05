@@ -72,7 +72,6 @@ export default function ChatBox({ chatId }: { chatId: string }) {
       (userId, typingState, chatId) => {
         setUserIsTyping(typingState);
         setCurrentChatIdTyping(chatId);
-        console.log(userId, typingState);
       }
     );
     () => {
