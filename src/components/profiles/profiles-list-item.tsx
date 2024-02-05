@@ -21,11 +21,11 @@ export default function ProfilesListItem({
   const joinedAtTime = joinTimeFormat(createdAt);
 
   return (
-    <div className="flex items-center gap-x-4 rounded p-1 px-2 transition hover:cursor-pointer hover:bg-white/15">
+    <div className="m-1 flex items-center gap-x-2 rounded   p-1 px-2 transition hover:cursor-pointer hover:bg-white/15">
       <div className="flex h-full items-center justify-center">
-        <UserAvatar className="m-3 h-11 w-11 rounded-md" username={name} />
+        <UserAvatar className="m-2 h-11 w-11 rounded-md" username={name} />
       </div>
-      <div className="flex w-full flex-col items-start">
+      <div className="flex flex-1 flex-col items-start">
         <p className="text-lg">{name}</p>
         <p className="text-xs text-stone-400">Joined {joinedAtTime} ago</p>
       </div>

@@ -44,7 +44,7 @@ export default function ChatsListItem({
     <Link
       href={`/chats/c/${id}`}
       className={cn(
-        'm-1 flex items-center gap-x-4 rounded p-1 px-2 transition hover:cursor-pointer hover:bg-white/15',
+        'm-1 flex items-center gap-x-2 rounded p-1 px-2 transition hover:cursor-pointer hover:bg-white/15',
         location.substring(location.indexOf('/chats/c/'), location.length) ===
           `/chats/c/${id}`
           ? 'bg-white/10'
@@ -53,7 +53,7 @@ export default function ChatsListItem({
     >
       <div className="flex h-full items-center justify-center">
         {isGroup ? (
-          <UserGroupIcon className="h-8 w-11 rounded-md" />
+          <UserGroupIcon className="m-2 h-8 w-11 rounded-md" />
         ) : (
           <UserAvatar
             className="m-2 h-11 w-11 rounded-md"
@@ -61,7 +61,7 @@ export default function ChatsListItem({
           />
         )}
       </div>
-      <div className="flex w-full flex-col items-start py-1">
+      <div className="flex flex-1 flex-col items-start py-1">
         <div className="flex w-full">
           {isGroup ? (
             <p className="text-lg">{name} </p>

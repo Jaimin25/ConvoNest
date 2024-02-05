@@ -39,7 +39,7 @@ export default function Chats() {
 
   return (
     <>
-      <div className="hidden h-full w-1/3 items-center px-4 py-4 md:flex">
+      <div className="hidden h-full w-1/3 items-center px-3 py-3 md:flex">
         <Card className="h-full w-full border-0 px-4 dark:bg-black/50">
           <CardHeader>
             <CardTitle>
@@ -55,7 +55,7 @@ export default function Chats() {
         </Card>
       </div>
       <Sheet open={isSidebarOpen} onOpenChange={toggleSidebar}>
-        <SheetTrigger className="absolute m-8 md:hidden">
+        <SheetTrigger className="absolute m-7 md:hidden">
           <div className="relative">
             <Menu />
             {totalUnreadMessages > 0 && (

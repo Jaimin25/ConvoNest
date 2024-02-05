@@ -61,7 +61,7 @@ export default function ConvoInfoModal({ chat }: { chat: ChatsProps }) {
 
   return (
     <Dialog onOpenChange={() => setConfirmDelete(false)}>
-      <DialogTrigger className="mx-2 ml-auto rounded-full p-2 hover:cursor-pointer hover:bg-white/15">
+      <DialogTrigger className=" ml-auto rounded-full p-2 hover:cursor-pointer hover:bg-white/15">
         <div>
           <Info className="h-6 w-6" />
         </div>

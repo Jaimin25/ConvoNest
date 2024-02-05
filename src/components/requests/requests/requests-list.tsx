@@ -79,11 +79,11 @@ export default function RequestsList({
       {' '}
       <div className="flex h-full items-center justify-center">
         <UserAvatar
-          className="m-3 h-10 w-10 rounded-md"
+          className="m-2 h-10 w-10 rounded-md"
           username={requestsList.username}
         />
       </div>
-      <div className="flex w-full flex-col items-start">
+      <div className="flex flex-1 flex-col items-start">
         <p className="text-lg">{requestsList.username}</p>
       </div>
       {type === 'received-request' ? (

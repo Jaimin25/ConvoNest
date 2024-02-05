@@ -15,6 +15,7 @@ import { useUser } from '@/components/providers/user-provider';
 import { SocketIndicator } from '@/components/socket-indicator';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 import ChatInput from './chat-input';
 import MessageList from './message-list';
@@ -82,7 +83,7 @@ export default function ChatBox({ chatId }: { chatId: string }) {
 
   if (error) {
     return (
-      <div className="w-full flex-1 px-4 py-4 md:mr-4 md:px-0" id="chat-box">
+      <div className="w-full flex-1 px-3 py-3 md:mr-4 md:px-0" id="chat-box">
         <Card className="h-full w-full flex-1 border-0 pb-16 md:pb-20 dark:bg-black/50">
           <CardContent className="h-full flex-1 px-2 md:px-6">
             <div className="flex h-full flex-1 items-center justify-center text-lg text-red-500">
@@ -95,9 +96,9 @@ export default function ChatBox({ chatId }: { chatId: string }) {
   }
 
   return (
-    <div className="w-full flex-1 px-4 py-4 md:mr-4 md:px-0" id="chat-box">
+    <div className="w-full flex-1 px-3 py-3 md:mr-4 md:px-0" id="chat-box">
       <Card className="h-full w-full flex-1 border-0 pb-16 md:pb-20 dark:bg-black/50">
-        <CardHeader className="flex-1 pt-2 md:p-4 md:px-6 md:pt-6">
+        <CardHeader className="flex-1 pb-2 pr-2 pt-2 md:p-4 md:px-6 md:pt-6">
           <CardTitle className="ml-8 flex items-center md:ml-0">
             <div className={'flex flex-col items-start gap-x-2'}>
               <div className="flex items-center gap-x-1">
@@ -164,7 +165,10 @@ export default function ChatBox({ chatId }: { chatId: string }) {
             <ConvoInfoModal chat={chat} />
           </CardTitle>
         </CardHeader>
-        <CardContent className="h-full flex-1 px-2 md:px-6">
+        <div className="px-5">
+          <Separator className="px-5" />
+        </div>
+        <CardContent className="h-full flex-1 px-2 pt-2 md:px-6">
           <div className="flex h-full w-full flex-1 flex-col justify-center">
             <MessageList message={message} chat={chat} />
 
