@@ -1,4 +1,7 @@
-![alt text](/public/image.png)
+<p align="center">
+<img src="https://github.com/Jaimin25/ConvoNest/blob/main/public/image.png?raw=true"/>
+</p>
+
 [Live](https://convonest.vercel.app/)
 
 ## About this project
