@@ -62,7 +62,7 @@ export default function ChatBox({ chatId }: { chatId: string }) {
         setUserIsTyping(typingState);
         setCurrentChatIdTyping(chatId);
         setUserTyping(
-          chat?.users.find((user) => user.id === userId)?.name as string
+          chat?.users.find((users) => users.id === userId)?.name as string
         );
       }
     );
