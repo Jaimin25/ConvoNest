@@ -2,11 +2,10 @@
 <img src="https://github.com/Jaimin25/ConvoNest/blob/main/public/image.png?raw=true"/>
 </p>
 
-[Live](https://convonest.vercel.app/)
-
-## About this project
+## About
 
 ConvoNest is a realtime web application for chatting, where you can add friends and chat with them individually or in a group.
+Check it out [here](https://convonest.vercel.app/).
 
 ## Features
 
