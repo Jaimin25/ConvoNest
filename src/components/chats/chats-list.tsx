@@ -34,7 +34,7 @@ export default function ChatsList() {
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center gap-y-1">
               <Braces className="h-5 w-5 text-gray-500" />
-              <p>No Contacts</p>
+              <p>No Chats</p>
             </div>
           )}
         </div>
