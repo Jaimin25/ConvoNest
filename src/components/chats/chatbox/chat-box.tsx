@@ -58,11 +58,11 @@ export default function ChatBox({ chatId }: { chatId: string }) {
   useEffect(() => {
     socket?.on(
       `chat:${user.id}:receive-typing`,
-      (userId, typingState, chatId) => {
+      (userId, typingState, chatId, typingUserId) => {
         setUserIsTyping(typingState);
         setCurrentChatIdTyping(chatId);
         setUserTyping(
-          chat?.users.find((users) => users.id === userId)?.name as string
+          chat?.users.find((users) => users.id === typingUserId)?.name as string
         );
       }
     );
@@ -143,7 +143,7 @@ export default function ChatBox({ chatId }: { chatId: string }) {
                 chat.id === currentChatIdTyping ? (
                   chat.isGroup ? (
                     userIsTyping ? (
-                      <span className="text-xs text-gray-500">
+                      <span className="mt-1 text-xs text-gray-500">
                         {userTyping + ' is typing...'}
                       </span>
                     ) : null

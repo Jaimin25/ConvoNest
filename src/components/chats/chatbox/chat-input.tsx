@@ -50,7 +50,8 @@ export default function ChatInput({
           chat?.users
             .filter((users) => users.id !== user.id)
             .map((user) => user.id),
-          chat?.id
+          chat?.id,
+          chat?.isGroup && user.id
         );
       } else {
         if (!chat) return;
