@@ -30,3 +30,7 @@ Check it out [here](https://convonest.vercel.app/).
 - Supabase Auth
 - PostgreSQL
 - Prisma
+
+### How to run the project locally?
+
+Click [here](https://github.com/Jaimin25/ConvoNest//blob/main/DEVELOPERS.md) to setup the project locally.
