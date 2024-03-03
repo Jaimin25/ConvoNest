@@ -29,6 +29,7 @@
     "@supabase/ssr": "^0.0.10",
     "@supabase/supabase-js": "^2.39.1",
     "@types/crypto-js": "^4.2.1",
+    "@vercel/analytics": "^1.2.2",
     "axios": "^1.6.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",

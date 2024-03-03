@@ -11,6 +11,7 @@ import { SocketProvider } from '@/components/providers/socket-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { UserProvider } from '@/components/providers/user-provider';
 import { Toaster } from '@/components/ui/sonner';
+import { Analytics } from '@vercel/analytics/react';
 
 import '../globals.css';
 
@@ -43,6 +44,7 @@ export default function RootLayout({
                         <Dashboard>
                           {children}
                           <Toaster duration={1500} position="top-right" />
+                          <Analytics />
                         </Dashboard>
                       </MessagesProvider>
                     </RequestsProvider>
