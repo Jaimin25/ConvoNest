@@ -53,7 +53,7 @@ export default function UserList({
       {loading ? (
         <UserDialogSkeleton />
       ) : (
-        <div className="flex h-full flex-col overflow-y-auto">
+        <div className="flex h-[300px] flex-col overflow-y-auto">
           {contacts.length > 0 ? (
             contacts.map((user) => (
               <UsersListItem
