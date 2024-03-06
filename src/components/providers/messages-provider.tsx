@@ -20,8 +20,7 @@ export interface MessagesProps {
   chatId: string;
   messages: Messages[];
 }
-
-export interface UnreadMessages {
+interface UnreadMessages {
   chatId: string;
   count: number;
 }
