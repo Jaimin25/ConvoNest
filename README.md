@@ -5,7 +5,17 @@
 ## About
 
 ConvoNest is a realtime web application for chatting, where you can add friends and chat with them individually or in a group.
-Check it out [here](https://convonest.vercel.app/).
+Check it out live [here](https://convonest.vercel.app/).
+
+## Tech Stack
+
+- Next.js
+- Shadcn/ui
+- TailwindCSS
+- Heroicons & Lucid React Icons
+- Supabase Auth
+- PostgreSQL
+- Prisma
 
 ## Features
 
@@ -21,14 +31,8 @@ Check it out [here](https://convonest.vercel.app/).
 - Notification for new messages
 - Unread message count
 
-## Tech Stack
+## Demo Video
 
-- Next.js
-- Shadcn/ui
-- TailwindCSS
-- Heroicons & Lucid React Icons
-- Supabase Auth
-- PostgreSQL
-- Prisma
+https://github.com/Jaimin25/ConvoNest/assets/65119631/32800f36-525a-44f6-bfbd-f401cd3f11a2
 
 ### Click [here](https://github.com/Jaimin25/ConvoNest//blob/main/DEVELOPERS.md) and follow the steps to setup the project on your device.
