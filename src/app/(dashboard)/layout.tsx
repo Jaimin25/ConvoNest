@@ -35,9 +35,6 @@ export default function RootLayout({
           defaultTheme="dark"
           disableTransitionOnChange
         >
-          {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
-            <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
-          ) : null}
           <UserProvider>
             <SocketProvider>
               <ProfilesProvider>
@@ -49,6 +46,11 @@ export default function RootLayout({
                           {children}
                           <Toaster duration={1500} position="top-right" />
                           <Analytics />
+                          {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
+                            <GoogleAnalytics
+                              ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}
+                            />
+                          ) : null}
                         </Dashboard>
                       </MessagesProvider>
                     </RequestsProvider>
