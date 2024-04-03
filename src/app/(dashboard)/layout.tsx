@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import Dashboard from '@/components/dashboard/dashboard';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { ChatsProvider } from '@/components/providers/chats-provider';
 import { ContactsProvider } from '@/components/providers/contacts-provider';
 import MessagesProvider from '@/components/providers/messages-provider';
@@ -34,6 +35,9 @@ export default function RootLayout({
           defaultTheme="dark"
           disableTransitionOnChange
         >
+          {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
+            <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
+          ) : null}
           <UserProvider>
             <SocketProvider>
               <ProfilesProvider>
