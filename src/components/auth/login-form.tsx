@@ -123,6 +123,14 @@ export default function LoginForm() {
               'Sign in'
             )}
           </Button>
+          <Button
+            onClick={() => {
+              loginForm.setValue('email', 'demo@example.com');
+              loginForm.setValue('password', '123456');
+            }}
+          >
+            Login as Demo
+          </Button>
         </form>
       </Form>
     </div>
