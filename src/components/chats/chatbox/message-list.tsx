@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
 
@@ -13,8 +13,13 @@ import { useSocket } from '@/components/providers/socket-provider';
 import { useUser } from '@/components/providers/user-provider';
 import SkeletonMessage from '@/components/skeletons/message-skeleton';
 import UserAvatar from '@/components/user-avatar';
-import { cn, isImageOrGif, isURL } from '@/lib/utils';
-import { TrashIcon } from '@heroicons/react/24/solid';
+import {
+  cn,
+  containsUrlRegex,
+  isImageOrGif,
+  isURL,
+  msgContainsUrl
+} from '@/lib/utils';
 
 export default function MessageList({
   message,
@@ -80,19 +85,10 @@ export default function MessageList({
             >
               <div
                 className={cn(
-                  'flex w-4/5 gap-x-2  sm:w-1/2',
+                  'flex w-[90%] gap-x-2',
                   message.userId === user.id && '  place-content-end'
                 )}
               >
-                {message.userId === user.id && (
-                  <div
-                    className="hidden self-center group-hover:block"
-                    onClick={() => handleDeleteMessage(message.id)}
-                  >
-                    <TrashIcon className="h-5 w-5 text-rose-500" />
-                  </div>
-                )}
-
                 <UserAvatar
                   username={
                     chat.users.find((u) => u.id === message.userId)
@@ -104,29 +100,85 @@ export default function MessageList({
                   )}
                 />
                 {!isImage ? (
-                  <div
-                    className={cn(
-                      'flex items-end gap-x-1 rounded-3xl bg-slate-500 p-3',
-                      message.userId === user.id
-                        ? 'rounded-br-md'
-                        : 'rounded-bl-md'
-                    )}
-                  >
-                    <div>
-                      <p className="text-lg font-semibold">
-                        {chat.isGroup &&
-                          (chat.users.find(
-                            (u) => u.id !== user.id && u.id === message.userId
-                          )?.name as string)}
-                      </p>
-                      <p className="text-sm">{message.content}</p>
+                  <div>
+                    <div
+                      className={cn(
+                        'items-end gap-x-1 rounded-3xl bg-slate-500 p-3',
+                        message.userId === user.id
+                          ? 'rounded-br-md'
+                          : 'rounded-bl-md'
+                      )}
+                    >
+                      <div>
+                        <p className="text-lg font-semibold">
+                          {chat.isGroup &&
+                            (chat.users.find(
+                              (u) => u.id !== user.id && u.id === message.userId
+                            )?.name as string)}
+                        </p>
+                        {isURL(message.content) ? (
+                          <a
+                            href={
+                              message.content.startsWith('http')
+                                ? message.content
+                                : `http://${message.content}`
+                            }
+                            target="_blank"
+                            className="text-blue-500 underline hover:no-underline"
+                          >
+                            {message.content}
+                          </a>
+                        ) : msgContainsUrl(message.content) ? (
+                          <div>
+                            {message.content
+                              .split(containsUrlRegex)
+                              .filter(
+                                (item, index, array) =>
+                                  item && array.indexOf(item) === index
+                              )
+                              .map((part, index) =>
+                                containsUrlRegex.test(part) ? (
+                                  <a
+                                    key={index}
+                                    href={
+                                      part.startsWith('http')
+                                        ? part
+                                        : `http://${part}`
+                                    }
+                                    target="_blank"
+                                    className="text-blue-500 underline hover:no-underline"
+                                  >
+                                    {part}
+                                  </a>
+                                ) : (
+                                  part
+                                )
+                              )}
+                          </div>
+                        ) : (
+                          <p className="break-all text-sm">{message.content}</p>
+                        )}
+                      </div>
+                      <div className="flex place-content-end">
+                        <p className="text-[10px] text-gray-800">
+                          {sentAt.toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-[10px] text-gray-800">
-                      {sentAt.toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </p>
+
+                    {message.userId === user.id && (
+                      <div
+                        className="hidden justify-end self-center group-hover:flex"
+                        onClick={() => handleDeleteMessage(message.id)}
+                      >
+                        <p className="text-rose-500 underline hover:no-underline">
+                          delete
+                        </p>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <Image
