@@ -67,10 +67,13 @@ export default function ChatBox({ chatId }: { chatId: string }) {
       }
     );
 
-    socket?.on(`chat:${user.id}:receive-stop-typing`, (userId, typingState, chatId) => {
-      setUserIsTyping(typingState);
-      setCurrentChatIdTyping(chatId);
-    });
+    socket?.on(
+      `chat:${user.id}:receive-stop-typing`,
+      (userId, typingState, chatId) => {
+        setUserIsTyping(typingState);
+        setCurrentChatIdTyping(chatId);
+      }
+    );
     () => {
       socket?.off(`chat:${user.id}:receive-typing`);
       socket?.off(`chat:${user.id}:receive-stop-typing`);

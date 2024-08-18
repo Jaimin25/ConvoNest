@@ -58,9 +58,9 @@ export default function Message({
       const previewData = await fetchPreviewData(url);
       setPreviews((prev) => ({ ...prev, [message.id]: previewData }));
     };
-console.log(msgContainsUrl(message.content));
+    console.log(msgContainsUrl(message.content));
     if (msgContainsUrl(message.content)) {
-      console.log(msgContainsUrl(message.content))
+      console.log(msgContainsUrl(message.content));
       if (!/^https?:\/\//i.test(msgContainsUrl(message.content) as string)) {
         return;
       }
