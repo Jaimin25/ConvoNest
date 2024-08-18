@@ -22,6 +22,16 @@ interface PreviewData {
   image: string;
   domain: string;
 }
+const fetchPreviewData = async (url: string): Promise<PreviewData | null> => {
+  try {
+    const res = await fetch(`/api/fetchPreview?url=${encodeURIComponent(url)}`);
+    if (!res.ok) throw new Error('Failed to fetch preview data');
+    return res.json();
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
 
 export default function Message({
   message,
@@ -46,50 +56,8 @@ export default function Message({
 
   useEffect(() => {
     const getPreview = async (url: string) => {
-      if (!url) {
-        return;
-      }
-
-      if (!/^https?:\/\//i.test(url)) {
-        return;
-      }
-      const parser = new DOMParser();
-      const response = await fetch(url);
-      const data = await response.text();
-      const document = parser.parseFromString(data, 'text/html');
-
-      const titleMatch =
-        document.querySelector('meta[name="og:title"]') ||
-        document.querySelector('meta[property="og:title"]') ||
-        document.querySelector('meta[name="twitter:title"]') ||
-        document.querySelector('meta[property="twitter:title"]');
-
-      const descriptionMatch =
-        document.querySelector('meta[name="og:description"]') ||
-        document.querySelector('meta[property="og:description"]') ||
-        document.querySelector('meta[name="twitter:description"]') ||
-        document.querySelector('meta[property="twitter:description"]');
-
-      const imageMatch =
-        document.querySelector('meta[name="og:image"]') ||
-        document.querySelector('meta[property="og:image"]') ||
-        document.querySelector('meta[name="twitter:image"]') ||
-        document.querySelector('meta[name="twitter:image:src"]') ||
-        document.querySelector('meta[property="twitter:image"]') ||
-        document.querySelector('meta[property="twitter:image:src"]');
-
-      const title = titleMatch ? titleMatch.getAttribute('content') : '';
-      const description = descriptionMatch
-        ? descriptionMatch.getAttribute('content')
-        : '';
-      const image = imageMatch ? imageMatch.getAttribute('content') : '';
-      const domain = new URL(msgContainsUrl(message.content) as string)
-        .hostname;
-
-      setPreviews((prev) => ({
-        ...prev,
-        [message.id]: { title, description, image, domain }
-      }));
+      const previewData = await fetchPreviewData(url);
+      setPreviews((prev) => ({ ...prev, [message.id]: previewData }));
     };
 
     if (msgContainsUrl(message.content)) {
@@ -118,13 +86,13 @@ export default function Message({
     };
     deleteMessage();
   };
+
   return (
     <div
       key={message.id}
       className={cn(
         'w-full',
-        message.userId === user.id &&
-          'group flex place-content-end hover:cursor-pointer '
+        message.userId === user.id && 'group flex place-content-end'
       )}
     >
       <div
@@ -165,7 +133,7 @@ export default function Message({
                         : `http://${message.content}`
                     }
                     target="_blank"
-                    className="text-blue-500 underline hover:no-underline"
+                    className="break-all text-blue-500 underline hover:no-underline"
                   >
                     {message.content}
                   </a>
@@ -185,7 +153,7 @@ export default function Message({
                               part.startsWith('http') ? part : `http://${part}`
                             }
                             target="_blank"
-                            className="text-blue-500 underline hover:no-underline"
+                            className="break-all text-blue-500 underline hover:no-underline"
                           >
                             {part}
                           </a>
@@ -200,21 +168,28 @@ export default function Message({
                 {previews[message.id] &&
                   previews[message.id]!.image !== '' &&
                   previews[message.id]!.title && (
-                    <div key={message.id} className="preview-container">
-                      <div className="relative">
-                        <img
-                          src={previews[message.id]!.image}
-                          width={400}
-                          className="aspect-video w-full rounded-lg object-fill"
-                          alt={previews[message.id]!.title}
-                        />
-                        <div className="absolute bottom-4 left-4 flex justify-between rounded-md bg-black bg-opacity-60 p-2 text-white">
-                          <strong className="max-w-[70%] truncate text-sm md:max-w-max">
-                            {previews[message.id]!.title}
-                          </strong>
+                    <a
+                      href={msgContainsUrl(message.content) as string}
+                      target="_blank"
+                    >
+                      <div
+                        key={message.id}
+                        className="preview-container flex items-center justify-center"
+                      >
+                        <div className="relative">
+                          <img
+                            src={previews[message.id]!.image}
+                            className="aspect-video h-[167px] w-[300px] rounded-lg object-cover sm:h-[169px] sm:w-[300px] md:h-[197px] md:w-[350px] lg:h-[225px] lg:w-[400px]"
+                            alt={previews[message.id]!.title}
+                          />
+                          <div className="absolute bottom-4 left-4 flex w-[calc(100%-2rem)] justify-between rounded-md bg-black bg-opacity-60 p-2 text-white">
+                            <strong className="max-w-[100%] truncate text-sm md:max-w-max">
+                              {previews[message.id]!.title}
+                            </strong>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </a>
                   )}
               </div>
               <div className="flex place-content-end">
@@ -229,7 +204,7 @@ export default function Message({
 
             {message.userId === user.id && (
               <div
-                className="hidden justify-end self-center group-hover:flex"
+                className="hidden justify-end self-center hover:cursor-pointer group-hover:flex"
                 onClick={() => handleDeleteMessage(message.id)}
               >
                 <p className="text-rose-500 underline hover:no-underline">
