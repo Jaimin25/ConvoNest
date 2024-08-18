@@ -18,6 +18,10 @@ export function isImageOrGif(url: string) {
 }
 
 export const containsUrlRegex =
+  /\b(http|https):\/\/([\p{L}\p{N}_-]+(?:(?:\.[\p{L}\p{N}_-]+)+))([\p{L}\p{N}_.,@?^=%&:\/~+#-]*[\p{L}\p{N}_@?^=%&\/~+#-])/gu;
+
+export const splitTextUrlRegex =
+  
   /((https?:\/\/[^\s/$.?#].[^\s]*)|(www\.[^\s/$.?#].[^\s]*))/gi;
 
 export function msgContainsUrl(str: string) {
