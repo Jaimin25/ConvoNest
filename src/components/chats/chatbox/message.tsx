@@ -12,7 +12,8 @@ import {
   containsUrlRegex,
   isImageOrGif,
   isURL,
-  msgContainsUrl
+  msgContainsUrl,
+  splitTextUrlRegex
 } from '@/lib/utils';
 import { Messages } from '@prisma/client';
 
@@ -57,8 +58,9 @@ export default function Message({
       const previewData = await fetchPreviewData(url);
       setPreviews((prev) => ({ ...prev, [message.id]: previewData }));
     };
-
+console.log(msgContainsUrl(message.content));
     if (msgContainsUrl(message.content)) {
+      console.log(msgContainsUrl(message.content))
       if (!/^https?:\/\//i.test(msgContainsUrl(message.content) as string)) {
         return;
       }
@@ -140,7 +142,7 @@ export default function Message({
                 ) : msgContainsUrl(message.content) ? (
                   <div>
                     {message.content
-                      .split(containsUrlRegex)
+                      .split(splitTextUrlRegex)
                       .filter(
                         (item, index, array) =>
                           item && array.indexOf(item) === index
