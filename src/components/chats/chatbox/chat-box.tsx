@@ -58,7 +58,7 @@ export default function ChatBox({ chatId }: { chatId: string }) {
   useEffect(() => {
     socket?.on(
       `chat:${user.id}:receive-typing`,
-      (typingState, chatId, typingUserId) => {
+      (userId, typingState, chatId, typingUserId) => {
         setUserIsTyping(typingState);
         setCurrentChatIdTyping(chatId);
         setUserTyping(
@@ -67,7 +67,7 @@ export default function ChatBox({ chatId }: { chatId: string }) {
       }
     );
 
-    socket?.on(`chat:${user.id}:receive-stop-typing`, (typingState, chatId) => {
+    socket?.on(`chat:${user.id}:receive-stop-typing`, (userId, typingState, chatId) => {
       setUserIsTyping(typingState);
       setCurrentChatIdTyping(chatId);
     });
