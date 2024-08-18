@@ -25,10 +25,9 @@ interface PreviewData {
 const fetchPreviewData = async (url: string): Promise<PreviewData | null> => {
   try {
     const res = await fetch(`/api/fetchPreview?url=${encodeURIComponent(url)}`);
-    if (!res.ok) throw new Error('Failed to fetch preview data');
+    if (!res.ok) return null;
     return res.json();
   } catch (error) {
-    console.error(error);
     return null;
   }
 };
@@ -61,7 +60,9 @@ export default function Message({
     };
 
     if (msgContainsUrl(message.content)) {
-      console.log(msgContainsUrl(message.content));
+      if (!/^https?:\/\//i.test(msgContainsUrl(message.content) as string)) {
+        return;
+      }
       getPreview(msgContainsUrl(message.content) as string);
     }
   }, [message.content]);

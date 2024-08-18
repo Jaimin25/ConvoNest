@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
   if (!/^https?:\/\//i.test(url)) {
     return NextResponse.json({ error: 'Invalid URL' }, { status: 400 });
   }
+
   try {
     const response = await fetch(url);
     const data = await response.text();
