@@ -36,7 +36,7 @@ export default function MessageList({
         message &&
         chat &&
         message.messages.map((message) => (
-          <Message message={message} chat={chat} />
+          <Message message={message} chat={chat} key={message.id} />
         ))
       )}
     </div>
