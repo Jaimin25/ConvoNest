@@ -21,5 +21,7 @@ export const containsUrlRegex =
   /((https?:\/\/[^\s/$.?#].[^\s]*)|(www\.[^\s/$.?#].[^\s]*))/gi;
 
 export function msgContainsUrl(str: string) {
-  return containsUrlRegex.test(str) ? str.match(containsUrlRegex)![0] : false;
+  return containsUrlRegex.test(str)
+    ? str.match(containsUrlRegex)![str.match(containsUrlRegex)!.length - 1]
+    : false;
 }

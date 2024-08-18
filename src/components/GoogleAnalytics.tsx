@@ -22,4 +22,3 @@ const GoogleAnalytics = ({ ga_id }: { ga_id: string }) => (
   </>
 );
 export default GoogleAnalytics;
-
