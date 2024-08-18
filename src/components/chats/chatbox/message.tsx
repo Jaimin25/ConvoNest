@@ -12,8 +12,7 @@ import {
   containsUrlRegex,
   isImageOrGif,
   isURL,
-  msgContainsUrl,
-  splitTextUrlRegex
+  msgContainsUrl
 } from '@/lib/utils';
 import { Messages } from '@prisma/client';
 
@@ -38,12 +37,11 @@ export default function Message({
   chat
 }: {
   message: Messages;
-
   chat: ChatsProps;
 }) {
   const { user } = useUser();
   const { socket } = useSocket();
-  const { removeMessage, messages } = useMessages();
+  const { removeMessage } = useMessages();
   const [previews, setPreviews] = useState<Record<string, PreviewData | null>>(
     {}
   );
@@ -61,13 +59,12 @@ export default function Message({
     };
 
     if (msgContainsUrl(message.content)) {
-      console.log(msgContainsUrl(message.content))
       if (!/^https?:\/\//i.test(msgContainsUrl(message.content) as string)) {
         return;
       }
       getPreview(msgContainsUrl(message.content) as string);
     }
-  }, [message.content, messages]);
+  }, [message.content]);
 
   const handleDeleteMessage = (id: number) => {
     const deleteMessage = async () => {
@@ -143,7 +140,7 @@ export default function Message({
                 ) : msgContainsUrl(message.content) ? (
                   <div>
                     {message.content
-                      .split(splitTextUrlRegex)
+                      .split(containsUrlRegex)
                       .filter(
                         (item, index, array) =>
                           item && array.indexOf(item) === index
