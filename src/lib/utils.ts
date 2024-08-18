@@ -18,7 +18,7 @@ export function isImageOrGif(url: string) {
 }
 
 export const containsUrlRegex =
-  /((https?:\/\/[^\s/$.?#].[^\s]*)|(www\.[^\s/$.?#].[^\s]*))/gi;
+  /(((https?:\/\/)|(www\.))[^\s]+)/;
 
 export function msgContainsUrl(str: string) {
   return containsUrlRegex.test(str)
