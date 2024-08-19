@@ -30,6 +30,7 @@ Check it out live [here](https://convonest.vercel.app/).
 - Can't access other's chats
 - Notification for new messages
 - Unread message count
+- Link support in messages and link previews using metadata
 
 ## Demo Video
 
