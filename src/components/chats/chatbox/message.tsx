@@ -178,10 +178,14 @@ export default function Message({
                         className="preview-container flex items-center justify-center"
                       >
                         <div className="relative">
-                          <img
+                          <Image
                             src={previews[message.id]!.image}
+                            width={400}
+                            height={225}
                             className="aspect-video h-[167px] w-[300px] rounded-lg object-cover sm:h-[169px] sm:w-[300px] md:h-[197px] md:w-[350px] lg:h-[225px] lg:w-[400px]"
                             alt={previews[message.id]!.title}
+                            decoding="async"
+                            unoptimized
                           />
                           <div className="absolute bottom-4 left-4 flex w-[calc(100%-2rem)] justify-between rounded-md bg-black bg-opacity-60 p-2 text-white">
                             <strong className="max-w-[100%] truncate text-sm md:max-w-max">
@@ -221,7 +225,7 @@ export default function Message({
             src={message.content}
             alt="image"
             className="m-2 aspect-auto rounded-2xl object-contain"
-            priority
+            unoptimized
           />
         )}
       </div>
