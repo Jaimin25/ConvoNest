@@ -1,5 +1,4 @@
 import React from 'react';
-import type { Metadata } from 'next';
 import { Merienda } from 'next/font/google';
 import { MessageCircleMore } from 'lucide-react';
 
@@ -11,11 +10,6 @@ const merienda = Merienda({
   subsets: ['latin'],
   variable: '--font-merienda'
 });
-
-export const metadata: Metadata = {
-  title: 'ConvoNest',
-  description: 'Place to have some fun conversations'
-};
 
 export default function AuthLayout({
   children
